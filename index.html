@@ -51,25 +51,15 @@
       box-shadow: 0 12px 30px rgba(0,0,0,0.6);
     }
     .case-card:active { transform: scale(0.95); box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-
-    /* Deep Glow Effects */
-    .case-card::after {
-      content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 30%, rgba(255,255,255,0.04), transparent 70%); pointer-events: none;
-    }
-
-    .case-card.free-type { border-color: rgba(16, 185, 129, 0.3); }
-    .case-card.free-type .case-glow { background: rgba(16, 185, 129, 0.15); }
-
-    .case-card.risk-type { border-color: rgba(239, 68, 68, 0.3); }
-    .case-card.risk-type .case-glow { background: rgba(239, 68, 68, 0.15); }
-
-    .case-card.win-type { border-color: rgba(251, 191, 36, 0.3); }
-    .case-card.win-type .case-glow { background: rgba(251, 191, 36, 0.15); }
+    .case-card::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 30%, rgba(255,255,255,0.04), transparent 70%); pointer-events: none; }
 
     .case-glow {
-      position: absolute; top: 15px; width: 80px; height: 80px; background: rgba(56, 189, 248, 0.12);
+      position: absolute; top: 15px; width: 80px; height: 80px; background: rgba(56, 189, 248, 0.15);
       filter: blur(35px); border-radius: 50%; z-index: 1; pointer-events: none;
     }
+    .case-card.free-type .case-glow { background: rgba(16, 185, 129, 0.2); }
+    .case-card.risk-type .case-glow { background: rgba(239, 68, 68, 0.2); }
+    .case-card.win-type .case-glow { background: rgba(251, 191, 36, 0.2); }
 
     .case-badge { 
       position: absolute; top: 12px; right: 12px; font-size: 9px; font-weight: 900; 
@@ -80,10 +70,10 @@
     .badge-top { background: rgba(251, 191, 36, 0.2); color: #fde047; border: 1px solid rgba(251, 191, 36, 0.4); }
 
     .case-img-wrap {
-      position: relative; width: 85px; height: 85px; display: flex; align-items: center; justify-content: center;
+      position: relative; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center;
       margin: 8px 0 12px 0; z-index: 2;
     }
-    .case-img { width: 85px; height: 85px; object-fit: contain; filter: drop-shadow(0 12px 16px rgba(0,0,0,0.7)); transition: transform 0.3s ease; }
+    .case-img { width: 85px; height: 85px; object-fit: contain; filter: drop-shadow(0 12px 18px rgba(0,0,0,0.8)); transition: transform 0.3s ease; }
     .case-card:hover .case-img { transform: scale(1.1) translateY(-4px); }
     
     .case-name { font-weight: 800; font-size: 15px; margin-bottom: 8px; color: #f8fafc; letter-spacing: -0.3px; z-index: 2; }
@@ -107,9 +97,9 @@
     .close-btn { position: absolute; top: 18px; right: 18px; background: rgba(255,255,255,0.05); border: none; color: #94a3b8; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; }
 
     .roulette-container {
-      position: relative; width: 100%; height: 115px; background: #07090e;
+      position: relative; width: 100%; height: 120px; background: #07090e;
       border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.08); overflow: hidden; margin: 22px 0;
-      box-shadow: inset 0 4px 12px rgba(0,0,0,0.8);
+      box-shadow: inset 0 4px 15px rgba(0,0,0,0.9);
     }
     .roulette-pointer {
       position: absolute; top: 0; bottom: 0; left: 50%; width: 3px;
@@ -117,15 +107,22 @@
       box-shadow: 0 0 12px #38bdf8, 0 0 24px #38bdf8;
     }
     .roulette-track {
-      display: flex; position: absolute; left: 0; top: 12px; height: 90px;
+      display: flex; position: absolute; left: 0; top: 10px; height: 100px;
       transition: transform 4s cubic-bezier(0.15, 0.9, 0.25, 1);
     }
     .roulette-item {
-      min-width: 82px; width: 82px; height: 90px; background: rgba(255, 255, 255, 0.03);
-      margin: 0 4px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.06);
-      display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 26px;
+      min-width: 90px; width: 90px; height: 100px; background: rgba(255, 255, 255, 0.03);
+      margin: 0 4px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;
     }
-    .roulette-item span { font-size: 10px; margin-top: 4px; color: #fbbf24; font-weight: 800; }
+    .roulette-item img { width: 50px; height: 50px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6)); }
+    .roulette-item span { font-size: 10px; margin-top: 6px; font-weight: 800; color: #fbbf24; }
+    
+    /* Item Rarity borders */
+    .rarity-common { border-color: rgba(148, 163, 184, 0.3); background: rgba(148, 163, 184, 0.05); }
+    .rarity-rare { border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.08); }
+    .rarity-epic { border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.08); }
+    .rarity-legendary { border-color: rgba(251, 191, 36, 0.6); background: rgba(251, 191, 36, 0.12); box-shadow: inset 0 0 15px rgba(251, 191, 36, 0.2); }
 
     .btn-open {
       width: 100%; background: linear-gradient(135deg, #38bdf8, #0284c7); color: #000; border: none;
@@ -133,6 +130,16 @@
       box-shadow: 0 8px 25px rgba(56, 189, 248, 0.4);
     }
     .btn-open:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Inventory Grid */
+    .inventory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+    .inventory-item {
+      background: rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 12px 8px;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.08); position: relative;
+    }
+    .inventory-item img { width: 45px; height: 45px; object-fit: contain; margin-bottom: 6px; }
+    .inventory-item .item-val { font-size: 11px; font-weight: 800; color: #fbbf24; }
 
     /* Bottom Nav */
     .nav-bar {
@@ -168,7 +175,7 @@
       <div class="case-card free-type" onclick="openCaseModal('Божья коровка', 0)">
         <div class="case-glow"></div>
         <div class="case-badge badge-free">FREE</div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/ladybird.png" alt="ladybird"></div>
+        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069176.png" alt="box"></div>
         <div class="case-name">Божья коровка</div>
         <div class="case-price" style="color: #34d399; background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.3);">Бесплатно</div>
       </div>
@@ -178,110 +185,59 @@
     <div class="cases-grid">
       <div class="case-card" onclick="openCaseModal('Суета', 99)">
         <div class="case-glow"></div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/tornado.png" alt="tornado"></div>
+        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069186.png" alt="box"></div>
         <div class="case-name">Суета</div>
         <div class="case-price">⭐ 99</div>
       </div>
       <div class="case-card" onclick="openCaseModal('Студент', 199)">
         <div class="case-glow"></div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/graduation-cap.png" alt="student"></div>
+        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069202.png" alt="box"></div>
         <div class="case-name">Студент</div>
         <div class="case-price">⭐ 199</div>
       </div>
       <div class="case-card" onclick="openCaseModal('Чилл', 299)">
         <div class="case-glow"></div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/floating-island.png" alt="chill"></div>
+        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069214.png" alt="box"></div>
         <div class="case-name">Чилл</div>
         <div class="case-price">⭐ 299</div>
       </div>
-      <div class="case-card" onclick="openCaseModal('Смена', 399)">
-        <div class="case-glow"></div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/construction.png" alt="work"></div>
-        <div class="case-name">Смена</div>
-        <div class="case-price">⭐ 399</div>
-      </div>
       <div class="case-card" onclick="openCaseModal('Геймер', 499)">
         <div class="case-glow"></div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/controller.png" alt="gamer"></div>
+        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069225.png" alt="box"></div>
         <div class="case-name">Геймер</div>
         <div class="case-price">⭐ 499</div>
       </div>
     </div>
 
-    <div class="category-title">Средний класс</div>
+    <div class="category-title">Премиум и NFT</div>
     <div class="cases-grid">
-      <div class="case-card" onclick="openCaseModal('Кэшбэк', 699)">
-        <div class="case-glow"></div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/money-bag.png" alt="cashback"></div>
-        <div class="case-name">Кэшбэк</div>
-        <div class="case-price">⭐ 699</div>
-      </div>
-      <div class="case-card" onclick="openCaseModal('To The Moon', 899)">
-        <div class="case-glow"></div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/rocket.png" alt="moon"></div>
-        <div class="case-name">To The Moon</div>
-        <div class="case-price">⭐ 899</div>
-      </div>
       <div class="case-card" onclick="openCaseModal('Мажор', 1199)">
         <div class="case-glow"></div>
         <div class="case-badge badge-top">TOP</div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/sunglasses.png" alt="major"></div>
+        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069192.png" alt="box"></div>
         <div class="case-name">Мажор</div>
         <div class="case-price">⭐ 1199</div>
       </div>
-      <div class="case-card" onclick="openCaseModal('Босс', 1499)">
-        <div class="case-glow"></div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/briefcase.png" alt="boss"></div>
-        <div class="case-name">Босс</div>
-        <div class="case-price">⭐ 1499</div>
-      </div>
       <div class="case-card" onclick="openCaseModal('Шейх', 1999)">
         <div class="case-glow"></div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/crown.png" alt="sheikh"></div>
+        <div class="case-badge badge-hot">NFT</div>
+        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069233.png" alt="box"></div>
         <div class="case-name">Шейх</div>
         <div class="case-price">⭐ 1999</div>
       </div>
-    </div>
-
-    <div class="category-title">Лимитированные и Риск</div>
-    <div class="cases-grid">
       <div class="case-card risk-type" onclick="openCaseModal('Cypherpunk', 2499)">
         <div class="case-glow"></div>
         <div class="case-badge badge-hot">HOT</div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/laptop.png" alt="cyber"></div>
+        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069241.png" alt="box"></div>
         <div class="case-name">Cypherpunk</div>
         <div class="case-price">⭐ 2499</div>
       </div>
-      <div class="case-card risk-type" onclick="openCaseModal('Eclipse', 2999)">
+      <div class="case-card win-type" onclick="openCaseModal('Telegram Gifts', 3500)">
         <div class="case-glow"></div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/full-moon.png" alt="eclipse"></div>
-        <div class="case-name">Eclipse</div>
-        <div class="case-price">⭐ 2999</div>
-      </div>
-      <div class="case-card risk-type" onclick="openCaseModal('Всё или ничего', 3500)">
-        <div class="case-glow"></div>
-        <div class="case-badge badge-hot">RISK</div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/dice.png" alt="risk"></div>
-        <div class="case-name">Всё или ничего</div>
+        <div class="case-badge badge-top">GIFTS</div>
+        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069255.png" alt="box"></div>
+        <div class="case-name">Telegram Gifts</div>
         <div class="case-price">⭐ 3500</div>
-      </div>
-    </div>
-
-    <div class="category-title">Беспроигрышные</div>
-    <div class="cases-grid">
-      <div class="case-card win-type" onclick="openCaseModal('Без Риска', 777)">
-        <div class="case-glow"></div>
-        <div class="case-badge badge-top">WIN</div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/shield.png" alt="shield"></div>
-        <div class="case-name">Без Риска</div>
-        <div class="case-price">⭐ 777</div>
-      </div>
-      <div class="case-card win-type" onclick="openCaseModal('Верняк', 1555)">
-        <div class="case-glow"></div>
-        <div class="case-badge badge-top">WIN</div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/bullseye.png" alt="target"></div>
-        <div class="case-name">Верняк</div>
-        <div class="case-price">⭐ 1555</div>
       </div>
     </div>
 
@@ -292,23 +248,13 @@
     <div class="cases-grid">
       <div class="case-card">
         <div class="case-glow"></div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/rocket.png" alt="crash"></div>
+        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069176.png" alt="crash"></div>
         <div class="case-name">Ракетка</div>
       </div>
       <div class="case-card">
         <div class="case-glow"></div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/dynamite.png" alt="mines"></div>
+        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069186.png" alt="mines"></div>
         <div class="case-name">Мины</div>
-      </div>
-      <div class="case-card">
-        <div class="case-glow"></div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/bowling-ball.png" alt="plinko"></div>
-        <div class="case-name">Plinko</div>
-      </div>
-      <div class="case-card">
-        <div class="case-glow"></div>
-        <div class="case-img-wrap"><img class="case-img" src="https://img.icons8.com/3d-fluency/100/casino.png" alt="roulette"></div>
-        <div class="case-name">Рулетка</div>
       </div>
     </div>
   </div>
@@ -317,12 +263,8 @@
   <div id="view-bonuses" class="view">
     <h3 style="margin-bottom: 12px; font-weight: 800;">Ежедневные задания</h3>
     <div style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: 18px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.06);">
-      <div style="font-weight: 700;">Поделись сторис</div>
-      <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Получи +5 ⭐</div>
-    </div>
-    <div style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.06);">
-      <div style="font-weight: 700;">Сыграй в любую игру</div>
-      <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Получи +5 ⭐</div>
+      <div style="font-weight: 700;">Поделись сторис в Telegram</div>
+      <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Получи +50 ⭐</div>
     </div>
   </div>
 
@@ -335,8 +277,8 @@
     </div>
     <div style="background: rgba(255,255,255,0.03); padding: 18px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.06);">
       <h4 style="margin-bottom: 12px; font-weight: 800;">Инвентарь</h4>
-      <div id="inventoryList" style="display: flex; gap: 8px; flex-wrap: wrap;">
-        <p style="color: #94a3b8; font-size: 13px;">Инвентарь пуст</p>
+      <div id="inventoryList" class="inventory-grid">
+        <p style="color: #94a3b8; font-size: 13px; grid-column: span 3; text-align: center; padding: 20px 0;">Инвентарь пуст</p>
       </div>
     </div>
   </div>
@@ -345,7 +287,7 @@
   <div class="modal-overlay" id="rouletteModal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeCaseModal()">✕</button>
-      <h3 id="modalCaseTitle" style="font-weight: 800; font-size: 18px;">Кейс</h3>
+      <h3 id="modalCaseTitle" style="font-weight: 800; font-size: 18px; margin-bottom: 4px;">Кейс</h3>
       
       <div class="roulette-container">
         <div class="roulette-pointer"></div>
@@ -393,13 +335,16 @@
     let isSpinning = false;
     const inventory = [];
 
+    // Реальные ценные награды (NFT, Telegram Stars, Gifts) с картинками и редкостью
     const prizesPool = [
-      { icon: '💎', name: 'Алмаз', value: 5000 },
-      { icon: '👑', name: 'Корона', value: 2500 },
-      { icon: '🏎️', name: 'Спорткар', value: 1500 },
-      { icon: '📱', name: 'Телефон', value: 800 },
-      { icon: '💍', name: 'Кольцо', value: 400 },
-      { icon: '⭐', name: '100 Звёзд', value: 100 }
+      { name: 'DUCK NFT', value: 5000, img: 'https://cdn-icons-png.flaticon.com/512/616/616408.png', rarity: 'rarity-legendary' },
+      { name: 'Gold Rolex Gift', value: 3200, img: 'https://cdn-icons-png.flaticon.com/512/2869/2869302.png', rarity: 'rarity-legendary' },
+      { name: 'TON Crystal', value: 1500, img: 'https://cdn-icons-png.flaticon.com/512/12114/12114238.png', rarity: 'rarity-epic' },
+      { name: '1000 Stars ⭐', value: 1000, img: 'https://cdn-icons-png.flaticon.com/512/1828/1828884.png', rarity: 'rarity-epic' },
+      { name: 'PUNK NFT #402', value: 750, img: 'https://cdn-icons-png.flaticon.com/512/4140/4140048.png', rarity: 'rarity-rare' },
+      { name: '500 Stars ⭐', value: 500, img: 'https://cdn-icons-png.flaticon.com/512/1828/1828884.png', rarity: 'rarity-rare' },
+      { name: '100 Stars ⭐', value: 100, img: 'https://cdn-icons-png.flaticon.com/512/1828/1828884.png', rarity: 'rarity-common' },
+      { name: 'Mystery Box', value: 50, img: 'https://cdn-icons-png.flaticon.com/512/3069/3069176.png', rarity: 'rarity-common' }
     ];
 
     function switchTab(tabName, el) {
@@ -429,11 +374,11 @@
       track.style.transform = 'translateX(0px)';
       track.innerHTML = '';
       
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < 60; i++) {
         const item = prizesPool[Math.floor(Math.random() * prizesPool.length)];
         const div = document.createElement('div');
-        div.className = 'roulette-item';
-        div.innerHTML = `${item.icon}<span>${item.value} ⭐</span>`;
+        div.className = `roulette-item ${item.rarity}`;
+        div.innerHTML = `<img src="${item.img}" alt=""><span>${item.value}⭐</span>`;
         track.appendChild(div);
       }
     }
@@ -451,11 +396,11 @@
       document.getElementById('spinBtn').disabled = true;
 
       const track = document.getElementById('rouletteTrack');
-      const itemWidth = 90;
-      const winIndex = 35 + Math.floor(Math.random() * 5);
-      const offset = -(winIndex * itemWidth - 110);
+      const itemWidth = 98;
+      const winIndex = 40 + Math.floor(Math.random() * 8);
+      const offset = -(winIndex * itemWidth - 140);
 
-      track.style.transition = 'transform 4s cubic-bezier(0.15, 0.9, 0.25, 1)';
+      track.style.transition = 'transform 4.5s cubic-bezier(0.12, 0.85, 0.15, 1)';
       track.style.transform = `translateX(${offset}px)`;
 
       setTimeout(() => {
@@ -465,10 +410,10 @@
         document.getElementById('openedCount').innerText = openedCases;
         
         const wonItem = prizesPool[Math.floor(Math.random() * prizesPool.length)];
-        inventory.push(wonItem);
+        inventory.unshift(wonItem);
         renderInventory();
-        alert(`Поздравляем! Вы выбили: ${wonItem.icon} ${wonItem.name} (${wonItem.value} ⭐)`);
-      }, 4200);
+        alert(`Поздравляем! Вы выбили: ${wonItem.name} (${wonItem.value} ⭐)`);
+      }, 4700);
     }
 
     function renderInventory() {
@@ -477,12 +422,8 @@
       invContainer.innerHTML = '';
       inventory.forEach(item => {
         const div = document.createElement('div');
-        div.style.background = 'rgba(255,255,255,0.05)';
-        div.style.padding = '8px 12px';
-        div.style.borderRadius = '12px';
-        div.style.fontSize = '20px';
-        div.style.border = '1px solid rgba(255,255,255,0.08)';
-        div.innerHTML = `${item.icon} <span style="font-size:12px; font-weight:bold; color:#fbbf24;">${item.value}⭐</span>`;
+        div.className = `inventory-item ${item.rarity}`;
+        div.innerHTML = `<img src="${item.img}" alt=""><div class="item-val">${item.value}⭐</div>`;
         invContainer.appendChild(div);
       });
     }
