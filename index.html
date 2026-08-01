@@ -14,7 +14,7 @@
       padding-bottom: 90px;
     }
 
-    /* Header в стиле Тигра */
+    /* Header */
     .header {
       display: flex; justify-content: space-between; align-items: center;
       padding: 12px 16px; background: rgba(15, 22, 36, 0.95); backdrop-filter: blur(20px);
@@ -29,29 +29,28 @@
     .view { display: none; padding: 16px; }
     .view.active { display: block; }
 
-    /* Главный кейс (ТОП) */
+    /* Главный кейс (Церковная мышь) */
     .main-case-card {
       position: relative;
       background: linear-gradient(145deg, #162032, #0d131f);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 24px;
-      padding: 24px 16px;
+      padding: 20px 16px;
       text-align: center;
       margin-bottom: 20px;
       box-shadow: 0 16px 32px rgba(0,0,0,0.6);
-      overflow: hidden;
       cursor: pointer;
     }
-    .main-case-card img { width: 150px; height: 120px; object-fit: contain; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.9)); margin-bottom: 12px; transition: transform 0.3s; }
+    .main-case-card img { width: 120px; height: 100px; object-fit: contain; filter: drop-shadow(0 12px 20px rgba(0,0,0,0.8)); margin-bottom: 8px; transition: transform 0.3s; }
     .main-case-card:hover img { transform: scale(1.05); }
-    .main-case-title { font-size: 18px; font-weight: 900; color: #fff; margin-bottom: 4px; }
-    .main-case-price { font-size: 14px; font-weight: 800; color: #94a3b8; }
+    .main-case-title { font-size: 17px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+    .main-case-price { font-size: 13px; font-weight: 800; color: #34d399; }
 
     /* Категории */
     .category-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 12px 0; font-size: 15px; font-weight: 900; color: #e2e8f0; }
     .category-toggle { font-size: 12px; color: #64748b; cursor: pointer; }
 
-    /* Сетка кейсов 2 в ряд (как у Тигра) */
+    /* Сетка кейсов 2 в ряд */
     .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .case-card {
       position: relative; 
@@ -65,7 +64,7 @@
     }
     .case-card:active { transform: scale(0.96); }
 
-    /* Бейджи новинок */
+    /* Бейджи */
     .case-badge { 
       position: absolute; top: 10px; right: 10px; font-size: 8px; font-weight: 900; 
       padding: 3px 7px; border-radius: 6px; text-transform: uppercase; z-index: 3; letter-spacing: 0.5px;
@@ -73,14 +72,14 @@
     .badge-new { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); }
     .badge-nft { background: linear-gradient(135deg, #10b981, #059669); color: #fff; box-shadow: 0 0 10px rgba(16, 185, 129, 0.4); }
 
-    .case-img-wrap { width: 100px; height: 90px; display: flex; align-items: center; justify-content: center; margin: 6px 0 10px 0; z-index: 2; }
-    .case-img { width: 100px; height: 90px; object-fit: contain; filter: drop-shadow(0 12px 18px rgba(0,0,0,0.8)); transition: transform 0.3s ease; }
+    .case-img-wrap { width: 90px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 6px 0 10px 0; z-index: 2; }
+    .case-img { width: 90px; height: 80px; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8)); transition: transform 0.3s ease; }
     .case-card:hover .case-img { transform: scale(1.08) translateY(-3px); }
     
-    .case-name { font-weight: 800; font-size: 14px; margin-bottom: 6px; color: #f8fafc; z-index: 2; }
+    .case-name { font-weight: 800; font-size: 13px; margin-bottom: 6px; color: #f8fafc; z-index: 2; }
     .case-price { 
-      font-size: 13px; font-weight: 900; color: #fbbf24; background: rgba(251, 191, 36, 0.08); 
-      padding: 4px 12px; border-radius: 10px; border: 1px solid rgba(251, 191, 36, 0.2); z-index: 2;
+      font-size: 12px; font-weight: 900; color: #fbbf24; background: rgba(251, 191, 36, 0.08); 
+      padding: 4px 10px; border-radius: 10px; border: 1px solid rgba(251, 191, 36, 0.2); z-index: 2;
       display: flex; align-items: center; gap: 4px;
     }
 
@@ -97,7 +96,7 @@
     }
     .close-btn { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.06); border: none; color: #94a3b8; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; }
 
-    /* Премиум рулетка */
+    /* Рулетка */
     .roulette-container {
       position: relative; width: 100%; height: 135px; background: #070b14;
       border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.08); overflow: hidden; margin: 20px 0;
@@ -122,7 +121,6 @@
     .roulette-item .item-title { font-size: 9px; font-weight: 700; color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center; }
     .roulette-item .item-val { font-size: 11px; font-weight: 900; color: #fbbf24; }
     
-    /* Редкости с крутым неоном */
     .rarity-common { border: 1px solid rgba(148, 163, 184, 0.2); background: linear-gradient(180deg, #131b2e, #0b111e); }
     .rarity-rare { border: 1px solid rgba(56, 189, 248, 0.4); background: linear-gradient(180deg, #142842, #0d1729); }
     .rarity-epic { border: 1px solid rgba(168, 85, 247, 0.5); background: linear-gradient(180deg, #281542, #150d26); }
@@ -171,19 +169,19 @@
   <!-- TAB 1: CASES -->
   <div id="view-cases" class="view active">
     
-    <!-- Главный бесплатный кейс сверху (как Церковная мышь в Тигре) -->
+    <!-- Главный бесплатный кейс -->
     <div class="main-case-card" onclick="openCaseModal('Церковная мышь', 0)">
       <img src="https://cdn-icons-png.flaticon.com/512/3069/3069176.png" alt="free box">
       <div class="main-case-title">Церковная мышь</div>
-      <div class="main-case-price" style="color: #34d399;">Бесплатно</div>
+      <div class="main-case-price">Бесплатно</div>
     </div>
 
     <div class="category-header">
-      <span>Лимитированные</span>
+      <span>Лимитированные кейсы</span>
       <span class="category-toggle">Свернуть</span>
     </div>
 
-    <!-- Сетка лимитированных кейсов (3D-сундуки) -->
+    <!-- Полный набор сундуков -->
     <div class="cases-grid">
       <div class="case-card" onclick="openCaseModal('Punks', 666)">
         <div class="case-badge badge-new">НОВИНКА</div>
@@ -209,6 +207,19 @@
         <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069255.png" alt="box"></div>
         <div class="case-name">Retro Box</div>
         <div class="case-price">⭐ 2200</div>
+      </div>
+
+      <div class="case-card" onclick="openCaseModal('Golden Case', 3000)">
+        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069176.png" alt="box"></div>
+        <div class="case-name">Golden Case</div>
+        <div class="case-price">⭐ 3000</div>
+      </div>
+
+      <div class="case-card" onclick="openCaseModal('Cyber Box', 4500)">
+        <div class="case-badge badge-nft">NFT</div>
+        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069186.png" alt="box"></div>
+        <div class="case-name">Cyber Box</div>
+        <div class="case-price">⭐ 4500</div>
       </div>
     </div>
 
@@ -293,7 +304,6 @@
 
     if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
       const user = tg.initDataUnsafe.user;
-      document.getElementById('userName').innerText = user.first_name;
       document.getElementById('profileName').innerText = user.first_name;
       document.getElementById('userAvatar').innerText = user.first_name[0].toUpperCase();
     }
@@ -388,7 +398,6 @@
       }, 4700);
     }
 
-    let hasRenderedInv = false;
     function renderInventory() {
       const invContainer = document.getElementById('inventoryList');
       if (inventory.length === 0) return;
