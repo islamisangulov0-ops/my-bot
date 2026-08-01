@@ -2,74 +2,165 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CaseUp Mini App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>CaseUp - Рулетка</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
     body {
-      background-color: #0f172a;
-      color: #ffffff;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
+      background: #0b0f19;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 10px;
+      min-height: 100vh;
+    }
+    .header { text-align: center; margin-bottom: 20px; }
+    .header h1 { font-size: 28px; color: #38bdf8; text-transform: uppercase; letter-spacing: 2px; }
+    .header p { color: #64748b; font-size: 13px; margin-top: 4px; }
+
+    /* Рулетка */
+    .roulette-container {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      height: 110px;
+      background: #161e2e;
+      border: 2px solid #334155;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 25px;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 0 20px rgba(56, 189, 248, 0.15);
+    }
+    /* Указатель выигрыша */
+    .pointer {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 4px; height: 100%;
+      background: #f43f5e;
+      z-index: 10;
+      box-shadow: 0 0 10px #f43f5e;
+    }
+    .roulette-track {
+      display: flex;
+      gap: 10px;
+      position: absolute;
+      left: 0; top: 10px;
+      will-change: transform;
+    }
+    .item-card {
+      width: 90px; height: 90px;
+      background: #1e293b;
+      border-radius: 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      box-sizing: border-box;
+      border: 2px solid #334155;
+      flex-shrink: 0;
     }
-    .card {
-      background: #1e293b;
-      border-radius: 16px;
-      padding: 24px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      max-width: 320px;
-      width: 100%;
-    }
-    h1 {
-      font-size: 24px;
-      margin-bottom: 8px;
-      color: #38bdf8;
-    }
-    p {
-      color: #94a3b8;
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
-    .btn {
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      color: white;
+    .item-card img { width: 45px; height: 45px; object-fit: contain; }
+    .item-card span { font-size: 11px; margin-top: 6px; font-weight: bold; color: #cbd5e1; }
+
+    /* Кнопки и инфо */
+    .btn-spin {
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      color: #fff;
       border: none;
-      padding: 14px 28px;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 16px;
+      width: 100%; max-width: 380px;
+      padding: 16px;
+      font-size: 18px; font-weight: bold;
+      border-radius: 14px;
       cursor: pointer;
-      width: 100%;
-      transition: transform 0.2s, opacity 0.2s;
+      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+      transition: all 0.2s;
     }
-    .btn:active {
-      transform: scale(0.98);
-      opacity: 0.9;
+    .btn-spin:active { transform: scale(0.97); }
+    .btn-spin:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .win-modal {
+      margin-top: 20px; font-size: 16px; font-weight: bold; color: #10b981;
+      text-align: center; height: 24px;
     }
   </style>
 </head>
 <body>
 
-  <div class="card">
-    <h1>🎰 CaseUp</h1>
-    <p>Открывай кейсы, получай крутые подарки и выводи их прямо в Telegram!</p>
-    <button class="btn" onclick="openCase()">Крутить Кейс ⭐</button>
+  <div class="header">
+    <h1>🎰 CASEUP</h1>
+    <p>Крути кейс и выбивай крутые призы!</p>
   </div>
+
+  <div class="roulette-container">
+    <div class="pointer"></div>
+    <div class="roulette-track" id="track"></div>
+  </div>
+
+  <button class="btn-spin" id="spinBtn" onclick="spinCase()">Открыть за 50 ⭐</button>
+  <div class="win-modal" id="winText"></div>
 
   <script>
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    function openCase() {
-      tg.showAlert("🎉 Поздравляем! Вы выиграли редкий подарок!");
+    const items = [
+      { name: 'Пепе', img: '🐸' },
+      { name: 'Дуров', img: '✈️' },
+      { name: 'Алмаз', img: '💎' },
+      { name: 'Заяц', img: '🐰' },
+      { name: 'Звезда', img: '⭐' },
+      { name: 'Огонь', img: '🔥' },
+      { name: 'Ракета', img: '🚀' }
+    ];
+
+    const track = document.getElementById('track');
+    const spinBtn = document.getElementById('spinBtn');
+    const winText = document.getElementById('winText');
+
+    function generateItems() {
+      track.innerHTML = '';
+      for (let i = 0; i < 60; i++) {
+        const rand = items[Math.floor(Math.random() * items.length)];
+        const card = document.createElement('div');
+        card.className = 'item-card';
+        card.innerHTML = `<span style="font-size:32px">${rand.img}</span><span>${rand.name}</span>`;
+        track.appendChild(card);
+      }
+    }
+
+    generateItems();
+
+    let isSpinning = false;
+
+    function spinCase() {
+      if (isSpinning) return;
+      isSpinning = true;
+      spinBtn.disabled = true;
+      winText.innerText = '';
+
+      generateItems();
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(0px)';
+
+      setTimeout(() => {
+        const itemWidth = 100; // 90px width + 10px gap
+        const winningIndex = 42; // Выигрышный предмет
+        const offset = -(winningIndex * itemWidth - 140); 
+
+        track.style.transition = 'transform 5s cubic-bezier(0.15, 0.85, 0.35, 1.2)';
+        track.style.transform = `translateX(${offset}px)`;
+
+        setTimeout(() => {
+          isSpinning = false;
+          spinBtn.disabled = false;
+          const wonItem = items[winningIndex % items.length];
+          winText.innerText = `🎉 Вы выиграли: ${wonItem.img} ${wonItem.name}!`;
+          tg.HapticFeedback.notificationOccurred('success');
+        }, 5000);
+      }, 50);
     }
   </script>
 </body>
