@@ -29,7 +29,7 @@
     .view { display: none; padding: 16px; }
     .view.active { display: block; }
 
-    /* Главный кейс (Церковная мышь) */
+    /* Главный кейс */
     .main-case-card {
       position: relative;
       background: linear-gradient(145deg, #162032, #0d131f);
@@ -41,8 +41,8 @@
       box-shadow: 0 16px 32px rgba(0,0,0,0.6);
       cursor: pointer;
     }
-    .main-case-card img { width: 120px; height: 100px; object-fit: contain; filter: drop-shadow(0 12px 20px rgba(0,0,0,0.8)); margin-bottom: 8px; transition: transform 0.3s; }
-    .main-case-card:hover img { transform: scale(1.05); }
+    .main-case-emoji { font-size: 56px; margin-bottom: 8px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); transition: transform 0.3s; }
+    .main-case-card:hover .main-case-emoji { transform: scale(1.08); }
     .main-case-title { font-size: 17px; font-weight: 900; color: #fff; margin-bottom: 4px; }
     .main-case-price { font-size: 13px; font-weight: 800; color: #34d399; }
 
@@ -50,7 +50,7 @@
     .category-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 12px 0; font-size: 15px; font-weight: 900; color: #e2e8f0; }
     .category-toggle { font-size: 12px; color: #64748b; cursor: pointer; }
 
-    /* Сетка кейсов 2 в ряд */
+    /* Сетка кейсов */
     .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .case-card {
       position: relative; 
@@ -72,9 +72,8 @@
     .badge-new { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); }
     .badge-nft { background: linear-gradient(135deg, #10b981, #059669); color: #fff; box-shadow: 0 0 10px rgba(16, 185, 129, 0.4); }
 
-    .case-img-wrap { width: 90px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 6px 0 10px 0; z-index: 2; }
-    .case-img { width: 90px; height: 80px; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8)); transition: transform 0.3s ease; }
-    .case-card:hover .case-img { transform: scale(1.08) translateY(-3px); }
+    .case-emoji-wrap { font-size: 44px; margin: 8px 0 12px 0; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.6)); transition: transform 0.3s ease; }
+    .case-card:hover .case-emoji-wrap { transform: scale(1.12) translateY(-3px); }
     
     .case-name { font-weight: 800; font-size: 13px; margin-bottom: 6px; color: #f8fafc; z-index: 2; }
     .case-price { 
@@ -108,16 +107,16 @@
       box-shadow: 0 0 12px #f59e0b, 0 0 24px #f59e0b;
     }
     .roulette-track {
-      display: flex; position: absolute; left: 0; top: 10px; height: 115px;
+      display: flex; position: absolute; left: 0; top: 12px; height: 110px;
       transition: transform 4s cubic-bezier(0.15, 0.9, 0.25, 1);
     }
     .roulette-item {
-      min-width: 95px; width: 95px; height: 115px;
+      min-width: 95px; width: 95px; height: 110px;
       margin: 0 4px; border-radius: 16px; 
       display: flex; flex-direction: column; align-items: center; justify-content: space-between; 
       padding: 10px 6px; position: relative;
     }
-    .roulette-item img { width: 58px; height: 58px; object-fit: contain; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.8)); }
+    .roulette-item .item-emoji { font-size: 38px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6)); }
     .roulette-item .item-title { font-size: 9px; font-weight: 700; color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center; }
     .roulette-item .item-val { font-size: 11px; font-weight: 900; color: #fbbf24; }
     
@@ -140,7 +139,7 @@
       display: flex; flex-direction: column; align-items: center; text-align: center;
       border: 1px solid rgba(255, 255, 255, 0.08); position: relative;
     }
-    .inventory-item img { width: 52px; height: 52px; object-fit: contain; margin-bottom: 6px; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6)); }
+    .inventory-item .inv-emoji { font-size: 34px; margin-bottom: 6px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5)); }
     .inventory-item .item-val { font-size: 11px; font-weight: 800; color: #fbbf24; }
 
     /* Нижняя навигация */
@@ -169,9 +168,9 @@
   <!-- TAB 1: CASES -->
   <div id="view-cases" class="view active">
     
-    <!-- Главный бесплатный кейс -->
+    <!-- Главный кейс -->
     <div class="main-case-card" onclick="openCaseModal('Церковная мышь', 0)">
-      <img src="https://cdn-icons-png.flaticon.com/512/3069/3069176.png" alt="free box">
+      <div class="main-case-emoji">📦</div>
       <div class="main-case-title">Церковная мышь</div>
       <div class="main-case-price">Бесплатно</div>
     </div>
@@ -181,43 +180,43 @@
       <span class="category-toggle">Свернуть</span>
     </div>
 
-    <!-- Полный набор сундуков -->
+    <!-- Полный сет кейсов-сундуков -->
     <div class="cases-grid">
       <div class="case-card" onclick="openCaseModal('Punks', 666)">
         <div class="case-badge badge-new">НОВИНКА</div>
-        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069186.png" alt="box"></div>
+        <div class="case-emoji-wrap">🎁</div>
         <div class="case-name">Punks</div>
         <div class="case-price">⭐ 666</div>
       </div>
 
       <div class="case-card" onclick="openCaseModal('Not Dead', 999)">
         <div class="case-badge badge-nft">ТОЛЬКО NFT</div>
-        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069202.png" alt="box"></div>
+        <div class="case-emoji-wrap">🧰</div>
         <div class="case-name">Not Dead</div>
         <div class="case-price">⭐ 999</div>
       </div>
 
       <div class="case-card" onclick="openCaseModal('Flamingo', 1500)">
-        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069233.png" alt="box"></div>
+        <div class="case-emoji-wrap">💼</div>
         <div class="case-name">Flamingo</div>
         <div class="case-price">⭐ 1500</div>
       </div>
 
       <div class="case-card" onclick="openCaseModal('Retro Box', 2200)">
-        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069255.png" alt="box"></div>
+        <div class="case-emoji-wrap">🗃️</div>
         <div class="case-name">Retro Box</div>
         <div class="case-price">⭐ 2200</div>
       </div>
 
       <div class="case-card" onclick="openCaseModal('Golden Case', 3000)">
-        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069176.png" alt="box"></div>
+        <div class="case-emoji-wrap">👑</div>
         <div class="case-name">Golden Case</div>
         <div class="case-price">⭐ 3000</div>
       </div>
 
       <div class="case-card" onclick="openCaseModal('Cyber Box', 4500)">
         <div class="case-badge badge-nft">NFT</div>
-        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069186.png" alt="box"></div>
+        <div class="case-emoji-wrap">🚀</div>
         <div class="case-name">Cyber Box</div>
         <div class="case-price">⭐ 4500</div>
       </div>
@@ -229,11 +228,11 @@
   <div id="view-games" class="view">
     <div class="cases-grid">
       <div class="case-card">
-        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069176.png" alt="crash"></div>
+        <div class="case-emoji-wrap">🎯</div>
         <div class="case-name">Ракетка</div>
       </div>
       <div class="case-card">
-        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069186.png" alt="mines"></div>
+        <div class="case-emoji-wrap">💣</div>
         <div class="case-name">Мины</div>
       </div>
     </div>
@@ -315,14 +314,14 @@
     const inventory = [];
 
     const prizesPool = [
-      { name: 'DUCK NFT', value: 5000, img: 'https://cdn-icons-png.flaticon.com/512/616/616408.png', rarity: 'rarity-legendary' },
-      { name: 'Gold Rolex', value: 3200, img: 'https://cdn-icons-png.flaticon.com/512/2869/2869302.png', rarity: 'rarity-legendary' },
-      { name: 'TON Crystal', value: 1500, img: 'https://cdn-icons-png.flaticon.com/512/12114/12114238.png', rarity: 'rarity-epic' },
-      { name: '1000 Stars', value: 1000, img: 'https://cdn-icons-png.flaticon.com/512/1828/1828884.png', rarity: 'rarity-epic' },
-      { name: 'PUNK NFT', value: 750, img: 'https://cdn-icons-png.flaticon.com/512/4140/4140048.png', rarity: 'rarity-rare' },
-      { name: '500 Stars', value: 500, img: 'https://cdn-icons-png.flaticon.com/512/1828/1828884.png', rarity: 'rarity-rare' },
-      { name: '100 Stars', value: 100, img: 'https://cdn-icons-png.flaticon.com/512/1828/1828884.png', rarity: 'rarity-common' },
-      { name: 'Mystery', value: 50, img: 'https://cdn-icons-png.flaticon.com/512/3069/3069176.png', rarity: 'rarity-common' }
+      { name: 'DUCK NFT', value: 5000, emoji: '🦆', rarity: 'rarity-legendary' },
+      { name: 'Gold Rolex', value: 3200, emoji: '⌚', rarity: 'rarity-legendary' },
+      { name: 'TON Crystal', value: 1500, emoji: '💎', rarity: 'rarity-epic' },
+      { name: '1000 Stars', value: 1000, emoji: '⭐', rarity: 'rarity-epic' },
+      { name: 'PUNK NFT', value: 750, emoji: '🎨', rarity: 'rarity-rare' },
+      { name: '500 Stars', value: 500, emoji: '⭐', rarity: 'rarity-rare' },
+      { name: '100 Stars', value: 100, emoji: '✨', rarity: 'rarity-common' },
+      { name: 'Mystery Box', value: 50, emoji: '🎁', rarity: 'rarity-common' }
     ];
 
     function switchTab(tabName, el) {
@@ -358,7 +357,7 @@
         div.className = `roulette-item ${item.rarity}`;
         div.innerHTML = `
           <div class="item-title">${item.name}</div>
-          <img src="${item.img}" alt="">
+          <div class="item-emoji">${item.emoji}</div>
           <div class="item-val">${item.value}⭐</div>
         `;
         track.appendChild(div);
@@ -405,7 +404,7 @@
       inventory.forEach(item => {
         const div = document.createElement('div');
         div.className = `inventory-item ${item.rarity}`;
-        div.innerHTML = `<img src="${item.img}" alt=""><div class="item-val">${item.value}⭐</div>`;
+        div.innerHTML = `<div class="inv-emoji">${item.emoji}</div><div class="item-val">${item.value}⭐</div>`;
         invContainer.appendChild(div);
       });
     }
