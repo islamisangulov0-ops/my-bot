@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Tiger Case</title>
+  <title>CaseUp</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
     body { 
-      background: #0b0e14; 
+      background: #080c14; 
       color: #fff; 
       min-height: 100vh; 
       padding-bottom: 90px;
@@ -17,7 +17,7 @@
     /* Header */
     .header {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 16px; background: rgba(15, 22, 36, 0.95); backdrop-filter: blur(20px);
+      padding: 12px 16px; background: rgba(13, 18, 28, 0.95); backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.06); position: sticky; top: 0; z-index: 100;
     }
     .user-info { display: flex; align-items: center; gap: 10px; }
@@ -32,18 +32,18 @@
     /* Главный кейс */
     .main-case-card {
       position: relative;
-      background: linear-gradient(145deg, #162032, #0d131f);
+      background: linear-gradient(145deg, #151f33, #0b111c);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 24px;
-      padding: 20px 16px;
+      padding: 22px 16px;
       text-align: center;
       margin-bottom: 20px;
       box-shadow: 0 16px 32px rgba(0,0,0,0.6);
       cursor: pointer;
     }
-    .main-case-svg { width: 64px; height: 64px; margin: 0 auto 8px auto; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5)); transition: transform 0.3s; }
+    .main-case-svg { width: 72px; height: 72px; margin: 0 auto 10px auto; filter: drop-shadow(0 8px 16px rgba(245, 158, 11, 0.3)); transition: transform 0.3s; }
     .main-case-card:hover .main-case-svg { transform: scale(1.08); }
-    .main-case-title { font-size: 17px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+    .main-case-title { font-size: 18px; font-weight: 900; color: #fff; margin-bottom: 4px; }
     .main-case-price { font-size: 13px; font-weight: 800; color: #34d399; }
 
     /* Категории */
@@ -54,10 +54,10 @@
     .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .case-card {
       position: relative; 
-      background: linear-gradient(150deg, #141d2f, #0a101a);
+      background: linear-gradient(150deg, #131c2e, #090e18);
       border: 1px solid rgba(255, 255, 255, 0.07); 
       border-radius: 20px; 
-      padding: 16px 12px;
+      padding: 18px 12px;
       display: flex; flex-direction: column; align-items: center; text-align: center;
       cursor: pointer; overflow: hidden; transition: all 0.2s ease;
       box-shadow: 0 8px 20px rgba(0,0,0,0.5);
@@ -72,7 +72,7 @@
     .badge-new { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); }
     .badge-nft { background: linear-gradient(135deg, #10b981, #059669); color: #fff; box-shadow: 0 0 10px rgba(16, 185, 129, 0.4); }
 
-    .case-svg-wrap { width: 52px; height: 52px; margin: 6px 0 10px 0; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6)); transition: transform 0.3s ease; }
+    .case-svg-wrap { width: 56px; height: 56px; margin: 6px 0 10px 0; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.6)); transition: transform 0.3s ease; }
     .case-card:hover .case-svg-wrap { transform: scale(1.12) translateY(-3px); }
     
     .case-name { font-weight: 800; font-size: 13px; margin-bottom: 6px; color: #f8fafc; z-index: 2; }
@@ -89,7 +89,7 @@
     }
     .modal-overlay.active { display: flex; }
     .modal-content {
-      background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 28px;
+      background: #0d1424; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 28px;
       width: 100%; max-width: 360px; padding: 24px 20px; text-align: center; position: relative;
       box-shadow: 0 25px 60px rgba(0,0,0,0.9);
     }
@@ -97,7 +97,7 @@
 
     /* Рулетка */
     .roulette-container {
-      position: relative; width: 100%; height: 135px; background: #070b14;
+      position: relative; width: 100%; height: 135px; background: #050811;
       border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.08); overflow: hidden; margin: 20px 0;
       box-shadow: inset 0 8px 25px rgba(0,0,0,0.9);
     }
@@ -145,7 +145,7 @@
     /* Нижняя навигация */
     .nav-bar {
       position: fixed; bottom: 0; left: 0; right: 0; height: 72px;
-      background: rgba(15, 22, 36, 0.95); backdrop-filter: blur(20px);
+      background: rgba(13, 18, 28, 0.95); backdrop-filter: blur(20px);
       border-top: 1px solid rgba(255, 255, 255, 0.06);
       display: flex; justify-content: space-around; align-items: center; z-index: 1000;
     }
@@ -168,18 +168,18 @@
   <!-- TAB 1: CASES -->
   <div id="view-cases" class="view active">
     
-    <!-- Главный кейс -->
+    <!-- Главный кейс (Церковная мышь) -->
     <div class="main-case-card" onclick="openCaseModal('Церковная мышь', 0)">
       <div class="main-case-svg">
         <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8" y="24" width="48" height="32" rx="6" fill="url(#m-grad)" stroke="#f59e0b" stroke-width="2"/>
-          <path d="M8 32H56" stroke="#f59e0b" stroke-width="2"/>
-          <path d="M28 24V20C28 17.7909 29.7909 16 32 16V16C34.2091 16 36 17.7909 36 20V24" stroke="#f59e0b" stroke-width="2"/>
-          <rect x="27" y="36" width="10" height="8" rx="2" fill="#0b0e14" stroke="#fbbf24" stroke-width="2"/>
+          <path d="M12 24C12 21.7909 13.7909 20 16 20H48C50.2091 20 52 21.7909 52 24V48C52 50.2091 50.2091 52 48 24H16C13.7909 52 12 50.2091 12 48V24Z" fill="url(#mg1)" stroke="#f59e0b" stroke-width="2"/>
+          <path d="M12 32H52" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4 2"/>
+          <path d="M26 20V15C26 13.3431 27.3431 12 29 12H35C36.6569 12 38 13.3431 38 15V20" stroke="#f59e0b" stroke-width="2"/>
+          <circle cx="32" cy="38" r="4" fill="#0b0e14" stroke="#fbbf24" stroke-width="2"/>
           <defs>
-            <linearGradient id="m-grad" x1="8" y1="24" x2="56" y2="56" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#25344f"/>
-              <stop offset="1" stop-color="#111827"/>
+            <linearGradient id="mg1" x1="12" y1="20" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2d2211"/>
+              <stop offset="1" stop-color="#110e08"/>
             </linearGradient>
           </defs>
         </svg>
@@ -193,19 +193,18 @@
       <span class="category-toggle">Свернуть</span>
     </div>
 
-    <!-- Сетка сундуков с SVG -->
+    <!-- Сетка кейсов с индивидуальными иконками -->
     <div class="cases-grid">
       <!-- Punks -->
       <div class="case-card" onclick="openCaseModal('Punks', 666)">
         <div class="case-badge badge-new">НОВИНКА</div>
         <div class="case-svg-wrap">
           <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="6" y="22" width="52" height="34" rx="8" fill="url(#c1)" stroke="#ef4444" stroke-width="2"/>
-            <path d="M6 32H58" stroke="#ef4444" stroke-width="2"/>
-            <path d="M26 22V16C26 13.7909 27.7909 12 30 12H34C36.2091 12 38 13.7909 38 16V22" stroke="#ef4444" stroke-width="2"/>
-            <rect x="26" y="37" width="12" height="10" rx="3" fill="#0b0e14" stroke="#f87171" stroke-width="2"/>
-            <circle cx="32" cy="42" r="2" fill="#ef4444"/>
-            <defs><linearGradient id="c1" x1="6" y1="22" x2="58" y2="56"><stop stop-color="#2b151b"/><stop offset="1" stop-color="#110a0d"/></linearGradient></defs>
+            <path d="M10 22C10 19.7909 11.7909 18 14 18H50C52.2091 18 54 19.7909 54 22V50C54 52.2091 52.2091 54 50 54H14C11.7909 54 10 52.2091 10 50V22Z" fill="url(#cg1)" stroke="#ef4444" stroke-width="2"/>
+            <path d="M10 30H54" stroke="#ef4444" stroke-width="2"/>
+            <path d="M24 18V13C24 11.3431 25.3431 10 27 10H37C38.6569 10 40 11.3431 40 13V18" stroke="#ef4444" stroke-width="2"/>
+            <path d="M22 38L32 28L42 38" stroke="#f87171" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs><linearGradient id="cg1" x1="10" y1="18" x2="54" y2="54"><stop stop-color="#3a131b"/><stop offset="1" stop-color="#12070a"/></linearGradient></defs>
           </svg>
         </div>
         <div class="case-name">Punks</div>
@@ -217,12 +216,11 @@
         <div class="case-badge badge-nft">ТОЛЬКО NFT</div>
         <div class="case-svg-wrap">
           <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="6" y="22" width="52" height="34" rx="8" fill="url(#c2)" stroke="#3b82f6" stroke-width="2"/>
-            <path d="M6 32H58" stroke="#3b82f6" stroke-width="2"/>
-            <path d="M26 22V16C26 13.7909 27.7909 12 30 12H34C36.2091 12 38 13.7909 38 16V22" stroke="#3b82f6" stroke-width="2"/>
-            <rect x="26" y="37" width="12" height="10" rx="3" fill="#0b0e14" stroke="#60a5fa" stroke-width="2"/>
-            <circle cx="32" cy="42" r="2" fill="#3b82f6"/>
-            <defs><linearGradient id="c2" x1="6" y1="22" x2="58" y2="56"><stop stop-color="#14213d"/><stop offset="1" stop-color="#0b0e14"/></linearGradient></defs>
+            <path d="M10 22C10 19.7909 11.7909 18 14 18H50C52.2091 18 54 19.7909 54 22V50C54 52.2091 52.2091 54 50 54H14C11.7909 54 10 52.2091 10 50V22Z" fill="url(#cg2)" stroke="#3b82f6" stroke-width="2"/>
+            <path d="M10 30H54" stroke="#3b82f6" stroke-width="2"/>
+            <circle cx="32" cy="38" r="6" fill="#1e3a8a" stroke="#60a5fa" stroke-width="2"/>
+            <path d="M32 26V32" stroke="#3b82f6" stroke-width="3"/>
+            <defs><linearGradient id="cg2" x1="10" y1="18" x2="54" y2="54"><stop stop-color="#102347"/><stop offset="1" stop-color="#070d1a"/></linearGradient></defs>
           </svg>
         </div>
         <div class="case-name">Not Dead</div>
@@ -233,12 +231,10 @@
       <div class="case-card" onclick="openCaseModal('Flamingo', 1500)">
         <div class="case-svg-wrap">
           <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="6" y="22" width="52" height="34" rx="8" fill="url(#c3)" stroke="#ec4899" stroke-width="2"/>
-            <path d="M6 32H58" stroke="#ec4899" stroke-width="2"/>
-            <path d="M26 22V16C26 13.7909 27.7909 12 30 12H34C36.2091 12 38 13.7909 38 16V22" stroke="#ec4899" stroke-width="2"/>
-            <rect x="26" y="37" width="12" height="10" rx="3" fill="#0b0e14" stroke="#f472b6" stroke-width="2"/>
-            <circle cx="32" cy="42" r="2" fill="#ec4899"/>
-            <defs><linearGradient id="c3" x1="6" y1="22" x2="58" y2="56"><stop stop-color="#3b1329"/><stop offset="1" stop-color="#140a10"/></linearGradient></defs>
+            <path d="M10 22C10 19.7909 11.7909 18 14 18H50C52.2091 18 54 19.7909 54 22V50C54 52.2091 52.2091 54 50 54H14C11.7909 54 10 52.2091 10 50V22Z" fill="url(#cg3)" stroke="#ec4899" stroke-width="2"/>
+            <path d="M10 30H54" stroke="#ec4899" stroke-width="2"/>
+            <path d="M26 36L32 42L38 36" stroke="#f472b6" stroke-width="3" stroke-linecap="round"/>
+            <defs><linearGradient id="cg3" x1="10" y1="18" x2="54" y2="54"><stop stop-color="#3d122b"/><stop offset="1" stop-color="#140610"/></linearGradient></defs>
           </svg>
         </div>
         <div class="case-name">Flamingo</div>
@@ -249,12 +245,10 @@
       <div class="case-card" onclick="openCaseModal('Retro Box', 2200)">
         <div class="case-svg-wrap">
           <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="6" y="22" width="52" height="34" rx="8" fill="url(#c4)" stroke="#8b5cf6" stroke-width="2"/>
-            <path d="M6 32H58" stroke="#8b5cf6" stroke-width="2"/>
-            <path d="M26 22V16C26 13.7909 27.7909 12 30 12H34C36.2091 12 38 13.7909 38 16V22" stroke="#8b5cf6" stroke-width="2"/>
-            <rect x="26" y="37" width="12" height="10" rx="3" fill="#0b0e14" stroke="#a78bfa" stroke-width="2"/>
-            <circle cx="32" cy="42" r="2" fill="#8b5cf6"/>
-            <defs><linearGradient id="c4" x1="6" y1="22" x2="58" y2="56"><stop stop-color="#24143d"/><stop offset="1" stop-color="#0f0b17"/></linearGradient></defs>
+            <path d="M10 22C10 19.7909 11.7909 18 14 18H50C52.2091 18 54 19.7909 54 22V50C54 52.2091 52.2091 54 50 54H14C11.7909 54 10 52.2091 10 50V22Z" fill="url(#cg4)" stroke="#8b5cf6" stroke-width="2"/>
+            <path d="M10 30H54" stroke="#8b5cf6" stroke-width="2"/>
+            <rect x="27" y="34" width="10" height="8" rx="2" fill="#2e1065" stroke="#a78bfa" stroke-width="2"/>
+            <defs><linearGradient id="cg4" x1="10" y1="18" x2="54" y2="54"><stop stop-color="#2a164a"/><stop offset="1" stop-color="#0d071a"/></linearGradient></defs>
           </svg>
         </div>
         <div class="case-name">Retro Box</div>
@@ -265,12 +259,10 @@
       <div class="case-card" onclick="openCaseModal('Golden Case', 3000)">
         <div class="case-svg-wrap">
           <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="6" y="22" width="52" height="34" rx="8" fill="url(#c5)" stroke="#fbbf24" stroke-width="2"/>
-            <path d="M6 32H58" stroke="#fbbf24" stroke-width="2"/>
-            <path d="M26 22V16C26 13.7909 27.7909 12 30 12H34C36.2091 12 38 13.7909 38 16V22" stroke="#fbbf24" stroke-width="2"/>
-            <rect x="26" y="37" width="12" height="10" rx="3" fill="#0b0e14" stroke="#fde047" stroke-width="2"/>
-            <circle cx="32" cy="42" r="2" fill="#fbbf24"/>
-            <defs><linearGradient id="c5" x1="6" y1="22" x2="58" y2="56"><stop stop-color="#3d2b10"/><stop offset="1" stop-color="#140f06"/></linearGradient></defs>
+            <path d="M10 22C10 19.7909 11.7909 18 14 18H50C52.2091 18 54 19.7909 54 22V50C54 52.2091 52.2091 54 50 54H14C11.7909 54 10 52.2091 10 50V22Z" fill="url(#cg5)" stroke="#fbbf24" stroke-width="2"/>
+            <path d="M10 30H54" stroke="#fbbf24" stroke-width="2"/>
+            <path d="M32 34L35 40H29L32 34Z" fill="#fbbf24"/>
+            <defs><linearGradient id="cg5" x1="10" y1="18" x2="54" y2="54"><stop stop-color="#423010"/><stop offset="1" stop-color="#140f05"/></linearGradient></defs>
           </svg>
         </div>
         <div class="case-name">Golden Case</div>
@@ -282,12 +274,10 @@
         <div class="case-badge badge-nft">NFT</div>
         <div class="case-svg-wrap">
           <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="6" y="22" width="52" height="34" rx="8" fill="url(#c6)" stroke="#10b981" stroke-width="2"/>
-            <path d="M6 32H58" stroke="#10b981" stroke-width="2"/>
-            <path d="M26 22V16C26 13.7909 27.7909 12 30 12H34C36.2091 12 38 13.7909 38 16V22" stroke="#10b981" stroke-width="2"/>
-            <rect x="26" y="37" width="12" height="10" rx="3" fill="#0b0e14" stroke="#34d399" stroke-width="2"/>
-            <circle cx="32" cy="42" r="2" fill="#10b981"/>
-            <defs><linearGradient id="c6" x1="6" y1="22" x2="58" y2="56"><stop stop-color="#10382b"/><stop offset="1" stop-color="#071410"/></linearGradient></defs>
+            <path d="M10 22C10 19.7909 11.7909 18 14 18H50C52.2091 18 54 19.7909 54 22V50C54 52.2091 52.2091 54 50 54H14C11.7909 54 10 52.2091 10 50V22Z" fill="url(#cg6)" stroke="#10b981" stroke-width="2"/>
+            <path d="M10 30H54" stroke="#10b981" stroke-width="2"/>
+            <path d="M22 38H42" stroke="#34d399" stroke-width="3" stroke-linecap="round"/>
+            <defs><linearGradient id="cg6" x1="10" y1="18" x2="54" y2="54"><stop stop-color="#10382b"/><stop offset="1" stop-color="#061410"/></linearGradient></defs>
           </svg>
         </div>
         <div class="case-name">Cyber Box</div>
