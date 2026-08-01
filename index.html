@@ -3,149 +3,157 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>CaseUp</title>
+  <title>Tiger Case</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
     body { 
-      background: #030508; 
+      background: #0b0e14; 
       color: #fff; 
       min-height: 100vh; 
       padding-bottom: 90px;
-      background-image: 
-        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.07) 0%, transparent 45%),
-        radial-gradient(circle at 85% 85%, rgba(245, 158, 11, 0.07) 0%, transparent 45%);
     }
 
-    /* Header */
+    /* Header в стиле Тигра */
     .header {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 18px; background: rgba(9, 13, 22, 0.9); backdrop-filter: blur(16px);
+      padding: 12px 16px; background: rgba(15, 22, 36, 0.95); backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.06); position: sticky; top: 0; z-index: 100;
     }
     .user-info { display: flex; align-items: center; gap: 10px; }
-    .avatar { width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, #0284c7, #2563eb); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
-    .username { font-weight: 700; font-size: 15px; }
-    .balance-box { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); padding: 6px 14px; border-radius: 24px; }
-    .stars-count { font-weight: 800; font-size: 14px; color: #fbbf24; }
-    .btn-topup { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; border: none; padding: 6px 14px; border-radius: 14px; font-size: 12px; font-weight: 900; cursor: pointer; box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; border: 2px solid rgba(16, 185, 129, 0.3); }
+    .balance-badge { display: flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.08); padding: 5px 12px; border-radius: 20px; font-weight: 800; font-size: 13px; color: #fbbf24; }
+    .btn-topup { background: #3b82f6; color: #fff; border: none; padding: 7px 14px; border-radius: 18px; font-size: 12px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); display: flex; align-items: center; gap: 4px; }
 
     /* Views */
     .view { display: none; padding: 16px; }
     .view.active { display: block; }
 
-    /* Category Header */
-    .category-title { font-size: 12px; font-weight: 900; margin: 22px 0 12px 0; color: #64748b; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 10px; }
-    .category-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.06), transparent); }
+    /* Главный кейс (ТОП) */
+    .main-case-card {
+      position: relative;
+      background: linear-gradient(145deg, #162032, #0d131f);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 24px 16px;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 16px 32px rgba(0,0,0,0.6);
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .main-case-card img { width: 150px; height: 120px; object-fit: contain; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.9)); margin-bottom: 12px; transition: transform 0.3s; }
+    .main-case-card:hover img { transform: scale(1.05); }
+    .main-case-title { font-size: 18px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+    .main-case-price { font-size: 14px; font-weight: 800; color: #94a3b8; }
 
-    /* Case Cards */
-    .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    /* Категории */
+    .category-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 12px 0; font-size: 15px; font-weight: 900; color: #e2e8f0; }
+    .category-toggle { font-size: 12px; color: #64748b; cursor: pointer; }
+
+    /* Сетка кейсов 2 в ряд (как у Тигра) */
+    .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .case-card {
       position: relative; 
-      background: linear-gradient(150deg, rgba(18, 24, 40, 0.85), rgba(8, 11, 18, 0.95));
+      background: linear-gradient(150deg, #141d2f, #0a101a);
       border: 1px solid rgba(255, 255, 255, 0.07); 
-      border-radius: 24px; 
-      padding: 20px 14px;
+      border-radius: 20px; 
+      padding: 16px 12px;
       display: flex; flex-direction: column; align-items: center; text-align: center;
       cursor: pointer; overflow: hidden; transition: all 0.2s ease;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
     }
     .case-card:active { transform: scale(0.96); }
-    .case-glow {
-      position: absolute; top: 10px; width: 70px; height: 70px; background: rgba(56, 189, 248, 0.12);
-      filter: blur(30px); border-radius: 50%; z-index: 1; pointer-events: none;
-    }
-    .case-card.free-type .case-glow { background: rgba(16, 185, 129, 0.15); }
-    .case-card.risk-type .case-glow { background: rgba(239, 68, 68, 0.15); }
 
+    /* Бейджи новинок */
     .case-badge { 
-      position: absolute; top: 12px; right: 12px; font-size: 9px; font-weight: 900; 
-      padding: 3px 8px; border-radius: 7px; text-transform: uppercase; z-index: 3;
+      position: absolute; top: 10px; right: 10px; font-size: 8px; font-weight: 900; 
+      padding: 3px 7px; border-radius: 6px; text-transform: uppercase; z-index: 3; letter-spacing: 0.5px;
     }
-    .badge-free { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-    .badge-hot { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
-    .badge-top { background: rgba(251, 191, 36, 0.15); color: #fde047; border: 1px solid rgba(251, 191, 36, 0.3); }
+    .badge-new { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); }
+    .badge-nft { background: linear-gradient(135deg, #10b981, #059669); color: #fff; box-shadow: 0 0 10px rgba(16, 185, 129, 0.4); }
 
-    .case-img-wrap { width: 85px; height: 85px; display: flex; align-items: center; justify-content: center; margin: 6px 0 10px 0; z-index: 2; }
-    .case-img { width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8)); transition: transform 0.3s ease; }
+    .case-img-wrap { width: 100px; height: 90px; display: flex; align-items: center; justify-content: center; margin: 6px 0 10px 0; z-index: 2; }
+    .case-img { width: 100px; height: 90px; object-fit: contain; filter: drop-shadow(0 12px 18px rgba(0,0,0,0.8)); transition: transform 0.3s ease; }
     .case-card:hover .case-img { transform: scale(1.08) translateY(-3px); }
     
-    .case-name { font-weight: 800; font-size: 15px; margin-bottom: 6px; color: #f8fafc; z-index: 2; }
+    .case-name { font-weight: 800; font-size: 14px; margin-bottom: 6px; color: #f8fafc; z-index: 2; }
     .case-price { 
       font-size: 13px; font-weight: 900; color: #fbbf24; background: rgba(251, 191, 36, 0.08); 
-      padding: 5px 12px; border-radius: 12px; border: 1px solid rgba(251, 191, 36, 0.2); z-index: 2;
+      padding: 4px 12px; border-radius: 10px; border: 1px solid rgba(251, 191, 36, 0.2); z-index: 2;
+      display: flex; align-items: center; gap: 4px;
     }
 
-    /* Roulette Modal */
+    /* Модальное окно рулетки */
     .modal-overlay {
-      position: fixed; inset: 0; background: rgba(2, 4, 10, 0.94); backdrop-filter: blur(20px);
+      position: fixed; inset: 0; background: rgba(3, 5, 10, 0.95); backdrop-filter: blur(25px);
       display: none; justify-content: center; align-items: center; z-index: 2000; padding: 16px;
     }
     .modal-overlay.active { display: flex; }
     .modal-content {
-      background: #0b1120; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 28px;
+      background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 28px;
       width: 100%; max-width: 360px; padding: 24px 20px; text-align: center; position: relative;
       box-shadow: 0 25px 60px rgba(0,0,0,0.9);
     }
-    .close-btn { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.05); border: none; color: #94a3b8; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer; }
+    .close-btn { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.06); border: none; color: #94a3b8; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; }
 
-    /* ИСПРАВЛЕННЫЙ БЛОК РУЛЕТКИ (Никакой каши, четкие карточки дропа) */
+    /* Премиум рулетка */
     .roulette-container {
-      position: relative; width: 100%; height: 130px; background: #05080f;
-      border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.06); overflow: hidden; margin: 20px 0;
-      box-shadow: inset 0 6px 20px rgba(0,0,0,0.9);
+      position: relative; width: 100%; height: 135px; background: #070b14;
+      border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.08); overflow: hidden; margin: 20px 0;
+      box-shadow: inset 0 8px 25px rgba(0,0,0,0.9);
     }
     .roulette-pointer {
       position: absolute; top: 0; bottom: 0; left: 50%; width: 3px;
-      background: #38bdf8; transform: translateX(-50%); z-index: 10;
-      box-shadow: 0 0 10px #38bdf8, 0 0 20px #38bdf8;
+      background: #f59e0b; transform: translateX(-50%); z-index: 10;
+      box-shadow: 0 0 12px #f59e0b, 0 0 24px #f59e0b;
     }
     .roulette-track {
-      display: flex; position: absolute; left: 0; top: 10px; height: 110px;
+      display: flex; position: absolute; left: 0; top: 10px; height: 115px;
       transition: transform 4s cubic-bezier(0.15, 0.9, 0.25, 1);
     }
     .roulette-item {
-      min-width: 95px; width: 95px; height: 110px; background: #0f172a;
-      margin: 0 4px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08);
+      min-width: 95px; width: 95px; height: 115px;
+      margin: 0 4px; border-radius: 16px; 
       display: flex; flex-direction: column; align-items: center; justify-content: space-between; 
       padding: 10px 6px; position: relative;
     }
-    .roulette-item img { width: 54px; height: 54px; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.7)); }
-    .roulette-item .item-title { font-size: 9px; font-weight: 700; color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+    .roulette-item img { width: 58px; height: 58px; object-fit: contain; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.8)); }
+    .roulette-item .item-title { font-size: 9px; font-weight: 700; color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center; }
     .roulette-item .item-val { font-size: 11px; font-weight: 900; color: #fbbf24; }
     
-    /* Редкости с неоном */
-    .rarity-common { border-color: rgba(148, 163, 184, 0.25); background: linear-gradient(180deg, rgba(148,163,184,0.03), rgba(148,163,184,0.08)); }
-    .rarity-rare { border-color: rgba(56, 189, 248, 0.4); background: linear-gradient(180deg, rgba(56,189,248,0.04), rgba(56,189,248,0.12)); }
-    .rarity-epic { border-color: rgba(168, 85, 247, 0.4); background: linear-gradient(180deg, rgba(168,85,247,0.04), rgba(168,85,247,0.12)); }
-    .rarity-legendary { border-color: rgba(251, 191, 36, 0.6); background: linear-gradient(180deg, rgba(251,191,36,0.06), rgba(251,191,36,0.2)); box-shadow: inset 0 0 15px rgba(251, 191, 36, 0.15); }
+    /* Редкости с крутым неоном */
+    .rarity-common { border: 1px solid rgba(148, 163, 184, 0.2); background: linear-gradient(180deg, #131b2e, #0b111e); }
+    .rarity-rare { border: 1px solid rgba(56, 189, 248, 0.4); background: linear-gradient(180deg, #142842, #0d1729); }
+    .rarity-epic { border: 1px solid rgba(168, 85, 247, 0.5); background: linear-gradient(180deg, #281542, #150d26); }
+    .rarity-legendary { border: 1px solid rgba(251, 191, 36, 0.7); background: linear-gradient(180deg, #3d2b10, #1f1406); box-shadow: inset 0 0 20px rgba(251, 191, 36, 0.2); }
 
     .btn-open {
-      width: 100%; background: linear-gradient(135deg, #38bdf8, #0284c7); color: #000; border: none;
-      padding: 15px; border-radius: 16px; font-size: 15px; font-weight: 900; cursor: pointer;
-      box-shadow: 0 8px 22px rgba(56, 189, 248, 0.35);
+      width: 100%; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; border: none;
+      padding: 16px; border-radius: 16px; font-size: 15px; font-weight: 900; cursor: pointer;
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4); text-transform: uppercase; letter-spacing: 0.5px;
     }
     .btn-open:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* Inventory */
+    /* Инвентарь */
     .inventory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
     .inventory-item {
-      background: #0f172a; border-radius: 16px; padding: 12px 6px;
+      background: #111827; border-radius: 16px; padding: 12px 6px;
       display: flex; flex-direction: column; align-items: center; text-align: center;
       border: 1px solid rgba(255, 255, 255, 0.08); position: relative;
     }
-    .inventory-item img { width: 50px; height: 50px; object-fit: contain; margin-bottom: 6px; }
+    .inventory-item img { width: 52px; height: 52px; object-fit: contain; margin-bottom: 6px; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6)); }
     .inventory-item .item-val { font-size: 11px; font-weight: 800; color: #fbbf24; }
 
-    /* Bottom Nav */
+    /* Нижняя навигация */
     .nav-bar {
       position: fixed; bottom: 0; left: 0; right: 0; height: 72px;
-      background: rgba(9, 13, 22, 0.92); backdrop-filter: blur(20px);
+      background: rgba(15, 22, 36, 0.95); backdrop-filter: blur(20px);
       border-top: 1px solid rgba(255, 255, 255, 0.06);
       display: flex; justify-content: space-around; align-items: center; z-index: 1000;
     }
-    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: #64748b; font-size: 11px; font-weight: 700; cursor: pointer; width: 25%; transition: color 0.2s; }
-    .nav-item.active { color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #64748b; font-size: 11px; font-weight: 700; cursor: pointer; width: 25%; transition: color 0.2s; }
+    .nav-item.active { color: #3b82f6; text-shadow: 0 0 12px rgba(59, 130, 246, 0.4); }
     .nav-icon { font-size: 20px; }
   </style>
 </head>
@@ -155,59 +163,52 @@
   <div class="header">
     <div class="user-info">
       <div class="avatar" id="userAvatar">U</div>
-      <div class="username" id="userName">User</div>
+      <div class="balance-badge">⭐ <span id="userBalance">354</span></div>
     </div>
-    <div class="balance-box">
-      <span class="stars-count">⭐ <span id="userBalance">5000</span></span>
-      <button class="btn-topup">Пополнить</button>
-    </div>
+    <button class="btn-topup">➕ Пополнить</button>
   </div>
 
   <!-- TAB 1: CASES -->
   <div id="view-cases" class="view active">
     
-    <div class="category-title">Ежедневный кейс</div>
-    <div class="cases-grid">
-      <div class="case-card free-type" onclick="openCaseModal('Божья коровка', 0)">
-        <div class="case-glow"></div>
-        <div class="case-badge badge-free">FREE</div>
-        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069176.png" alt="box"></div>
-        <div class="case-name">Божья коровка</div>
-        <div class="case-price" style="color: #34d399; background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.25);">Бесплатно</div>
-      </div>
+    <!-- Главный бесплатный кейс сверху (как Церковная мышь в Тигре) -->
+    <div class="main-case-card" onclick="openCaseModal('Церковная мышь', 0)">
+      <img src="https://cdn-icons-png.flaticon.com/512/3069/3069176.png" alt="free box">
+      <div class="main-case-title">Церковная мышь</div>
+      <div class="main-case-price" style="color: #34d399;">Бесплатно</div>
     </div>
 
-    <div class="category-title">Базовые кейсы</div>
+    <div class="category-header">
+      <span>Лимитированные</span>
+      <span class="category-toggle">Свернуть</span>
+    </div>
+
+    <!-- Сетка лимитированных кейсов (3D-сундуки) -->
     <div class="cases-grid">
-      <div class="case-card" onclick="openCaseModal('Суета', 99)">
-        <div class="case-glow"></div>
+      <div class="case-card" onclick="openCaseModal('Punks', 666)">
+        <div class="case-badge badge-new">НОВИНКА</div>
         <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069186.png" alt="box"></div>
-        <div class="case-name">Суета</div>
-        <div class="case-price">⭐ 99</div>
+        <div class="case-name">Punks</div>
+        <div class="case-price">⭐ 666</div>
       </div>
-      <div class="case-card" onclick="openCaseModal('Студент', 199)">
-        <div class="case-glow"></div>
-        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069202.png" alt="box"></div>
-        <div class="case-name">Студент</div>
-        <div class="case-price">⭐ 199</div>
-      </div>
-    </div>
 
-    <div class="category-title">Премиум и NFT</div>
-    <div class="cases-grid">
-      <div class="case-card" onclick="openCaseModal('Шейх', 1999)">
-        <div class="case-glow"></div>
-        <div class="case-badge badge-hot">NFT</div>
-        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069233.png" alt="box"></div>
-        <div class="case-name">Шейх</div>
-        <div class="case-price">⭐ 1999</div>
+      <div class="case-card" onclick="openCaseModal('Not Dead', 999)">
+        <div class="case-badge badge-nft">ТОЛЬКО NFT</div>
+        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069202.png" alt="box"></div>
+        <div class="case-name">Not Dead</div>
+        <div class="case-price">⭐ 999</div>
       </div>
-      <div class="case-card risk-type" onclick="openCaseModal('Telegram Gifts', 3500)">
-        <div class="case-glow"></div>
-        <div class="case-badge badge-top">GIFTS</div>
+
+      <div class="case-card" onclick="openCaseModal('Flamingo', 1500)">
+        <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069233.png" alt="box"></div>
+        <div class="case-name">Flamingo</div>
+        <div class="case-price">⭐ 1500</div>
+      </div>
+
+      <div class="case-card" onclick="openCaseModal('Retro Box', 2200)">
         <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069255.png" alt="box"></div>
-        <div class="case-name">Telegram Gifts</div>
-        <div class="case-price">⭐ 3500</div>
+        <div class="case-name">Retro Box</div>
+        <div class="case-price">⭐ 2200</div>
       </div>
     </div>
 
@@ -217,12 +218,10 @@
   <div id="view-games" class="view">
     <div class="cases-grid">
       <div class="case-card">
-        <div class="case-glow"></div>
         <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069176.png" alt="crash"></div>
         <div class="case-name">Ракетка</div>
       </div>
       <div class="case-card">
-        <div class="case-glow"></div>
         <div class="case-img-wrap"><img class="case-img" src="https://cdn-icons-png.flaticon.com/512/3069/3069186.png" alt="mines"></div>
         <div class="case-name">Мины</div>
       </div>
@@ -257,7 +256,7 @@
   <div class="modal-overlay" id="rouletteModal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeCaseModal()">✕</button>
-      <h3 id="modalCaseTitle" style="font-weight: 800; font-size: 17px; margin-bottom: 2px;">Кейс</h3>
+      <h3 id="modalCaseTitle" style="font-weight: 800; font-size: 17px; margin-bottom: 2px; color: #f8fafc;">Кейс</h3>
       
       <div class="roulette-container">
         <div class="roulette-pointer"></div>
@@ -299,7 +298,7 @@
       document.getElementById('userAvatar').innerText = user.first_name[0].toUpperCase();
     }
 
-    let balance = 5000;
+    let balance = 354;
     let openedCases = 0;
     let currentPrice = 0;
     let isSpinning = false;
@@ -369,9 +368,9 @@
       document.getElementById('spinBtn').disabled = true;
 
       const track = document.getElementById('rouletteTrack');
-      const itemWidth = 103; // 95px ширина + 8px отступы (4+4)
+      const itemWidth = 103;
       const winIndex = 42 + Math.floor(Math.random() * 10);
-      const offset = -(winIndex * itemWidth - 128); // центрирование под указатель
+      const offset = -(winIndex * itemWidth - 128);
 
       track.style.transition = 'transform 4.5s cubic-bezier(0.12, 0.85, 0.15, 1)';
       track.style.transform = `translateX(${offset}px)`;
@@ -389,6 +388,7 @@
       }, 4700);
     }
 
+    let hasRenderedInv = false;
     function renderInventory() {
       const invContainer = document.getElementById('inventoryList');
       if (inventory.length === 0) return;
