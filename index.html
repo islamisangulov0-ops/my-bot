@@ -5,143 +5,224 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CaseUp</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
     
     html, body { 
-      width: 100%; height: 100%; background: #080c14; color: #fff; overflow: hidden;
+      width: 100%; height: 100%; background: #06080f; color: #fff; overflow: hidden;
     }
 
     .app-container {
-      display: flex; flex-direction: column; height: 100vh; position: relative;
+      display: flex; flex-direction: column; width: 100%; height: 100vh; position: relative; overflow: hidden;
     }
 
     /* Header */
     .header {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 16px; background: rgba(13, 18, 28, 0.98);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06); flex-shrink: 0;
+      padding: 12px 16px; background: rgba(10, 14, 24, 0.85);
+      backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.04); flex-shrink: 0;
+      z-index: 10;
     }
     .user-info { display: flex; align-items: center; gap: 10px; }
-    .avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; border: 2px solid rgba(16, 185, 129, 0.3); }
-    .balance-badge { display: flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.08); padding: 4px 10px; border-radius: 20px; font-weight: 800; font-size: 12px; color: #fbbf24; }
-    .btn-topup { background: #3b82f6; color: #fff; border: none; padding: 6px 12px; border-radius: 16px; font-size: 11px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
+    .avatar { 
+      width: 34px; height: 34px; border-radius: 12px; 
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8); 
+      display: flex; align-items: center; justify-content: center; 
+      font-weight: 800; font-size: 13px; color: #fff;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .balance-badge { 
+      display: flex; align-items: center; gap: 6px; 
+      background: rgba(255, 255, 255, 0.04); 
+      border: 1px solid rgba(255, 255, 255, 0.08); 
+      padding: 6px 12px; border-radius: 24px; 
+      font-weight: 800; font-size: 12px; color: #fbbf24;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+    }
+    .btn-topup { 
+      background: linear-gradient(135deg, #3b82f6, #2563eb); 
+      color: #fff; border: none; padding: 7px 14px; border-radius: 20px; 
+      font-size: 11px; font-weight: 800; cursor: pointer; 
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+      transition: transform 0.1s;
+    }
+    .btn-topup:active { transform: scale(0.95); }
 
-    /* Content */
+    /* Content Area */
     .content-area {
-      flex: 1; overflow-y: auto; padding: 12px 16px 80px 16px; -webkit-overflow-scrolling: touch;
+      flex: 1; overflow-y: auto; padding: 16px 16px 80px 16px; -webkit-overflow-scrolling: touch;
     }
     .view { display: none; }
     .view.active { display: block; }
 
-    /* Главный кейс */
+    /* Главный кейс (Церковная мышь) */
     .main-case-card {
       position: relative;
-      background: linear-gradient(145deg, #151f33, #0b111c);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px; padding: 14px; text-align: center; margin-bottom: 14px;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.5); cursor: pointer;
+      background: linear-gradient(145deg, rgba(26, 34, 52, 0.6), rgba(13, 18, 30, 0.8));
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      border-radius: 22px; padding: 20px; text-align: center; margin-bottom: 20px;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+      cursor: pointer; overflow: hidden;
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s, border-color 0.2s;
     }
-    .main-case-svg { width: 52px; height: 52px; margin: 0 auto 6px auto; filter: drop-shadow(0 6px 12px rgba(245, 158, 11, 0.3)); }
-    .main-case-title { font-size: 15px; font-weight: 900; color: #fff; margin-bottom: 2px; }
-    .main-case-price { font-size: 12px; font-weight: 800; color: #34d399; }
+    .main-case-card:active { transform: scale(0.98); }
+    .main-case-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(251,191,36,0.6), transparent);
+    }
+    .main-case-img-wrap {
+      width: 140px; height: 100px; margin: 0 auto 10px auto;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.7));
+      transition: transform 0.3s ease;
+    }
+    .main-case-card:hover .main-case-img-wrap { transform: scale(1.05); }
+    .main-case-img-wrap img { width: 100%; height: 100%; object-fit: contain; }
+
+    .main-case-title { font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 4px; letter-spacing: -0.2px; }
+    .main-case-price { 
+      display: inline-block; font-size: 11px; font-weight: 800; color: #34d399; 
+      background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.25);
+      padding: 4px 12px; border-radius: 12px; text-transform: uppercase;
+    }
 
     /* Категории */
-    .category-header { display: flex; justify-content: space-between; align-items: center; margin: 14px 0 10px 0; font-size: 14px; font-weight: 900; color: #e2e8f0; }
-    .category-toggle { font-size: 11px; color: #64748b; cursor: pointer; }
+    .category-header { 
+      display: flex; justify-content: space-between; align-items: center; 
+      margin: 0 0 12px 0; font-size: 14px; font-weight: 900; color: #f1f5f9; 
+      letter-spacing: -0.3px;
+    }
+    .category-toggle { font-size: 11px; color: #64748b; cursor: pointer; font-weight: 700; }
 
     /* Сетка кейсов */
-    .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .case-card {
-      position: relative; background: linear-gradient(150deg, #131c2e, #090e18);
-      border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 18px; padding: 14px 10px;
+      position: relative; 
+      background: linear-gradient(150deg, rgba(19, 27, 46, 0.7), rgba(9, 14, 26, 0.9));
+      border: 1px solid rgba(255, 255, 255, 0.08); 
+      border-radius: 20px; padding: 18px 12px;
       display: flex; flex-direction: column; align-items: center; text-align: center;
-      cursor: pointer; overflow: hidden; box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+      cursor: pointer; overflow: hidden; 
+      box-shadow: 0 10px 28px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s, border-color 0.2s;
     }
     .case-card:active { transform: scale(0.96); }
+    .case-card:hover { border-color: rgba(255, 255, 255, 0.2); }
 
     .case-badge { 
-      position: absolute; top: 8px; right: 8px; font-size: 7px; font-weight: 900; 
-      padding: 2px 6px; border-radius: 4px; text-transform: uppercase; z-index: 3;
+      position: absolute; top: 10px; right: 10px; font-size: 7px; font-weight: 900; 
+      padding: 3px 8px; border-radius: 6px; text-transform: uppercase; z-index: 3;
+      letter-spacing: 0.5px;
     }
-    .badge-new { background: #f59e0b; color: #000; }
-    .badge-nft { background: #10b981; color: #fff; }
+    .badge-new { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; box-shadow: 0 2px 8px rgba(245,158,11,0.4); }
+    .badge-nft { background: linear-gradient(135deg, #10b981, #059669); color: #fff; box-shadow: 0 2px 8px rgba(16,185,129,0.4); }
 
-    .case-svg-wrap { width: 46px; height: 46px; margin: 4px 0 8px 0; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6)); }
-    .case-name { font-weight: 800; font-size: 12px; margin-bottom: 4px; color: #f8fafc; z-index: 2; }
+    .case-img-wrap {
+      width: 90px; height: 75px; margin: 4px 0 10px 0;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));
+      transition: transform 0.3s ease;
+    }
+    .case-card:hover .case-img-wrap { transform: scale(1.08); }
+    .case-img-wrap img { width: 100%; height: 100%; object-fit: contain; }
+
+    .case-name { font-weight: 800; font-size: 13px; margin-bottom: 6px; color: #f8fafc; z-index: 2; }
     .case-price { 
       font-size: 11px; font-weight: 900; color: #fbbf24; background: rgba(251, 191, 36, 0.08); 
-      padding: 3px 8px; border-radius: 8px; border: 1px solid rgba(251, 191, 36, 0.2); z-index: 2;
+      padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(251, 191, 36, 0.2); z-index: 2;
     }
 
     /* Модальное окно рулетки */
     .modal-overlay {
-      position: fixed; inset: 0; background: rgba(3, 5, 10, 0.95); backdrop-filter: blur(20px);
+      position: fixed; inset: 0; background: rgba(3, 5, 10, 0.85); backdrop-filter: blur(20px);
       display: none; justify-content: center; align-items: center; z-index: 2000; padding: 16px;
     }
     .modal-overlay.active { display: flex; }
     .modal-content {
-      background: #0d1424; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px;
+      background: linear-gradient(145deg, #111827, #0b111e); 
+      border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 24px;
       width: 100%; max-width: 340px; padding: 20px; text-align: center; position: relative;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.9);
     }
-    .close-btn { position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,0.06); border: none; color: #94a3b8; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; }
+    .close-btn { 
+      position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.06); 
+      border: none; color: #94a3b8; width: 28px; height: 28px; border-radius: 50%; 
+      display: flex; align-items: center; justify-content: center; font-size: 13px; cursor: pointer; 
+      transition: background 0.2s;
+    }
+    .close-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
 
-    /* Рулетка (качественные карточки выпадения) */
+    /* Рулетка */
     .roulette-container {
-      position: relative; width: 100%; height: 130px; background: #050811;
+      position: relative; width: 100%; height: 120px; background: #04060b;
       border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08); overflow: hidden; margin: 16px 0;
       box-shadow: inset 0 6px 20px rgba(0,0,0,0.9);
     }
     .roulette-pointer {
       position: absolute; top: 0; bottom: 0; left: 50%; width: 3px;
       background: #f59e0b; transform: translateX(-50%); z-index: 10;
-      box-shadow: 0 0 10px #f59e0b;
+      box-shadow: 0 0 12px #f59e0b;
     }
+    .roulette-pointer::before, .roulette-pointer::after {
+      content: ''; position: absolute; left: 50%; transform: translateX(-50%);
+      border-left: 5px solid transparent; border-right: 5px solid transparent;
+    }
+    .roulette-pointer::before { top: 0; border-top: 6px solid #f59e0b; }
+    .roulette-pointer::after { bottom: 0; border-bottom: 6px solid #f59e0b; }
+
     .roulette-track {
-      display: flex; position: absolute; left: 0; top: 10px; height: 110px;
+      display: flex; position: absolute; left: 0; top: 10px; height: 100px;
       transition: transform 4s cubic-bezier(0.15, 0.9, 0.25, 1);
     }
     .roulette-item {
-      min-width: 90px; width: 90px; height: 110px;
-      margin: 0 4px; border-radius: 14px; 
+      min-width: 84px; width: 84px; height: 100px;
+      margin: 0 4px; border-radius: 12px; 
       display: flex; flex-direction: column; align-items: center; justify-content: space-between; 
       padding: 10px 6px; position: relative;
     }
-    .roulette-item .item-svg { width: 44px; height: 44px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5)); }
-    .roulette-item .item-title { font-size: 9px; font-weight: 800; color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center; }
+    .roulette-item .item-svg { width: 42px; height: 42px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6)); }
+    .roulette-item .item-title { font-size: 9px; font-weight: 800; color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; text-align: center; }
     .roulette-item .item-val { font-size: 10px; font-weight: 900; color: #fbbf24; }
     
     .rarity-common { border: 1px solid rgba(148, 163, 184, 0.3); background: linear-gradient(180deg, #131b2e, #0b111e); }
     .rarity-rare { border: 1px solid rgba(56, 189, 248, 0.5); background: linear-gradient(180deg, #142842, #0d1729); }
     .rarity-epic { border: 1px solid rgba(168, 85, 247, 0.6); background: linear-gradient(180deg, #281542, #150d26); }
-    .rarity-legendary { border: 1px solid rgba(251, 191, 36, 0.8); background: linear-gradient(180deg, #3d2b10, #1f1406); box-shadow: inset 0 0 15px rgba(251, 191, 36, 0.2); }
+    .rarity-legendary { border: 1px solid rgba(251, 191, 36, 0.8); background: linear-gradient(180deg, #3d2b10, #1f1406); box-shadow: inset 0 0 16px rgba(251, 191, 36, 0.25); }
 
     .btn-open {
       width: 100%; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; border: none;
-      padding: 14px; border-radius: 14px; font-size: 14px; font-weight: 900; cursor: pointer;
-      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4); text-transform: uppercase;
+      padding: 14px; border-radius: 14px; font-size: 13px; font-weight: 900; cursor: pointer;
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4); text-transform: uppercase; letter-spacing: 0.5px;
+      transition: transform 0.1s;
     }
+    .btn-open:active { transform: scale(0.98); }
     .btn-open:disabled { opacity: 0.5; }
 
     /* Инвентарь */
     .inventory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
     .inventory-item {
-      background: #111827; border-radius: 14px; padding: 10px 4px;
+      background: #111827; border-radius: 12px; padding: 10px 6px;
       display: flex; flex-direction: column; align-items: center; text-align: center;
       border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
-    .inventory-item .inv-svg { width: 34px; height: 34px; margin-bottom: 4px; }
+    .inventory-item .inv-svg { width: 36px; height: 36px; margin-bottom: 4px; }
     .inventory-item .item-val { font-size: 10px; font-weight: 800; color: #fbbf24; }
 
     /* Нижняя навигация */
     .nav-bar {
-      position: absolute; bottom: 0; left: 0; right: 0; height: 68px;
-      background: rgba(13, 18, 28, 0.98); backdrop-filter: blur(20px);
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      position: absolute; bottom: 0; left: 0; right: 0; height: 64px;
+      background: rgba(10, 14, 24, 0.9); backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
       display: flex; justify-content: space-around; align-items: center; z-index: 1000;
     }
-    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: #64748b; font-size: 10px; font-weight: 700; cursor: pointer; width: 25%; }
+    .nav-item { 
+      display: flex; flex-direction: column; align-items: center; gap: 3px; 
+      color: #64748b; font-size: 10px; font-weight: 700; cursor: pointer; width: 25%;
+      transition: color 0.2s;
+    }
     .nav-item.active { color: #3b82f6; }
     .nav-icon { font-size: 18px; }
   </style>
@@ -158,20 +239,17 @@
       <button class="btn-topup">➕ Пополнить</button>
     </div>
 
-    <!-- Scrollable Content -->
+    <!-- Content Area -->
     <div class="content-area">
       
       <!-- TAB 1: CASES -->
       <div id="view-cases" class="view active">
         
+        <!-- Главный кейс -->
         <div class="main-case-card" onclick="openCaseModal('Церковная мышь', 0)">
-          <div class="main-case-svg">
-            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 24C12 21.7909 13.7909 20 16 20H48C50.2091 20 52 21.7909 52 24V48C52 50.2091 50.2091 52 48 52H16C13.7909 52 12 50.2091 12 48V24Z" fill="#1f160b" stroke="#f59e0b" stroke-width="2"/>
-              <path d="M12 32H52" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4 2"/>
-              <path d="M26 20V15C26 13.3431 27.3431 12 29 12H35C36.6569 12 38 13.3431 38 15V20" stroke="#f59e0b" stroke-width="2"/>
-              <circle cx="32" cy="38" r="4" fill="#0b0e14" stroke="#fbbf24" stroke-width="2"/>
-            </svg>
+          <div class="main-case-img-wrap">
+            <!-- Точный профессиональный 3D-рендер сундука под стиль оригинала -->
+            <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=400&auto=format&fit=crop&q=80" alt="Церковная мышь" style="filter: hue-rotate(20deg) saturate(1.8);">
           </div>
           <div class="main-case-title">Церковная мышь</div>
           <div class="main-case-price">Бесплатно</div>
@@ -183,51 +261,39 @@
         </div>
 
         <div class="cases-grid">
+          <!-- Punks -->
           <div class="case-card" onclick="openCaseModal('Punks', 666)">
             <div class="case-badge badge-new">НОВИНКА</div>
-            <div class="case-svg-wrap">
-              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 22C10 19.7909 11.7909 18 14 18H50C52.2091 18 54 19.7909 54 22V50C54 52.2091 52.2091 54 50 54H14C11.7909 54 10 52.2091 10 50V22Z" fill="#2b1015" stroke="#ef4444" stroke-width="2"/>
-                <path d="M10 30H54" stroke="#ef4444" stroke-width="2"/>
-                <path d="M22 38L32 28L42 38" stroke="#f87171" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+            <div class="case-img-wrap">
+              <img src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=300&auto=format&fit=crop&q=80" alt="Punks" style="filter: hue-rotate(300deg) saturate(2);">
             </div>
             <div class="case-name">Punks</div>
             <div class="case-price">⭐ 666</div>
           </div>
 
+          <!-- Not Dead -->
           <div class="case-card" onclick="openCaseModal('Not Dead', 999)">
             <div class="case-badge badge-nft">ТОЛЬКО NFT</div>
-            <div class="case-svg-wrap">
-              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 22C10 19.7909 11.7909 18 14 18H50C52.2091 18 54 19.7909 54 22V50C54 52.2091 52.2091 54 50 54H14C11.7909 54 10 52.2091 10 50V22Z" fill="#102347" stroke="#3b82f6" stroke-width="2"/>
-                <path d="M10 30H54" stroke="#3b82f6" stroke-width="2"/>
-                <circle cx="32" cy="38" r="6" fill="#1e3a8a" stroke="#60a5fa" stroke-width="2"/>
-              </svg>
+            <div class="case-img-wrap">
+              <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&auto=format&fit=crop&q=80" alt="Not Dead" style="filter: hue-rotate(180deg) saturate(2);">
             </div>
             <div class="case-name">Not Dead</div>
             <div class="case-price">⭐ 999</div>
           </div>
 
+          <!-- Flamingo -->
           <div class="case-card" onclick="openCaseModal('Flamingo', 1500)">
-            <div class="case-svg-wrap">
-              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 22C10 19.7909 11.7909 18 14 18H50C52.2091 18 54 19.7909 54 22V50C54 52.2091 52.2091 54 50 54H14C11.7909 54 10 52.2091 10 50V22Z" fill="#3d122b" stroke="#ec4899" stroke-width="2"/>
-                <path d="M10 30H54" stroke="#ec4899" stroke-width="2"/>
-                <path d="M26 36L32 42L38 36" stroke="#f472b6" stroke-width="3" stroke-linecap="round"/>
-              </svg>
+            <div class="case-img-wrap">
+              <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=300&auto=format&fit=crop&q=80" alt="Flamingo" style="filter: hue-rotate(280deg) saturate(2.5);">
             </div>
             <div class="case-name">Flamingo</div>
             <div class="case-price">⭐ 1500</div>
           </div>
 
+          <!-- Retro Box -->
           <div class="case-card" onclick="openCaseModal('Retro Box', 2200)">
-            <div class="case-svg-wrap">
-              <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 22C10 19.7909 11.7909 18 14 18H50C52.2091 18 54 19.7909 54 22V50C54 52.2091 52.2091 54 50 54H14C11.7909 54 10 52.2091 10 50V22Z" fill="#2a164a" stroke="#8b5cf6" stroke-width="2"/>
-                <path d="M10 30H54" stroke="#8b5cf6" stroke-width="2"/>
-                <rect x="27" y="34" width="10" height="8" rx="2" fill="#2e1065" stroke="#a78bfa" stroke-width="2"/>
-              </svg>
+            <div class="case-img-wrap">
+              <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&auto=format&fit=crop&q=80" alt="Retro Box" style="filter: hue-rotate(240deg) saturate(1.5);">
             </div>
             <div class="case-name">Retro Box</div>
             <div class="case-price">⭐ 2200</div>
@@ -239,15 +305,11 @@
       <div id="view-games" class="view">
         <div class="cases-grid">
           <div class="case-card">
-            <div class="case-svg-wrap">
-              <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="24" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/><circle cx="32" cy="32" r="14" fill="none" stroke="#60a5fa" stroke-width="2"/></svg>
-            </div>
+            <div class="case-img-wrap" style="display:flex;align-items:center;justify-content:center;font-size:36px;">🎯</div>
             <div class="case-name">Ракетка</div>
           </div>
           <div class="case-card">
-            <div class="case-svg-wrap">
-              <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" fill="#1e293b" stroke="#ef4444" stroke-width="2"/></svg>
-            </div>
+            <div class="case-img-wrap" style="display:flex;align-items:center;justify-content:center;font-size:36px;">💣</div>
             <div class="case-name">Мины</div>
           </div>
         </div>
@@ -255,10 +317,10 @@
 
       <!-- TAB 3: BONUSES -->
       <div id="view-bonuses" class="view">
-        <h3 style="margin-bottom: 10px; font-size: 15px;">Ежедневные задания</h3>
+        <h3 style="margin-bottom: 12px; font-size: 15px; font-weight: 900;">Ежедневные задания</h3>
         <div style="background: rgba(255,255,255,0.03); padding: 14px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.06);">
-          <div style="font-weight: 700; font-size: 13px;">Поделись сторис в Telegram</div>
-          <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;">Получи +50 ⭐</div>
+          <div style="font-weight: 800; font-size: 13px;">Поделись сторис в Telegram</div>
+          <div style="font-size: 11px; color: #34d399; margin-top: 4px; font-weight: 700;">Получи +50 ⭐</div>
         </div>
       </div>
 
@@ -266,13 +328,13 @@
       <div id="view-profile" class="view">
         <div style="text-align: center; padding: 10px 0;">
           <div style="font-size: 36px; margin-bottom: 6px;">👤</div>
-          <h2 id="profileName" style="font-size: 16px; font-weight: 800;">Пользователь</h2>
-          <p style="color: #94a3b8; font-size: 11px; margin-top: 2px;">Открыто кейсов: <span id="openedCount" style="color: #fff;">0</span></p>
+          <h2 id="profileName" style="font-size: 16px; font-weight: 900;">Пользователь</h2>
+          <p style="color: #94a3b8; font-size: 11px; margin-top: 3px; font-weight: 600;">Открыто кейсов: <span id="openedCount" style="color: #fff; font-weight: 800;">0</span></p>
         </div>
-        <div style="background: rgba(255,255,255,0.03); padding: 14px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.06);">
-          <h4 style="margin-bottom: 10px; font-size: 13px;">Инвентарь</h4>
+        <div style="background: rgba(255,255,255,0.03); padding: 14px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); margin-top: 14px;">
+          <h4 style="margin-bottom: 10px; font-size: 13px; font-weight: 900;">Инвентарь</h4>
           <div id="inventoryList" class="inventory-grid">
-            <p style="color: #94a3b8; font-size: 11px; grid-column: span 3; text-align: center; padding: 10px 0;">Инвентарь пуст</p>
+            <p style="color: #64748b; font-size: 11px; grid-column: span 3; text-align: center; padding: 16px 0; font-weight: 600;">Инвентарь пуст</p>
           </div>
         </div>
       </div>
@@ -283,7 +345,7 @@
     <div class="modal-overlay" id="rouletteModal">
       <div class="modal-content">
         <button class="close-btn" onclick="closeCaseModal()">✕</button>
-        <h3 id="modalCaseTitle" style="font-size: 16px; font-weight: 800; margin-bottom: 2px;">Кейс</h3>
+        <h3 id="modalCaseTitle" style="font-size: 16px; font-weight: 900; margin-bottom: 4px;">Кейс</h3>
         <div class="roulette-container">
           <div class="roulette-pointer"></div>
           <div class="roulette-track" id="rouletteTrack"></div>
@@ -329,7 +391,6 @@
     let isSpinning = false;
     const inventory = [];
 
-    // Красивые и детализированные награды для рулетки с качественными SVG
     const prizesPool = [
       { 
         name: 'DUCK NFT', value: 5000, rarity: 'rarity-legendary',
@@ -397,9 +458,9 @@
       document.getElementById('spinBtn').disabled = true;
 
       const track = document.getElementById('rouletteTrack');
-      const itemWidth = 98; // ширина карточки + отступы
+      const itemWidth = 92; 
       const winIndex = 42 + Math.floor(Math.random() * 8);
-      const offset = -(winIndex * itemWidth - 120);
+      const offset = -(winIndex * itemWidth - 115);
 
       track.style.transition = 'transform 4s cubic-bezier(0.12, 0.85, 0.15, 1)';
       track.style.transform = `translateX(${offset}px)`;
