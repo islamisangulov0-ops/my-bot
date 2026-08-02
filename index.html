@@ -3,97 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CaseUp</title>
+    <title>CaseUp — Telegram Mini App</title>
     <style>
         :root {
-            --bg: #0f1218;
-            --card: #1a1d24;
+            --bg: #0b0e14;
+            --card-bg: #151922;
+            --card-border: #222836;
             --accent: #ffd700;
             --blue: #00c8ff;
+            --text-main: #ffffff;
+            --text-sec: #8a96a3;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg); color: #fff; padding-bottom: 70px; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(26,29,36,0.95); border-bottom: 1px solid #2a2e38; position: sticky; top: 0; z-index: 10; }
+        body { background-color: var(--bg); color: var(--text-main); padding-bottom: 75px; }
+
+        /* Шапка */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(21, 25, 34, 0.9); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px); }
         .logo { font-weight: 900; font-size: 20px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
-        .balance { background: #2a2e38; padding: 5px 12px; border-radius: 15px; font-size: 15px; color: var(--accent); font-weight: bold; border: 1px solid rgba(255,215,0,0.3); }
-        .container { padding: 20px; }
-        h1 { font-size: 22px; margin-bottom: 15px; color: var(--accent); text-transform: uppercase; text-align: center; font-weight: 800; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .card { background: var(--card); border-radius: 14px; padding: 15px; text-align: center; border: 1px solid #2a2e38; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; }
-        .card:active { transform: scale(0.97); }
-        .icon { font-size: 45px; margin: 10px 0; }
-        .name { font-weight: 700; font-size: 15px; margin-bottom: 5px; }
-        .price { font-size: 14px; color: var(--accent); margin-bottom: 12px; font-weight: 800; }
-        .btn { background: linear-gradient(135deg, #ffd700, #ffc300); color: #000; border: none; padding: 10px; border-radius: 8px; font-weight: 900; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 13px; }
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 100; flex-direction: column; padding: 20px; }
-        .modal { background: var(--card); border-radius: 16px; padding: 25px; text-align: center; border: 2px solid var(--accent); width: 100%; max-width: 320px; display: none; flex-direction: column; align-items: center; }
-        .collect { background: linear-gradient(135deg, var(--blue), #0099ff); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 900; width: 100%; cursor: pointer; margin-top: 15px; text-transform: uppercase; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .balance-badge { background: #1f2633; padding: 6px 14px; border-radius: 20px; font-size: 15px; color: var(--accent); font-weight: 800; border: 1px solid rgba(255,215,0,0.2); display: flex; align-items: center; gap: 6px; }
+
+        /* Контент страниц */
+        .page { display: none; padding: 20px; }
+        .page.active { display: block; }
+        .section-title { font-size: 20px; margin-bottom: 15px; color: var(--accent); text-transform: uppercase; font-weight: 900; letter-spacing: 0.5px; }
+
+        /* Сетка кейсов (16 штук) */
+        .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .case-card { background: var(--card-bg); border-radius: 16px; padding: 15px; text-align: center; border: 1px solid var(--card-border); cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; transition: 0.2s; }
+        .case-card:active { transform: scale(0.96); border-color: var(--accent); }
+        .case-icon { font-size: 40px; margin: 10px 0; }
+        .case-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; color: var(--text-main); }
+        .case-price { font-size: 13px; color: var(--accent); margin-bottom: 10px; font-weight: 800; }
+        .open-btn { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; border: none; padding: 9px; border-radius: 10px; font-weight: 900; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 12px; }
+
+        /* Нижняя навигация */
+        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(21, 25, 34, 0.95); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid var(--card-border); z-index: 100; backdrop-filter: blur(10px); }
+        .nav-item { background: none; border: none; color: var(--text-sec); font-size: 12px; font-weight: 700; display: flex; flex-direction: column; align-items: center; cursor: pointer; gap: 4px; transition: 0.2s; }
+        .nav-item.active { color: var(--accent); }
+        .nav-item svg { width: 22px; height: 22px; fill: currentColor; }
+
+        /* Модальные окна */
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 200; flex-direction: column; padding: 20px; backdrop-filter: blur(5px); }
+        .modal { background: var(--card-bg); border-radius: 20px; padding: 25px; text-align: center; border: 2px solid var(--accent); width: 100%; max-width: 320px; display: none; flex-direction: column; align-items: center; box-shadow: 0 0 30px rgba(255,215,0,0.3); }
+        .collect-btn { background: linear-gradient(135deg, var(--blue), #0088ff); color: #fff; border: none; padding: 12px; border-radius: 12px; font-weight: 900; width: 100%; cursor: pointer; margin-top: 20px; text-transform: uppercase; font-size: 14px; }
+
+        /* Инвентарь и Профиль */
+        .inventory-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .inv-item { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; text-align: center; font-size: 12px; }
+        .profile-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 20px; text-align: center; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="logo">CaseUp</div>
-    <div class="balance">⭐ <span id="bal">15450</span></div>
+    <div class="balance-badge">⭐ <span id="bal">15450</span></div>
 </header>
 
-<div class="container">
-    <h1>Кейсы</h1>
-    <div class="grid">
-        <div class="card" onclick="openCase('STAR CASE', 100)">
-            <div class="icon">🎁</div>
-            <div class="name">Star Case</div>
-            <div class="price">⭐ 100</div>
-            <button class="btn">Открыть</button>
-        </div>
-        <div class="card" onclick="openCase('NFT CROWN', 500)">
-            <div class="icon">👑</div>
-            <div class="name">NFT Crown</div>
-            <div class="price">⭐ 500</div>
-            <button class="btn">Открыть</button>
-        </div>
+<!-- СТРАНИЦА 1: КЕЙСЫ (16 штук) -->
+<div id="page-cases" class="page active">
+    <div class="section-title">Все кейсы</div>
+    <div class="cases-grid" id="casesGrid">
+        <!-- Генерируются скриптом 16 кейсов -->
     </div>
 </div>
 
-<div class="overlay" id="loader">
-    <div style="font-size: 50px; animation: spin 1s infinite linear;">🌀</div>
-    <div style="color: var(--accent); margin-top: 15px; font-weight: bold;">Открываем...</div>
+<!-- СТРАНИЦА 2: ИНВЕНТАРЬ -->
+<div id="page-inventory" class="page">
+    <div class="section-title">Мой инвентарь</div>
+    <div class="inventory-grid" id="inventoryGrid">
+        <div style="grid-column: span 3; text-align: center; color: var(--text-sec); padding: 40px 0;">Пусто. Открывай кейсы!</div>
+    </div>
 </div>
 
+<!-- СТРАНИЦА 3: ПРОФИЛЬ -->
+<div id="page-profile" class="page">
+    <div class="section-title">Профиль</div>
+    <div class="profile-card">
+        <div style="font-size: 50px; margin-bottom: 10px;">👤</div>
+        <div style="font-weight: bold; font-size: 18px; margin-bottom: 5px;">Игрок #777</div>
+        <div style="color: var(--text-sec); font-size: 13px; margin-bottom: 20px;">ID: 894102543</div>
+        <button class="open-btn" style="background: #222836; color: var(--accent); border: 1px solid var(--accent);">Реферальная ссылка</button>
+    </div>
+</div>
+
+<!-- НИЖНЯЯ НАВИГАЦИЯ -->
+<div class="nav-bar">
+    <button class="nav-item active" onclick="switchPage('cases', this)">
+        <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z"/></svg>
+        Кейсы
+    </button>
+    <button class="nav-item" onclick="switchPage('inventory', this)">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 5h2v5h-2z"/></svg>
+        Инвентарь
+    </button>
+    <button class="nav-item" onclick="switchPage('profile', this)">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        Профиль
+    </button>
+</div>
+
+<!-- АНИМАЦИЯ ОТКРЫТИЯ -->
+<div class="overlay" id="loader">
+    <div style="font-size: 60px; animation: spin 1s infinite linear;">🌀</div>
+    <div style="color: var(--accent); margin-top: 15px; font-weight: bold; font-size: 16px;">Вскрываем кейс...</div>
+</div>
+
+<!-- ОКНО ВЫИГРЫША -->
 <div class="overlay" id="dropOverlay">
     <div class="modal" id="modal">
         <h3 style="color: var(--accent); margin-bottom: 10px; font-size: 18px;">ВЫИГРЫШ!</h3>
-        <div id="dropIcon" style="font-size: 60px; margin: 10px 0;">💎</div>
+        <div id="dropIcon" style="font-size: 70px; margin: 10px 0;">💎</div>
         <div id="dropName" style="font-size: 18px; font-weight: bold; margin-bottom: 5px;"></div>
         <div id="dropRarity" style="color: var(--blue); font-size: 13px; margin-bottom: 15px; text-transform: uppercase; font-weight: bold;"></div>
-        <button class="collect" onclick="closeDrop()">Забрать</button>
+        <button class="collect-btn" onclick="closeDrop()">Забрать в инвентарь</button>
     </div>
 </div>
 
 <script>
     let balance = 15450;
-    const items = [
-        { name: 'Diamond Ring', rarity: 'Legendary NFT', icon: '💍' },
-        { name: 'Gold Crown', rarity: 'Epic NFT', icon: '👑' },
-        { name: 'Golden Star', rarity: 'Rare Token', icon: '⭐' },
-        { name: 'Teddy Bear', rarity: 'Common Gift', icon: '🧸' }
+    let inventory = [];
+
+    // Список из 16 кейсов
+    const casesData = [
+        { name: 'Star Case', price: 50, icon: '⭐' },
+        { name: 'Moon Case', price: 100, icon: '🌙' },
+        { name: 'Sun Case', price: 150, icon: '☀️' },
+        { name: 'Neon Case', price: 200, icon: '⚡' },
+        { name: 'Gold Case', price: 300, icon: '🪙' },
+        { name: 'Diamond Case', price: 500, icon: '💎' },
+        { name: 'Ruby Case', price: 750, icon: '🔴' },
+        { name: 'Sapphire Case', price: 1000, icon: '🔵' },
+        { name: 'Emerald Case', price: 1250, icon: '🟢' },
+        { name: 'Cyber Case', price: 1500, icon: '🤖' },
+        { name: 'Matrix Case', price: 2000, icon: '🧬' },
+        { name: 'Galaxy Case', price: 2500, icon: '🌌' },
+        { name: 'Royal Case', price: 3000, icon: '👑' },
+        { name: 'Titan Case', price: 4000, icon: '🛡️' },
+        { name: 'God Case', price: 5000, icon: '⚡' },
+        { name: 'CaseUp VIP', price: 10000, icon: '🔥' }
     ];
 
+    const itemsPool = [
+        { name: 'Diamond Ring', rarity: 'Legendary NFT', icon: '💍' },
+        { name: 'Gold Crown', rarity: 'Epic NFT', icon: '👑' },
+        { name: 'Telegram Star', rarity: 'Rare Token', icon: '⭐' },
+        { name: 'Teddy Bear', rarity: 'Common Gift', icon: '🧸' },
+        { name: 'Party Popper', rarity: 'Rare Gift', icon: '🎉' },
+        { name: 'Green Heart', rarity: 'Epic NFT', icon: '💚' }
+    ];
+
+    let lastWonItem = null;
+
+    // Рендер 16 кейсов
+    const grid = document.getElementById('casesGrid');
+    casesData.forEach(c => {
+        grid.innerHTML += `
+            <div class="case-card" onclick="openCase('${c.name}', ${c.price})">
+                <div class="case-icon">${c.icon}</div>
+                <div>
+                    <div class="case-name">${c.name}</div>
+                    <div class="case-price">⭐ ${c.price}</div>
+                </div>
+                <button class="open-btn">Открыть</button>
+            </div>
+        `;
+    });
+
+    function switchPage(pageId, btn) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        document.getElementById('page-' + pageId).classList.add('active');
+        btn.classList.add('active');
+    }
+
     function openCase(name, price) {
-        if (balance < price) { alert('Мало звезд!'); return; }
+        if (balance < price) { alert('Недостаточно звезд на балансе!'); return; }
         balance -= price;
-        document.getElementById('bal').innerText = balance;
+        document.getElementById('bal').innerText = balance.toLocaleString();
         
         document.getElementById('loader').style.display = 'flex';
 
         setTimeout(() => {
             document.getElementById('loader').style.display = 'none';
-            let win = items[Math.floor(Math.random() * items.length)];
+            lastWonItem = itemsPool[Math.floor(Math.random() * itemsPool.length)];
             
-            document.getElementById('dropIcon').innerText = win.icon;
-            document.getElementById('dropName').innerText = win.name;
-            document.getElementById('dropRarity').innerText = win.rarity;
+            document.getElementById('dropIcon').innerText = lastWonItem.icon;
+            document.getElementById('dropName').innerText = lastWonItem.name;
+            document.getElementById('dropRarity').innerText = lastWonItem.rarity;
 
             document.getElementById('dropOverlay').style.display = 'flex';
             document.getElementById('modal').style.display = 'flex';
@@ -101,9 +198,29 @@
     }
 
     function closeDrop() {
+        if (lastWonItem) {
+            inventory.push(lastWonItem);
+            updateInventory();
+        }
         document.getElementById('dropOverlay').style.display = 'none';
         document.getElementById('modal').style.display = 'none';
     }
+
+    function updateInventory() {
+        const invGrid = document.getElementById('inventoryGrid');
+        invGrid.innerHTML = '';
+        inventory.forEach(item => {
+            invGrid.innerHTML += `
+                <div class="inv-item">
+                    <div style="font-size: 30px; margin-bottom: 5px;">${item.icon}</div>
+                    <div style="font-weight: bold; font-size: 11px;">${item.name}</div>
+                </div>
+            `;
+        });
+    }
 </script>
+<style>
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+</style>
 </body>
 </html>
