@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
@@ -11,48 +12,61 @@
 <style>
 
 :root{
---bg:#050914;
---card:#111827;
---card2:#172033;
---gold:#ffd700;
---blue:#00a8ff;
---purple:#8b5cf6;
---text:#fff;
---gray:#8892a6;
+    --bg:#050816;
+    --panel:#0d1528;
+    --card:#111c32;
+    --blue:#00a8ff;
+    --gold:#ffd700;
+    --purple:#9b5cff;
+    --green:#35e28f;
+    --text:#ffffff;
+    --muted:#7f8aa3;
 }
+
 
 *{
-box-sizing:border-box;
-margin:0;
-padding:0;
-font-family:
-Inter,
-Arial,
-sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:
+    Inter,
+    Arial,
+    sans-serif;
 }
 
+
 body{
-background:
-radial-gradient(circle at top,#102040,#050914 40%);
-color:white;
-min-height:100vh;
-padding-bottom:80px;
+
+    background:
+    radial-gradient(circle at 50% -10%,
+    #143a68 0,
+    #050816 45%);
+
+    color:white;
+
+    min-height:100vh;
+
+    padding-bottom:90px;
+
 }
 
 
 /* HEADER */
 
-header{
+.header{
 
-height:65px;
+height:70px;
+
 display:flex;
+
 align-items:center;
+
 justify-content:space-between;
 
-padding:0 18px;
+padding:0 16px;
 
 background:
-rgba(10,15,30,.85);
+rgba(7,12,25,.85);
 
 backdrop-filter:blur(15px);
 
@@ -60,55 +74,67 @@ border-bottom:
 1px solid rgba(255,255,255,.08);
 
 position:sticky;
+
 top:0;
-z-index:20;
+
+z-index:50;
 
 }
 
 
 .logo{
 
-font-size:22px;
-font-weight:900;
+font-size:25px;
+
+font-weight:1000;
+
+letter-spacing:1px;
 
 color:var(--gold);
 
 text-shadow:
-0 0 15px #ffd700;
+0 0 20px rgba(255,215,0,.8);
 
 }
+
 
 
 .balance{
 
-background:
-linear-gradient(135deg,#1d273c,#111827);
-
-border:
-1px solid rgba(255,215,0,.3);
-
 padding:
-9px 15px;
+10px 16px;
 
 border-radius:20px;
 
-font-weight:900;
+background:
+linear-gradient(
+135deg,
+#18243d,
+#0b1222
+);
+
+border:
+1px solid rgba(255,215,0,.35);
 
 color:var(--gold);
+
+font-weight:900;
 
 }
 
 
-/* PAGES */
+
+/* PAGE */
+
 
 .page{
 
 display:none;
 
-padding:18px;
+padding:16px;
 
 animation:
-fade .3s;
+show .35s ease;
 
 }
 
@@ -120,35 +146,162 @@ display:block;
 }
 
 
-@keyframes fade{
+@keyframes show{
 
 from{
+
 opacity:0;
-transform:translateY(10px);
+
+transform:translateY(15px);
+
 }
 
 to{
+
 opacity:1;
+
 transform:none;
-}
 
 }
 
+}
 
-.title{
 
-font-size:22px;
 
-font-weight:900;
 
-margin-bottom:18px;
+.section-title{
 
-color:white;
+font-size:24px;
+
+font-weight:1000;
+
+margin:
+15px 0 20px;
 
 }
+
+
+
+
+
+/* FEATURE CASE */
+
+
+.feature{
+
+height:190px;
+
+border-radius:28px;
+
+padding:20px;
+
+margin-bottom:20px;
+
+position:relative;
+
+overflow:hidden;
+
+background:
+
+linear-gradient(
+135deg,
+#122b52,
+#091224
+);
+
+
+border:
+1px solid rgba(0,168,255,.35);
+
+
+}
+
+
+
+.feature:after{
+
+content:"";
+
+position:absolute;
+
+width:220px;
+
+height:220px;
+
+right:-40px;
+
+top:-30px;
+
+
+background:
+radial-gradient(
+circle,
+rgba(0,168,255,.7),
+transparent 65%
+);
+
+
+filter:blur(10px);
+
+
+}
+
+
+.feature h2{
+
+font-size:28px;
+
+position:relative;
+
+z-index:2;
+
+}
+
+
+.feature p{
+
+color:#b9c5df;
+
+margin-top:8px;
+
+position:relative;
+
+z-index:2;
+
+}
+
+
+
+.feature button{
+
+margin-top:25px;
+
+padding:
+
+13px 30px;
+
+
+border:0;
+
+border-radius:15px;
+
+
+background:
+linear-gradient(
+135deg,
+#ffd700,
+#ff9900
+);
+
+
+font-weight:1000;
+
+}
+
 
 
 /* CASE GRID */
+
 
 .case-grid{
 
@@ -163,13 +316,19 @@ gap:14px;
 
 
 
+
 .case{
 
+height:230px;
+
+border-radius:25px;
+
 background:
+
 linear-gradient(
 160deg,
-#151d31,
-#0d1423
+#17243e,
+#0c1325
 );
 
 
@@ -178,17 +337,10 @@ border:
 1px solid rgba(255,255,255,.08);
 
 
-border-radius:22px;
-
-
-padding:15px;
-
-
-text-align:center;
+padding:14px;
 
 
 position:relative;
-
 
 overflow:hidden;
 
@@ -202,106 +354,87 @@ transition:.2s;
 
 .case:active{
 
-transform:scale(.95);
+transform:scale(.94);
 
 }
 
 
 
-.case::before{
 
-content:"";
+.case-art{
 
-position:absolute;
-
-inset:0;
-
-background:
-linear-gradient(
-120deg,
-transparent,
-rgba(255,255,255,.08),
-transparent
-);
-
-transform:translateX(-100%);
-
-}
-
-
-
-.case:hover::before{
-
-transform:translateX(100%);
-
-transition:.7s;
-
-}
-
-
-.case-img{
-
-font-size:55px;
-
-height:80px;
+height:115px;
 
 display:flex;
 
-align-items:center;
-
 justify-content:center;
 
+align-items:center;
+
+
+font-size:70px;
+
+
 filter:
-drop-shadow(0 0 15px #00a8ff);
+drop-shadow(
+0 0 20px
+rgba(0,168,255,.7)
+);
+
 
 }
+
 
 
 .case-name{
 
-font-size:14px;
+font-weight:1000;
 
-font-weight:900;
+font-size:15px;
 
-margin-top:10px;
+text-align:center;
 
 }
 
 
 .case-price{
 
-color:var(--gold);
-
-font-weight:900;
+text-align:center;
 
 margin:8px;
 
+color:var(--gold);
+
+font-weight:1000;
 
 }
 
 
-.open-btn{
+
+.open{
 
 width:100%;
 
+padding:11px;
+
 border:0;
 
-padding:12px;
-
 border-radius:14px;
+
 
 background:
 
 linear-gradient(
 135deg,
 #ffd700,
-#ff9d00
+#ffb000
 );
 
 
-font-weight:900;
+font-weight:1000;
 
 }
+
 
 
 /* NAV */
@@ -317,16 +450,7 @@ left:0;
 
 right:0;
 
-
-height:70px;
-
-
-background:
-
-rgba(10,15,30,.95);
-
-
-backdrop-filter:blur(15px);
+height:75px;
 
 
 display:flex;
@@ -336,9 +460,20 @@ justify-content:space-around;
 align-items:center;
 
 
+background:
+
+rgba(8,14,28,.95);
+
+
+backdrop-filter:blur(15px);
+
+
 border-top:
 
 1px solid rgba(255,255,255,.08);
+
+
+z-index:100;
 
 
 }
@@ -351,13 +486,15 @@ background:none;
 
 border:0;
 
-color:#788399;
+color:#75809a;
+
+font-weight:900;
 
 font-size:12px;
 
-font-weight:800;
 
 }
+
 
 
 .nav button.active{
@@ -366,175 +503,14 @@ color:var(--gold);
 
 }
 
-
-/* INVENTORY */
-
-
-.inventory{
-
-display:grid;
-
-grid-template-columns:
-repeat(3,1fr);
-
-gap:10px;
-
-}
-
-
-
-.item{
-
-background:
-var(--card);
-
-border-radius:16px;
-
-padding:10px;
-
-text-align:center;
-
-border:
-1px solid rgba(255,255,255,.08);
-
-}
-
-
-
-.item span{
-
-font-size:35px;
-
-}
-
-
-/* PROFILE */
-
-
-.profile{
-
-background:
-var(--card);
-
-border-radius:22px;
-
-padding:25px;
-
-text-align:center;
-
-}
-
-
-.avatar{
-
-font-size:60px;
-
-}
-
-
-/* MODAL */
-
-
-.overlay{
-
-position:fixed;
-
-inset:0;
-
-background:
-rgba(0,0,0,.85);
-
-display:none;
-
-align-items:center;
-
-justify-content:center;
-
-z-index:100;
-
-
-}
-
-
-.modal{
-
-width:90%;
-
-max-width:360px;
-
-
-background:
-#111827;
-
-
-border-radius:28px;
-
-
-padding:25px;
-
-
-text-align:center;
-
-
-border:
-1px solid rgba(255,215,0,.5);
-
-
-}
-
-
-.reward{
-
-font-size:80px;
-
-animation:
-pulse 1s infinite;
-
-}
-
-
-@keyframes pulse{
-
-50%{
-transform:scale(1.15);
-}
-
-}
-
-
-
-.claim{
-
-margin-top:20px;
-
-width:100%;
-
-padding:14px;
-
-border:0;
-
-border-radius:15px;
-
-
-background:
-linear-gradient(135deg,#00a8ff,#006eff);
-
-
-color:white;
-
-font-weight:900;
-
-}
-
-
 </style>
-</head>
 
+</head>
 
 <body>
 
 
-<header>
+<div class="header">
 
 <div class="logo">
 CASEUP
@@ -542,36 +518,58 @@ CASEUP
 
 
 <div class="balance">
-⭐ <span id="balance">15450</span>
+⭐ <span id="balance">5501</span>
 </div>
 
+</div>
 
-</header><main>
 
 
 <!-- КЕЙСЫ -->
 
-<section id="cases" class="page active">
+<section id="casesPage" class="page active">
 
-<div class="title">
+
+<div class="feature">
+
+<h2>
+🔥 VIP Case
+</h2>
+
+<p>
+Лучшие подарки и редкие NFT
+</p>
+
+<button onclick="openCase(15)">
+Открыть ⭐10000
+</button>
+
+</div>
+
+
+
+<div class="section-title">
 🎁 Все кейсы
 </div>
 
 
-<div class="case-grid" id="caseGrid"></div>
+<div class="case-grid" id="cases"></div>
 
 
 </section>
 
 
 
-<!-- МИНИ ИГРЫ -->
-
-<section id="games" class="page">
 
 
-<div class="title">
-🎮 Мини-игры
+<!-- ИГРЫ -->
+
+
+<section id="gamesPage" class="page">
+
+
+<div class="section-title">
+🎮 Мини игры
 </div>
 
 
@@ -581,20 +579,21 @@ CASEUP
 
 <div class="case">
 
-<div class="case-img">
+<div class="case-art">
 🎡
 </div>
 
 <div class="case-name">
-Колесо удачи
+Wheel
 </div>
 
 <div class="case-price">
-⭐ Бесплатно
+Колесо удачи
 </div>
 
-<button class="open-btn"
-onclick="wheelGame()">
+
+<button class="open"
+onclick="wheel()">
 Играть
 </button>
 
@@ -605,7 +604,7 @@ onclick="wheelGame()">
 
 <div class="case">
 
-<div class="case-img">
+<div class="case-art">
 💣
 </div>
 
@@ -614,11 +613,12 @@ Mines
 </div>
 
 <div class="case-price">
-⭐ Ставка
+Найди подарок
 </div>
 
-<button class="open-btn"
-onclick="minesGame()">
+
+<button class="open"
+onclick="mines()">
 Играть
 </button>
 
@@ -627,10 +627,9 @@ onclick="minesGame()">
 
 
 
-
 <div class="case">
 
-<div class="case-img">
+<div class="case-art">
 🚀
 </div>
 
@@ -639,39 +638,18 @@ Crash
 </div>
 
 <div class="case-price">
-x2 - x100
+x1-x50
 </div>
 
-<button class="open-btn"
-onclick="crashGame()">
+
+<button class="open"
+onclick="crash()">
 Играть
 </button>
 
 </div>
 
 
-
-
-<div class="case">
-
-<div class="case-img">
-🎯
-</div>
-
-<div class="case-name">
-Бонус дня
-</div>
-
-<div class="case-price">
-⭐ +100
-</div>
-
-<button class="open-btn"
-onclick="bonus()">
-Забрать
-</button>
-
-</div>
 
 
 </div>
@@ -683,18 +661,19 @@ onclick="bonus()">
 
 
 
+
 <!-- ИНВЕНТАРЬ -->
 
 
-<section id="inventory" class="page">
+<section id="inventoryPage" class="page">
 
 
-<div class="title">
+<div class="section-title">
 🎒 Инвентарь
 </div>
 
 
-<div class="inventory"
+<div class="case-grid"
 id="inventory">
 
 </div>
@@ -706,60 +685,44 @@ id="inventory">
 
 
 
+
 <!-- ПРОФИЛЬ -->
 
 
-<section id="profile" class="page">
+<section id="profilePage" class="page">
 
 
-<div class="title">
-👤 Профиль
-</div>
-
-
-<div class="profile">
-
-
-<div class="avatar">
-👤
-</div>
+<div class="feature">
 
 
 <h2>
-Игрок CaseUp
+👤 Игрок
 </h2>
-
-
-<br>
 
 
 <p>
 Открыто кейсов:
-<b id="opened">
+<span id="opened">
 0
-</b>
+</span>
 </p>
-
-
-<br>
 
 
 <p>
 Предметов:
-<b id="items">
+<span id="count">
 0
-</b>
+</span>
 </p>
 
 
 </div>
-
 
 
 </section>
 
 
-</main>
+
 
 
 
@@ -772,35 +735,31 @@ id="inventory">
 
 
 <button class="active"
-onclick="tab('cases',this)">
+onclick="page('casesPage',this)">
 🎁
 <br>
 Кейсы
 </button>
 
 
-
 <button
-onclick="tab('games',this)">
+onclick="page('gamesPage',this)">
 🎮
 <br>
 Игры
 </button>
 
 
-
-
 <button
-onclick="tab('inventory',this)">
+onclick="page('inventoryPage',this)">
 🎒
 <br>
 Инвентарь
 </button>
 
 
-
 <button
-onclick="tab('profile',this)">
+onclick="page('profilePage',this)">
 👤
 <br>
 Профиль
@@ -813,38 +772,60 @@ onclick="tab('profile',this)">
 
 
 
+
+
+
+
 <!-- ОКНО ОТКРЫТИЯ -->
 
 
-<div class="overlay"
-id="overlay">
+<div id="modal"
+style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.85);
+z-index:200;
+align-items:center;
+justify-content:center;
+">
 
 
-<div class="modal">
+
+<div style="
+width:90%;
+background:#111a2d;
+border-radius:30px;
+padding:25px;
+text-align:center;
+border:1px solid #ffd700;
+">
 
 
 <h2>
-ВЫИГРЫШ!
+Возможный приз
 </h2>
 
 
-<div class="reward"
-id="reward">
+<div id="roulette"
+style="
+font-size:90px;
+margin:30px;
+">
 🎁
 </div>
 
 
+<h2 id="winName">
+</h2>
 
-<h3 id="rewardName">
-</h3>
 
-
-<p id="rewardRarity">
+<p id="winRare">
 </p>
 
 
 
-<button class="claim"
+<button class="open"
 onclick="claim()">
 
 Забрать в инвентарь
@@ -864,139 +845,60 @@ onclick="claim()">
 <script>
 
 
-let balance = 15450;
+let balance=5501;
 
 
-let inventory =
+let opened=0;
+
+
+let current=null;
+
+
+let inventory=
 JSON.parse(
-localStorage.getItem("inventory")
+localStorage.getItem("caseup_inventory")
 )
 ||
 [];
 
 
 
-let currentReward=null;
-
-
-let opened=0;
-
 
 
 const cases=[
 
 
-{
-name:"Star Case",
-price:50,
-icon:"⭐"
-},
+["Star Case",50,"⭐"],
 
+["Moon Case",100,"🌙"],
 
-{
-name:"Moon Case",
-price:100,
-icon:"🌙"
-},
+["Sun Case",150,"☀️"],
 
+["Neon Case",200,"⚡"],
 
-{
-name:"Sun Case",
-price:150,
-icon:"☀️"
-},
+["Gold Case",300,"🪙"],
 
+["Diamond Case",500,"💎"],
 
-{
-name:"Neon Case",
-price:200,
-icon:"⚡"
-},
+["Ruby Case",750,"🔴"],
 
+["Sapphire Case",1000,"🔵"],
 
-{
-name:"Gold Case",
-price:300,
-icon:"🪙"
-},
+["Emerald Case",1250,"🟢"],
 
+["Cyber Case",1500,"🤖"],
 
-{
-name:"Diamond Case",
-price:500,
-icon:"💎"
-},
+["Matrix Case",2000,"🧬"],
 
+["Galaxy Case",2500,"🌌"],
 
-{
-name:"Ruby Case",
-price:750,
-icon:"🔴"
-},
+["Royal Case",3000,"👑"],
 
+["Titan Case",4000,"🛡️"],
 
-{
-name:"Sapphire Case",
-price:1000,
-icon:"🔵"
-},
+["God Case",5000,"🔥"],
 
-
-{
-name:"Emerald Case",
-price:1250,
-icon:"🟢"
-},
-
-
-{
-name:"Cyber Case",
-price:1500,
-icon:"🤖"
-},
-
-
-{
-name:"Matrix Case",
-price:2000,
-icon:"🧬"
-},
-
-
-{
-name:"Galaxy Case",
-price:2500,
-icon:"🌌"
-},
-
-
-{
-name:"Royal Case",
-price:3000,
-icon:"👑"
-},
-
-
-{
-name:"Titan Case",
-price:4000,
-icon:"🛡️"
-},
-
-
-{
-name:"God Case",
-price:5000,
-icon:"🔥"
-},
-
-
-{
-name:"VIP Case",
-price:10000,
-icon:"💠"
-}
-
+["VIP Case",10000,"💠"]
 
 ];
 
@@ -1007,48 +909,17 @@ icon:"💠"
 const rewards=[
 
 
-{
-name:"Telegram Gift",
-icon:"🎁",
-rarity:"Common"
-},
+["Golden Star","⭐","Rare"],
 
+["Diamond","💎","Epic"],
 
-{
-name:"Golden Star",
-icon:"⭐",
-rarity:"Rare"
-},
+["Premium Gift","🎁","Legendary"],
 
+["Crown NFT","👑","Mythic"],
 
-{
-name:"Diamond Ring",
-icon:"💍",
-rarity:"Epic"
-},
+["Rocket","🚀","Legendary"],
 
-
-{
-name:"Golden Crown",
-icon:"👑",
-rarity:"Legendary"
-},
-
-
-{
-name:"Rocket",
-icon:"🚀",
-rarity:"Mythic"
-},
-
-
-{
-name:"Premium NFT",
-icon:"💎",
-rarity:"Legendary"
-}
-
-
+["Galaxy Item","🌌","Ultra"]
 
 ];
 
@@ -1056,45 +927,43 @@ rarity:"Legendary"
 
 
 
-const grid=document.getElementById(
-"caseGrid"
-);
+let box=document.getElementById("cases");
 
 
 
-cases.forEach((c,index)=>{
+cases.forEach((c,i)=>{
 
 
-grid.innerHTML+=`
+box.innerHTML+=`
 
 <div class="case">
 
 
-<div class="case-img">
-${c.icon}
+<div class="case-art">
+${c[2]}
 </div>
 
 
 <div class="case-name">
-${c.name}
+${c[0]}
 </div>
 
 
 <div class="case-price">
-⭐ ${c.price}
+⭐ ${c[1]}
 </div>
 
 
-<button class="open-btn"
-onclick="openCase(${index})">
 
-ОТКРЫТЬ
+<button class="open"
+onclick="openCase(${i})">
+
+Открыть
 
 </button>
 
 
 </div>
-
 
 `;
 
@@ -1103,23 +972,14 @@ onclick="openCase(${index})">
 
 
 
-
-document.getElementById(
-"balance"
-).innerHTML=balance;
-
-
-
-
-function tab(id,btn){
+function page(id,btn){
 
 
 document
 .querySelectorAll(".page")
 .forEach(
-p=>p.classList.remove("active")
+x=>x.classList.remove("active")
 );
-
 
 
 document
@@ -1131,9 +991,8 @@ document
 document
 .querySelectorAll(".nav button")
 .forEach(
-b=>b.classList.remove("active")
+x=>x.classList.remove("active")
 );
-
 
 
 btn.classList.add("active");
@@ -1142,17 +1001,19 @@ btn.classList.add("active");
 }
 
 
+// ===============================
 // ОТКРЫТИЕ КЕЙСА
+// ===============================
 
 
 function openCase(id){
 
 
-let box=cases[id];
+let selected=cases[id];
 
 
 
-if(balance < box.price){
+if(balance < selected[1]){
 
 alert(
 "Недостаточно ⭐"
@@ -1164,7 +1025,7 @@ return;
 
 
 
-balance-=box.price;
+balance-=selected[1];
 
 
 document.getElementById(
@@ -1176,95 +1037,99 @@ document.getElementById(
 opened++;
 
 
-let random=
-Math.random();
-
-
-
-if(random < 0.55){
-
-currentReward=rewards[0];
-
-}
-
-else if(random < 0.8){
-
-currentReward=rewards[1];
-
-}
-
-else if(random < 0.93){
-
-currentReward=rewards[2];
-
-}
-
-else if(random < 0.98){
-
-currentReward=rewards[3];
-
-}
-
-else{
-
-currentReward=rewards[5];
-
-}
-
-
+document.getElementById(
+"opened"
+).innerText=opened;
 
 
 
 document.getElementById(
-"overlay"
+"modal"
 ).style.display="flex";
 
 
 
-document.getElementById(
-"reward"
-).innerText="🎲";
-
-document.getElementById(
-"rewardName"
-).innerText=
-"Открываем...";
-
-document.getElementById(
-"rewardRarity"
-).innerText="";
+let roll=document.getElementById(
+"roulette"
+);
 
 
+let name=document.getElementById(
+"winName"
+);
 
 
-
-setTimeout(()=>{
-
-
-document.getElementById(
-"reward"
-).innerText=
-currentReward.icon;
-
-
-document.getElementById(
-"rewardName"
-).innerText=
-currentReward.name;
-
-
-document.getElementById(
-"rewardRarity"
-).innerText=
-currentReward.rarity;
+let rare=document.getElementById(
+"winRare"
+);
 
 
 
-},2000);
+roll.innerHTML="🎲";
+
+
+name.innerHTML="Открытие...";
+
+rare.innerHTML="";
 
 
 
-updateProfile();
+let timer=0;
+
+
+let animation=setInterval(()=>{
+
+
+let temp=
+rewards[
+Math.floor(
+Math.random()*rewards.length
+)
+];
+
+
+roll.innerHTML=temp[1];
+
+
+timer+=100;
+
+
+
+if(timer>=2200){
+
+
+clearInterval(animation);
+
+
+
+let win=
+getReward();
+
+
+
+current=win;
+
+
+
+roll.innerHTML=win[1];
+
+
+name.innerHTML=
+win[0];
+
+
+rare.innerHTML=
+"Редкость: "+win[2];
+
+
+
+}
+
+
+
+},100);
+
+
 
 
 }
@@ -1272,24 +1137,88 @@ updateProfile();
 
 
 
+
+
+// ===============================
+// ШАНСЫ ВЫПАДЕНИЯ
+// ===============================
+
+
+function getReward(){
+
+
+let r=Math.random();
+
+
+
+if(r<0.55){
+
+return rewards[0];
+
+}
+
+
+if(r<0.80){
+
+return rewards[1];
+
+}
+
+
+if(r<0.93){
+
+return rewards[2];
+
+}
+
+
+if(r<0.98){
+
+return rewards[4];
+
+}
+
+
+return rewards[3];
+
+
+}
+
+
+
+
+
+
+
+// ===============================
 // ЗАБРАТЬ ПРИЗ
+// ===============================
 
 
 function claim(){
 
 
-if(currentReward){
+
+if(current){
 
 
-inventory.push(
-currentReward
-);
+inventory.push({
 
+name:current[0],
+
+icon:current[1],
+
+rarity:current[2]
+
+});
 
 
 localStorage.setItem(
-"inventory",
+
+"caseup_inventory",
+
 JSON.stringify(inventory)
+
 );
 
 
@@ -1302,7 +1231,7 @@ renderInventory();
 
 
 document.getElementById(
-"overlay"
+"modal"
 ).style.display="none";
 
 
@@ -1312,68 +1241,77 @@ document.getElementById(
 
 
 
+
+
+
+// ===============================
 // ИНВЕНТАРЬ
+// ===============================
 
 
 function renderInventory(){
 
 
-let box=document.getElementById(
+let place=document.getElementById(
 "inventory"
 );
 
 
 
-box.innerHTML="";
+place.innerHTML="";
 
 
 
 if(inventory.length===0){
 
 
-box.innerHTML=
-`
+place.innerHTML=`
+
 <div style="
-grid-column:1/4;
+grid-column:1/3;
 text-align:center;
-color:#8892a6;
-padding:30px">
-Пока пусто 🎁
+color:#7f8aa3;
+padding:40px">
+
+Инвентарь пуст 🎁
+
 </div>
+
 `;
 
 return;
 
-
 }
-
-
 
 
 
 inventory.forEach(item=>{
 
 
-box.innerHTML+=`
+place.innerHTML+=`
 
-<div class="item">
+<div class="case">
 
-<span>
+
+<div class="case-art">
+
 ${item.icon}
-</span>
 
-<br>
+</div>
 
-<b>
+
+<div class="case-name">
+
 ${item.name}
-</b>
+
+</div>
 
 
-<br>
+<div class="case-price">
 
-<small>
 ${item.rarity}
-</small>
+
+</div>
 
 
 </div>
@@ -1387,7 +1325,7 @@ ${item.rarity}
 
 
 document.getElementById(
-"items"
+"count"
 ).innerText=
 inventory.length;
 
@@ -1397,18 +1335,42 @@ inventory.length;
 
 
 
+renderInventory();
 
 
-// ПРОФИЛЬ
 
 
-function updateProfile(){
+
+
+// ===============================
+// МИНИ ИГРЫ
+// ===============================
+
+
+
+function wheel(){
+
+
+
+let win=
+Math.floor(
+Math.random()*300
+)+50;
+
+
+
+balance+=win;
+
 
 
 document.getElementById(
-"opened"
-).innerText=
-opened;
+"balance"
+).innerText=balance;
+
+
+alert(
+"🎡 Вы выиграли ⭐"+win
+);
 
 
 }
@@ -1416,13 +1378,99 @@ opened;
 
 
 
-renderInventory();
+function mines(){
+
+
+let chance=Math.random();
+
+
+
+if(chance>0.45){
+
+
+balance+=200;
+
+
+alert(
+"💎 Вы нашли подарок ⭐200"
+);
+
+
+}
+
+else{
+
+
+alert(
+"💥 Мина! Попробуйте снова"
+);
+
+
+}
+
+
+
+document.getElementById(
+"balance"
+).innerText=balance;
+
+
+}
 
 
 
 
 
+function crash(){
+
+
+let x=
+(
+Math.random()*10+1
+)
+.toFixed(2);
+
+
+
+let win=
+Math.floor(
+100*x
+);
+
+
+
+balance+=win;
+
+
+
+document.getElementById(
+"balance"
+).innerText=balance;
+
+
+
+alert(
+
+"🚀 Crash x"+
+x+
+"\nВыигрыш ⭐"+
+win
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+// ===============================
 // TELEGRAM WEB APP
+// ===============================
 
 
 if(window.Telegram){
@@ -1440,179 +1488,300 @@ Telegram.WebApp.expand();
 
 
 
-// ------------------
-// МИНИ ИГРЫ
-// ------------------
-
-
-
-
-function wheelGame(){
-
-
-let win =
-Math.floor(
-Math.random()*200
-)+50;
-
-
-
-balance+=win;
-
-
-
-document.getElementById(
-"balance"
-).innerText=
-balance;
-
-
-alert(
-"🎡 Вы выиграли ⭐"+win
-);
-
-
-}
-
-
-
-
-function minesGame(){
-
-
-let win =
-Math.random()>0.5;
-
-
-if(win){
-
-
-balance+=100;
-
-
-alert(
-"💎 Вы нашли ⭐100"
-);
-
-
-
-}
-
-else{
-
-
-alert(
-"💥 Мина! Попробуйте ещё"
-);
-
-
-}
-
-
-
-document.getElementById(
-"balance"
-).innerText=
-balance;
-
-
-}
-
-
-
-
-
-function crashGame(){
-
-
-let multiplier =
-(
-Math.random()*5+1
-)
-.toFixed(2);
-
-
-
-let win =
-Math.floor(
-100*multiplier
-);
-
-
-
-balance+=win;
-
-
-document.getElementById(
-"balance"
-).innerText=
-balance;
-
-
-alert(
-"🚀 Crash x"+multiplier+
-"\nВы получили ⭐"+win
-);
-
-
-
-}
-
-
-
-
-
-function bonus(){
-
-
-let today=
-localStorage.getItem(
-"bonus"
-);
-
-
-
-if(today){
-
-
-alert(
-"Бонус уже забран"
-);
-
-
-return;
-
-}
-
-
-
-balance+=100;
-
-
-localStorage.setItem(
-"bonus",
-"yes"
-);
-
-
-
-document.getElementById(
-"balance"
-).innerText=
-balance;
-
-
-alert(
-"🎁 +100 ⭐"
-);
-
-
-}
-
-
-
 </script>
 
 
 </body>
-</html>
+
+</html>/* ===== PREMIUM CASEUP STYLE ===== */
+
+
+.case{
+
+background:
+linear-gradient(
+145deg,
+rgba(255,255,255,.08),
+rgba(255,255,255,.02)
+),
+#10182b;
+
+box-shadow:
+
+0 15px 35px
+rgba(0,0,0,.35),
+
+inset 0 0 30px
+rgba(0,168,255,.08);
+
+}
+
+
+
+.case:hover{
+
+transform:
+translateY(-5px);
+
+box-shadow:
+
+0 20px 45px
+rgba(0,168,255,.25);
+
+}
+
+
+
+.case-art{
+
+position:relative;
+
+}
+
+
+
+.case-art:after{
+
+content:"";
+
+position:absolute;
+
+width:90px;
+
+height:90px;
+
+border-radius:50%;
+
+
+background:
+radial-gradient(
+circle,
+rgba(0,168,255,.5),
+transparent 70%
+);
+
+
+filter:blur(15px);
+
+z-index:-1;
+
+}
+
+
+
+
+
+/* РЕДКОСТИ */
+
+
+.rarity-common{
+
+color:#9ca3af;
+
+}
+
+
+.rarity-rare{
+
+color:#00a8ff;
+
+text-shadow:
+0 0 10px #00a8ff;
+
+}
+
+
+.rarity-epic{
+
+color:#9b5cff;
+
+text-shadow:
+0 0 15px #9b5cff;
+
+}
+
+
+.rarity-legendary{
+
+color:#ffd700;
+
+text-shadow:
+0 0 20px #ffd700;
+
+}
+
+
+
+
+/* ОКНО ОТКРЫТИЯ */
+
+
+#modal{
+
+animation:
+
+modalShow .35s ease;
+
+}
+
+
+
+@keyframes modalShow{
+
+
+from{
+
+opacity:0;
+
+}
+
+
+to{
+
+opacity:1;
+
+}
+
+}
+
+
+
+#modal>div{
+
+
+box-shadow:
+
+0 0 60px
+rgba(255,215,0,.2);
+
+
+}
+
+
+
+
+#roulette{
+
+
+animation:
+
+giftSpin 1s infinite;
+
+}
+
+
+
+@keyframes giftSpin{
+
+
+0%{
+
+transform:
+scale(1)
+rotate(0);
+
+}
+
+
+50%{
+
+transform:
+scale(1.15)
+rotate(10deg);
+
+}
+
+
+100%{
+
+transform:
+scale(1)
+rotate(0);
+
+}
+
+
+}
+
+
+
+
+
+/* КНОПКА */
+
+.open{
+
+box-shadow:
+
+0 5px 20px
+rgba(255,215,0,.35);
+
+}
+
+
+
+.open:active{
+
+transform:
+scale(.96);
+
+}
+
+
+
+/* ИНВЕНТАРЬ */
+
+
+#inventory .case{
+
+
+height:180px;
+
+}
+
+
+
+
+/* АДАПТИВ */
+
+
+@media(min-width:700px){
+
+
+.case-grid{
+
+grid-template-columns:
+repeat(4,1fr);
+
+}
+
+
+}
+
+
+
+@media(max-width:350px){
+
+
+.case-grid{
+
+gap:10px;
+
+}
+
+
+.case{
+
+height:210px;
+
+}
+
+
+.case-art{
+
+font-size:55px;
+
+}
+
+
+}
