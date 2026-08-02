@@ -1,816 +1,1298 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CaseUp</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        body {
-            background: radial-gradient(ellipse at top, #0a1628, #05080f 70%);
-            color: #ffffff;
-            min-height: 100vh;
-            padding-bottom: 80px;
-            overflow-x: hidden;
-        }
-
-        /* ===== HEADER ===== */
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 20px;
-            background: rgba(10, 18, 36, 0.92);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 215, 0, 0.15);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 22px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
-        }
-
-        .balance-wrap {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 215, 0, 0.08);
-            padding: 8px 16px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 215, 0, 0.2);
-        }
-
-        .balance-wrap span {
-            color: #ffd700;
-            font-weight: 900;
-            font-size: 16px;
-        }
-
-        .btn-topup {
-            background: linear-gradient(135deg, #ffd700, #f57c00);
-            border: none;
-            color: #0a1628;
-            font-weight: 800;
-            font-size: 12px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-        }
-
-        /* ===== PAGES ===== */
-        .page {
-            display: none;
-            padding: 16px 16px 20px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ===== BANNER ===== */
-        .banner {
-            background: linear-gradient(135deg, #0d2137, #162a44);
-            border-radius: 20px;
-            padding: 20px 24px;
-            border: 1px solid rgba(255, 215, 0, 0.12);
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .banner::after {
-            content: '';
-            position: absolute;
-            right: -40px;
-            top: -40px;
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.06), transparent);
-            border-radius: 50%;
-        }
-
-        .banner h1 {
-            font-size: 22px;
-            font-weight: 900;
-            position: relative;
-            z-index: 1;
-        }
-
-        .banner p {
-            color: #8aa3c9;
-            font-size: 14px;
-            margin-top: 4px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .banner .btn-banner {
-            margin-top: 14px;
-            padding: 10px 24px;
-            border: none;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            font-weight: 900;
-            font-size: 14px;
-            color: #0a1628;
-            cursor: pointer;
-            position: relative;
-            z-index: 1;
-            transition: transform 0.2s;
-        }
-
-        .banner .btn-banner:active {
-            transform: scale(0.96);
-        }
-
-        /* ===== SECTION TITLE ===== */
-        .section-title {
-            font-size: 20px;
-            font-weight: 800;
-            margin: 18px 0 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title span {
-            color: #ffd700;
-        }
-
-        /* ===== CASE GRID ===== */
-        .case-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-        }
-
-        /* ===== CASE CARD ===== */
-        .case-card {
-            background: linear-gradient(160deg, #121e38, #0a1224);
-            border-radius: 20px;
-            padding: 16px 12px 14px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.25s ease;
-            position: relative;
-            overflow: hidden;
-            min-height: 210px;
-        }
-
-        .case-card:active {
-            transform: scale(0.97);
-        }
-
-        .case-card .glow {
-            position: absolute;
-            inset: -1px;
-            border-radius: 20px;
-            padding: 1px;
-            background: var(--case-color);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0.25;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
-
-        .case-card .glow.active {
-            opacity: 0.7;
-        }
-
-        .case-icon {
-            font-size: 40px;
-            margin-bottom: 6px;
-            filter: drop-shadow(0 0 20px var(--case-color));
-            line-height: 1;
-        }
-
-        .case-name {
-            font-size: 14px;
-            font-weight: 800;
-            letter-spacing: 0.3px;
-            margin-bottom: 2px;
-        }
-
-        .case-price {
-            font-size: 16px;
-            font-weight: 900;
-            color: #ffd700;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
-            margin: 4px 0 8px;
-        }
-
-        .case-price.free {
-            color: #4CAF50;
-            text-shadow: 0 0 20px rgba(76, 175, 80, 0.2);
-        }
-
-        .rarity-badge {
-            font-size: 9px;
-            font-weight: 700;
-            padding: 3px 12px;
-            border-radius: 30px;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            background: var(--rarity-bg);
-            color: #fff;
-            box-shadow: 0 0 20px var(--rarity-glow);
-            margin-bottom: 10px;
-        }
-
-        .btn-open {
-            width: 100%;
-            padding: 11px;
-            border: none;
-            border-radius: 14px;
-            font-weight: 800;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            background: linear-gradient(135deg, #ffd700, #f57c00);
-            color: #0a1628;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-open:active {
-            transform: scale(0.95);
-        }
-
-        .btn-open:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .case-card.free .btn-open {
-            background: linear-gradient(135deg, #4CAF50, #1b5e20);
-            color: #fff;
-        }
-
-        /* ===== RARITY COLORS ===== */
-        .rarity-common { --rarity-bg: #546e7a; --rarity-glow: rgba(84, 110, 122, 0.3); }
-        .rarity-uncommon { --rarity-bg: #29b6f6; --rarity-glow: rgba(41, 182, 246, 0.3); }
-        .rarity-rare { --rarity-bg: #7c4dff; --rarity-glow: rgba(124, 77, 255, 0.3); }
-        .rarity-epic { --rarity-bg: #e040fb; --rarity-glow: rgba(224, 64, 251, 0.3); }
-        .rarity-legendary { --rarity-bg: #ffa726; --rarity-glow: rgba(255, 167, 38, 0.3); }
-        .rarity-mythic { --rarity-bg: #ff1744; --rarity-glow: rgba(255, 23, 68, 0.4); }
-
-        /* ===== REWARDS MODAL ===== */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 999;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            animation: fadeIn 0.25s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-box {
-            background: linear-gradient(160deg, #121e38, #0a1224);
-            border-radius: 30px;
-            padding: 24px 20px 20px;
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid rgba(255, 215, 0, 0.15);
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        .modal-box .modal-close {
-            position: absolute;
-            top: 14px;
-            right: 18px;
-            background: none;
-            border: none;
-            color: #8aa3c9;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .modal-box h2 {
-            font-size: 20px;
-            font-weight: 900;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        .modal-box .sub {
-            color: #8aa3c9;
-            text-align: center;
-            font-size: 13px;
-            margin-bottom: 16px;
-        }
-
-        .rewards-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-
-        .reward-item {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 14px;
-            padding: 12px 6px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            transition: all 0.2s;
-        }
-
-        .reward-item .r-icon {
-            font-size: 28px;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .reward-item .r-name {
-            font-size: 11px;
-            font-weight: 700;
-            display: block;
-            line-height: 1.2;
-        }
-
-        .reward-item .r-rarity {
-            font-size: 8px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            display: block;
-            margin-top: 3px;
-        }
-
-        .reward-item.r-common { border-color: rgba(84, 110, 122, 0.3); }
-        .reward-item.r-common .r-rarity { color: #78909c; }
-        .reward-item.r-uncommon { border-color: rgba(41, 182, 246, 0.3); }
-        .reward-item.r-uncommon .r-rarity { color: #29b6f6; }
-        .reward-item.r-rare { border-color: rgba(124, 77, 255, 0.3); }
-        .reward-item.r-rare .r-rarity { color: #7c4dff; }
-        .reward-item.r-epic { border-color: rgba(224, 64, 251, 0.3); }
-        .reward-item.r-epic .r-rarity { color: #e040fb; }
-        .reward-item.r-legendary { border-color: rgba(255, 167, 38, 0.3); }
-        .reward-item.r-legendary .r-rarity { color: #ffa726; }
-        .reward-item.r-mythic { border-color: rgba(255, 23, 68, 0.4); }
-        .reward-item.r-mythic .r-rarity { color: #ff1744; }
-
-        .btn-modal-action {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 16px;
-            font-weight: 900;
-            font-size: 16px;
-            background: linear-gradient(135deg, #ffd700, #f57c00);
-            color: #0a1628;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .btn-modal-action:active {
-            transform: scale(0.97);
-        }
-
-        /* ===== OPENING MODAL ===== */
-        .opening-display {
-            text-align: center;
-            padding: 20px 0;
-        }
-
-        .opening-display .slot-icon {
-            font-size: 80px;
-            line-height: 1.2;
-            transition: all 0.1s;
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .opening-display .slot-name {
-            font-size: 22px;
-            font-weight: 900;
-            margin: 8px 0 4px;
-        }
-
-        .opening-display .slot-rarity {
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .opening-display .slot-type {
-            font-size: 13px;
-            color: #8aa3c9;
-            margin-top: 4px;
-        }
-
-        /* ===== INVENTORY ===== */
-        .inventory-empty {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 50px 20px;
-            color: #546e7a;
-        }
-
-        .inventory-empty .big-icon {
-            font-size: 60px;
-            display: block;
-            margin-bottom: 12px;
-        }
-
-        .inventory-item {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 16px;
-            padding: 14px 10px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .inventory-item .inv-icon {
-            font-size: 34px;
-            display: block;
-        }
-
-        .inventory-item .inv-name {
-            font-size: 12px;
-            font-weight: 700;
-            margin-top: 4px;
-        }
-
-        .inventory-item .inv-rarity {
-            font-size: 9px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
-        /* ===== STATS ===== */
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .stat-row .label {
-            color: #8aa3c9;
-        }
-
-        .stat-row .value {
-            font-weight: 700;
-        }
-
-        /* ===== NAV ===== */
-        .nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 70px;
-            background: rgba(8, 14, 28, 0.96);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid rgba(255, 215, 0, 0.06);
-            z-index: 200;
-        }
-
-        .nav button {
-            background: none;
-            border: none;
-            color: #546e7a;
-            font-size: 10px;
-            font-weight: 700;
-            text-align: center;
-            cursor: pointer;
-            transition: color 0.2s;
-            padding: 4px 12px;
-        }
-
-        .nav button .nav-icon {
-            font-size: 24px;
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        .nav button.active {
-            color: #ffd700;
-        }
-
-        /* ===== SCROLLBAR ===== */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #ffd700;
-            border-radius: 10px;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 380px) {
-            .case-card {
-                min-height: 180px;
-                padding: 12px 8px;
-            }
-            .case-icon {
-                font-size: 32px;
-            }
-            .case-name {
-                font-size: 12px;
-            }
-            .rewards-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 6px;
-            }
-            .reward-item .r-icon {
-                font-size: 22px;
-            }
-        }
-
-        @media (min-width: 500px) {
-            .case-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .rewards-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- ===== HEADER ===== -->
-    <header class="header">
-        <div class="logo">▲ CASEUP</div>
-        <div class="balance-wrap">
-            <span>⭐</span>
-            <span id="balanceDisplay">1000</span>
-            <button class="btn-topup" onclick="topUp()">+</button>
-        </div>
-    </header>
-
-    <!-- ===== PAGE: CASES ===== -->
-    <section id="casesPage" class="page active">
-        <div class="banner">
-            <h1>🔥 Открывай кейсы</h1>
-            <p>Звёзды и редкие NFT — каждый кейс уникален</p>
-            <button class="btn-banner" onclick="quickOpenVIP()">⚡ VIP CASE 10000 ⭐</button>
-        </div>
-
-        <div class="section-title">🎁 <span>Все кейсы</span></div>
-        <div class="case-grid" id="caseGrid"></div>
-    </section>
-
-    <!-- ===== PAGE: GAMES ===== -->
-    <section id="gamesPage" class="page">
-        <div class="section-title">🎮 <span>Игры</span></div>
-        <div class="case-grid">
-            <div class="case-card" style="--case-color:#29b6f6;">
-                <div class="glow active"></div>
-                <div class="case-icon">🎡</div>
-                <div class="case-name">Колесо</div>
-                <div class="case-price" style="font-size:13px;color:#8aa3c9;">x1 – x5</div>
-                <button class="btn-open" onclick="playWheel()">Крутить</button>
-            </div>
-            <div class="case-card" style="--case-color:#e040fb;">
-                <div class="glow active"></div>
-                <div class="case-icon">💣</div>
-                <div class="case-name">Mines</div>
-                <div class="case-price" style="font-size:13px;color:#8aa3c9;">Найди подарок</div>
-                <button class="btn-open" onclick="playMines()">Играть</button>
-            </div>
-            <div class="case-card" style="--case-color:#ff1744;">
-                <div class="glow active"></div>
-                <div class="case-icon">🚀</div>
-                <div class="case-name">Crash</div>
-                <div class="case-price" style="font-size:13px;color:#8aa3c9;">x1 – x10</div>
-                <button class="btn-open" onclick="playCrash()">Лететь</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- ===== PAGE: INVENTORY ===== -->
-    <section id="inventoryPage" class="page">
-        <div class="section-title">🎒 <span>Инвентарь</span></div>
-        <div class="case-grid" id="inventoryGrid"></div>
-    </section>
-
-    <!-- ===== PAGE: PROFILE ===== -->
-    <section id="profilePage" class="page">
-        <div class="section-title">👤 <span>Профиль</span></div>
-        <div class="banner" style="margin-bottom:10px;">
-            <div class="stat-row"><span class="label">Открыто кейсов</span><span class="value" id="statOpened">0</span></div>
-            <div class="stat-row"><span class="label">Предметов в инвентаре</span><span class="value" id="statItems">0</span></div>
-            <div class="stat-row"><span class="label">Всего потрачено ⭐</span><span class="value" id="statSpent">0</span></div>
-            <div class="stat-row"><span class="label">Выиграно ⭐</span><span class="value" id="statWon">0</span></div>
-        </div>
-        <button class="btn-modal-action" onclick="clearHistory()" style="background:rgba(255,255,255,0.05);color:#ff1744;font-size:13px;">Очистить историю</button>
-    </section>
-
-    <!-- ===== NAV ===== -->
-    <nav class="nav">
-        <button class="active" onclick="showPage('casesPage', this)">
-            <span class="nav-icon">🎁</span> Кейсы
-        </button>
-        <button onclick="showPage('gamesPage', this)">
-            <span class="nav-icon">🎮</span> Игры
-        </button>
-        <button onclick="showPage('inventoryPage', this)">
-            <span class="nav-icon">🎒</span> Инвентарь
-        </button>
-        <button onclick="showPage('profilePage', this)">
-            <span class="nav-icon">👤</span> Профиль
-        </button>
-    </nav>
-
-    <!-- ===== REWARDS MODAL ===== -->
-    <div class="modal-overlay" id="rewardsModal">
-        <div class="modal-box">
-            <button class="modal-close" onclick="closeRewards()">✕</button>
-            <h2>Возможные призы</h2>
-            <p class="sub" id="rewardsCaseName">Gold Case</p>
-            <div class="rewards-grid" id="rewardsGrid"></div>
-            <button class="btn-modal-action" onclick="closeRewards()">Закрыть</button>
-        </div>
-    </div>
-
-    <!-- ===== OPENING MODAL ===== -->
-    <div class="modal-overlay" id="openingModal">
-        <div class="modal-box" style="max-width:360px;">
-            <div class="opening-display">
-                <div class="slot-icon" id="slotIcon">🎲</div>
-                <div class="slot-name" id="slotName">Открываем...</div>
-                <div class="slot-rarity" id="slotRarity" style="color:#546e7a;">—</div>
-                <div class="slot-type" id="slotType"></div>
-            </div>
-            <button class="btn-modal-action" id="btnCollect" onclick="collectReward()" style="display:none;">Забрать</button>
-            <button class="btn-modal-action" onclick="closeOpening()" style="background:rgba(255,255,255,0.05);color:#8aa3c9;margin-top:8px;font-size:14px;">Закрыть</button>
-        </div>
-    </div>
-
-    <script>
-        // ============================================================
-        //  DATA
-        // ============================================================
-
-        const CASES = [{
-            id: 0,
-            name: "Free Case",
-            price: 0,
-            icon: "🎁",
-            color: "#4CAF50",
-            rarity: "Common",
-            rewards: [
-                { type: "stars", amount: 5, chance: 35, rarity: "Common", icon: "⭐" },
-                { type: "stars", amount: 10, chance: 25, rarity: "Common", icon: "⭐" },
-                { type: "stars", amount: 25, chance: 20, rarity: "Uncommon", icon: "⭐" },
-                { type: "nft", name: "Free Gift", icon: "🎁", chance: 12, rarity: "Uncommon" },
-                { type: "nft", name: "Wooden Coin", icon: "🪙", chance: 8, rarity: "Rare" }
-            ]
-        }, {
-            id: 1,
-            name: "Moon Case",
-            price: 100,
-            icon: "🌙",
-            color: "#4FC3F7",
-            rarity: "Common",
-            rewards: [
-                { type: "stars", amount: 50, chance: 30, rarity: "Common", icon: "⭐" },
-                { type: "stars", amount: 100, chance: 25, rarity: "Common", icon: "⭐" },
-                { type: "stars", amount: 150, chance: 18, rarity: "Uncommon", icon: "⭐" },
-                { type: "nft", name: "Moon Stone", icon: "🪨", chance: 15, rarity: "Uncommon" },
-                { type: "nft", name: "Silver Crescent", icon: "🌙", chance: 8, rarity: "Rare" },
-                { type: "stars", amount: 300, chance: 4, rarity: "Rare", icon: "⭐" }
-            ]
-        }, {
-            id: 2,
-            name: "Sun Case",
-            price: 150,
-            icon: "☀️",
-            color: "#FFD54F",
-            rarity: "Common",
-            rewards: [
-                { type: "stars", amount: 80, chance: 28, rarity: "Common", icon: "⭐" },
-                { type: "stars", amount: 150, chance: 22, rarity: "Common", icon: "⭐" },
-                { type: "stars", amount: 250, chance: 18, rarity: "Uncommon", icon: "⭐" },
-                { type: "nft", name: "Sun Token", icon: "🪙", chance: 14, rarity: "Uncommon" },
-                { type: "nft", name: "Golden Ray", icon: "☀️", chance: 10, rarity: "Rare" },
-                { type: "stars", amount: 500, chance: 5, rarity: "Rare", icon: "⭐" },
-                { type: "nft", name: "Solar Crown", icon: "👑", chance: 3, rarity: "Epic" }
-            ]
-        }, {
-            id: 3,
-            name: "Neon Case",
-            price: 200,
-            icon: "💜",
-            color: "#FF4081",
-            rarity: "Uncommon",
-            rewards: [
-                { type: "stars", amount: 100, chance: 25, rarity: "Common", icon: "⭐" },
-                { type: "stars", amount: 200, chance: 20, rarity: "Common", icon: "⭐" },
-                { type: "stars", amount: 350, chance: 18, rarity: "Uncommon", icon: "⭐" },
-                { type: "nft", name: "Neon Badge", icon: "💜", chance: 15, rarity: "Uncommon" },
-                { type: "nft", name: "Cyber Glow", icon: "✨", chance: 12, rarity: "Rare" },
-                { type: "stars", amount: 600, chance: 6, rarity: "Rare", icon: "⭐" },
-                { type: "nft", name: "Neon Dragon", icon: "🐉", chance: 4, rarity: "Epic" }
-            ]
-        }, {
-            id: 4,
-            name: "Gold Case",
-            price: 300,
-            icon: "👑",
-            color: "#FFD700",
-            rarity: "Uncommon",
-            rewards: [
-                { type: "stars", amount: 150, chance: 22, rarity: "Common", icon: "⭐" },
-                { type: "stars", amount: 300, chance: 18, rarity: "Common", icon: "⭐" },
-                { type: "stars", amount: 500, chance: 16, rarity: "Uncommon", icon: "⭐" },
-                { type: "nft", name: "Gold Coin", icon: "🪙", chance: 15, rarity: "Uncommon" },
-                { type: "nft", name: "Golden Ring", icon: "💍", chance: 12, rarity: "Rare" },
-                { type: "stars", amount: 800, chance: 8, rarity: "Rare", icon: "⭐" },
-                { type: "nft", name: "Gold Crown", icon: "👑", chance: 5, rarity: "Epic" },
-                { type: "stars", amount: 1500, chance: 4, rarity: "Legendary", icon: "⭐" }
-            ]
-        }, {
-            id: 5,
-            name: "Diamond Case",
-            price: 500,
-            icon: "💎",
-            color: "#00E5FF",
-            rarity: "Rare",
-            rewards: [
-                { type: "stars", amount: 250, chance: 20, rarity: "Common", icon: "⭐" },
-                { type: "stars", amount: 500, chance: 16, rarity: "Common", icon: "⭐" },
-                { type: "stars", amount: 800, chance: 14, rarity: "Uncommon", icon: "⭐" },
-                { type: "nft", name: "Diamond Shard", icon: "💎", chance: 14, rarity: "Uncommon" },
-                { type: "nft", name: "Crystal Gem", icon: "🔮", chance: 12, rarity: "Rare" },
-                { type: "stars", amount: 1200, chance: 10, rarity: "Rare", icon: "⭐" },
-                { type: "nft", name: "Diamond Ring", icon: "💍", chance: 8, rarity: "Epic" },
-                { type: "stars", amount: 2500, chance: 4, rarity: "Legendary", icon: "⭐" },
-                { type: "nft", name: "Pure Diamond", icon: "💎", chance: 2, rarity: "Mythic" }
-            ]
-        }, {
-            id: 6,
-            name: "Ruby Case",
-            price: 750,
-            icon: "❤️",
-            color: "#FF1744",
-            rarity: "Rare",
-            rewards: [
-                { type: "stars", amount: 350, chance: 18, rarity: "Common", icon: "⭐" },
-                { type: "stars", amount: 750, chance: 15, rarity: "Common", icon: "⭐" },
-                { type: "stars", amount: 1100, chance: 14, rarity: "Uncommon", icon: "⭐" },
-                { type: "nft", name: "Ruby Gem", icon: "❤️", chance: 14, rarity: "Uncommon" },
-                { type: "nft", name: "Red Crystal", icon: "🔴", chance: 12, rarity: "Rare" },
-                { type: "stars", amount: 1600, chance: 10, rarity: "Rare", icon: "⭐" },
-                { type: "nft", name: "Ruby Crown", icon: "👑", chance: 8, rarity: "Epic" },
-                { type: "stars", amount: 3000, chance: 5, rarity: "Legendary", icon: "⭐" },
-                { type: "nft", name: "Heart of Ruby", icon: "💖", chance: 4, rarity: "Legendary" }
-            ]
-        }, {
-            id: 7,
-            name: "Sapphire Case",
-            price: 1000,
-            icon: "🔵",
-            color: "#2979FF",
-            rarity: "Rare",
-            rewards: [
-                { type: "stars", amount: 500, chance
+const cases = [
+    {
+        id: 0,
+        name: "Free Case",
+        price: 0,
+        icon: "🎁",
+        color: "#4CAF50",
+        gradient: "linear-gradient(135deg, #1b5e20, #4CAF50)",
+        rarity: "Common"
+    },
+    {
+        id: 1,
+        name: "Moon Case",
+        price: 100,
+        icon: "🌙",
+        color: "#4FC3F7",
+        gradient: "linear-gradient(135deg, #0d47a1, #4FC3F7)",
+        rarity: "Common"
+    },
+    {
+        id: 2,
+        name: "Sun Case",
+        price: 150,
+        icon: "☀️",
+        color: "#FFD54F",
+        gradient: "linear-gradient(135deg, #f57f17, #FFD54F)",
+        rarity: "Common"
+    },
+    {
+        id: 3,
+        name: "Neon Case",
+        price: 200,
+        icon: "💜",
+        color: "#FF4081",
+        gradient: "linear-gradient(135deg, #880e4f, #FF4081)",
+        rarity: "Uncommon"
+    },
+    {
+        id: 4,
+        name: "Gold Case",
+        price: 300,
+        icon: "👑",
+        color: "#FFD700",
+        gradient: "linear-gradient(135deg, #f9a825, #FFD700)",
+        rarity: "Uncommon"
+    },
+    {
+        id: 5,
+        name: "Diamond Case",
+        price: 500,
+        icon: "💎",
+        color: "#00E5FF",
+        gradient: "linear-gradient(135deg, #006064, #00E5FF)",
+        rarity: "Rare"
+    },
+    {
+        id: 6,
+        name: "Ruby Case",
+        price: 750,
+        icon: "❤️",
+        color: "#FF1744",
+        gradient: "linear-gradient(135deg, #b71c1c, #FF1744)",
+        rarity: "Rare"
+    },
+    {
+        id: 7,
+        name: "Sapphire Case",
+        price: 1000,
+        icon: "🔵",
+        color: "#2979FF",
+        gradient: "linear-gradient(135deg, #0d47a1, #2979FF)",
+        rarity: "Rare"
+    },
+    {
+        id: 8,
+        name: "Emerald Case",
+        price: 1250,
+        icon: "🟢",
+        color: "#00E676",
+        gradient: "linear-gradient(135deg, #1b5e20, #00E676)",
+        rarity: "Epic"
+    },
+    {
+        id: 9,
+        name: "Cyber Case",
+        price: 1500,
+        icon: "🤖",
+        color: "#D500F9",
+        gradient: "linear-gradient(135deg, #4a148c, #D500F9)",
+        rarity: "Epic"
+    },
+    {
+        id: 10,
+        name: "Matrix Case",
+        price: 2000,
+        icon: "💻",
+        color: "#00E676",
+        gradient: "linear-gradient(135deg, #003300, #00E676)",
+        rarity: "Epic"
+    },
+    {
+        id: 11,
+        name: "Galaxy Case",
+        price: 2500,
+        icon: "🌌",
+        color: "#E040FB",
+        gradient: "linear-gradient(135deg, #1a237e, #E040FB)",
+        rarity: "Legendary"
+    },
+    {
+        id: 12,
+        name: "Royal Case",
+        price: 3000,
+        icon: "🏰",
+        color: "#FFD700",
+        gradient: "linear-gradient(135deg, #4a2800, #FFD700)",
+        rarity: "Legendary"
+    },
+    {
+        id: 13,
+        name: "Titan Case",
+        price: 4000,
+        icon: "⚡",
+        color: "#78909C",
+        gradient: "linear-gradient(135deg, #263238, #78909C)",
+        rarity: "Legendary"
+    },
+    {
+        id: 14,
+        name: "God Case",
+        price: 5000,
+        icon: "🔥",
+        color: "#FF6F00",
+        gradient: "linear-gradient(135deg, #b26500, #FF6F00)",
+        rarity: "Mythic"
+    },
+    {
+        id: 15,
+        name: "VIP Case",
+        price: 10000,
+        icon: "💎",
+        color: "#FF1744",
+        gradient: "linear-gradient(135deg, #b71c1c, #FF1744)",
+        rarity: "Mythic"
+    }
+];* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background: radial-gradient(ellipse at top, #0a1628, #05080f 70%);
+    color: #ffffff;
+    min-height: 100vh;
+    padding-bottom: 80px;
+    overflow-x: hidden;
+}
+
+/* ===== HEADER ===== */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: rgba(10, 18, 36, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.12);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+}
+
+.balance-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 215, 0, 0.08);
+    padding: 8px 16px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 215, 0, 0.15);
+}
+
+.balance-wrap span {
+    color: #ffd700;
+    font-weight: 900;
+    font-size: 16px;
+}
+
+.btn-topup {
+    background: linear-gradient(135deg, #ffd700, #f57c00);
+    border: none;
+    color: #0a1628;
+    font-weight: 800;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* ===== PAGES ===== */
+.page {
+    display: none;
+    padding: 16px 16px 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== BANNER ===== */
+.banner {
+    background: linear-gradient(135deg, #0d2137, #162a44);
+    border-radius: 20px;
+    padding: 20px 24px;
+    border: 1px solid rgba(255, 215, 0, 0.10);
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.banner::after {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.05), transparent);
+    border-radius: 50%;
+}
+
+.banner h1 {
+    font-size: 22px;
+    font-weight: 900;
+    position: relative;
+    z-index: 1;
+}
+
+.banner p {
+    color: #8aa3c9;
+    font-size: 14px;
+    margin-top: 4px;
+    position: relative;
+    z-index: 1;
+}
+
+.banner .btn-banner {
+    margin-top: 14px;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
+    font-weight: 900;
+    font-size: 14px;
+    color: #0a1628;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.2s;
+}
+
+.banner .btn-banner:active {
+    transform: scale(0.96);
+}
+
+/* ===== SECTION TITLE ===== */
+.section-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 18px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title span {
+    color: #ffd700;
+}
+
+/* ===== CASE GRID ===== */
+.case-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+/* ===== CASE CARD ===== */
+.case-card {
+    background: linear-gradient(160deg, #121e38, #0a1224);
+    border-radius: 20px;
+    padding: 16px 12px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    min-height: 210px;
+    cursor: pointer;
+}
+
+.case-card:active {
+    transform: scale(0.97);
+}
+
+/* Свечение по краям */
+.case-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 20px;
+    padding: 2px;
+    background: var(--case-color);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.2;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.case-card:hover::before {
+    opacity: 0.6;
+}
+
+/* Иконка кейса */
+.case-icon {
+    font-size: 44px;
+    margin-bottom: 6px;
+    filter: drop-shadow(0 0 25px var(--case-color));
+    line-height: 1;
+}
+
+/* Название */
+.case-name {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    margin-bottom: 2px;
+}
+
+/* Цена */
+.case-price {
+    font-size: 16px;
+    font-weight: 900;
+    color: #ffd700;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.12);
+    margin: 4px 0 8px;
+}
+
+.case-price.free {
+    color: #4CAF50;
+    text-shadow: 0 0 20px rgba(76, 175, 80, 0.15);
+}
+
+/* Бейдж редкости */
+.rarity-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 14px;
+    border-radius: 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    background: var(--rarity-bg);
+    color: #fff;
+    box-shadow: 0 0 20px var(--rarity-glow);
+    margin-bottom: 10px;
+}
+
+/* Кнопка открытия */
+.btn-open {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #ffd700, #f57c00);
+    color: #0a1628;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-open:active {
+    transform: scale(0.95);
+}
+
+.btn-open:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Бесплатный кейс */
+.case-card.free .btn-open {
+    background: linear-gradient(135deg, #4CAF50, #1b5e20);
+    color: #fff;
+}
+
+/* ===== РЕДКОСТИ ===== */
+.rarity-common { 
+    --rarity-bg: #546e7a; 
+    --rarity-glow: rgba(84, 110, 122, 0.3); 
+}
+.rarity-uncommon { 
+    --rarity-bg: #29b6f6; 
+    --rarity-glow: rgba(41, 182, 246, 0.3); 
+}
+.rarity-rare { 
+    --rarity-bg: #7c4dff; 
+    --rarity-glow: rgba(124, 77, 255, 0.3); 
+}
+.rarity-epic { 
+    --rarity-bg: #e040fb; 
+    --rarity-glow: rgba(224, 64, 251, 0.3); 
+}
+.rarity-legendary { 
+    --rarity-bg: #ffa726; 
+    --rarity-glow: rgba(255, 167, 38, 0.3); 
+}
+.rarity-mythic { 
+    --rarity-bg: #ff1744; 
+    --rarity-glow: rgba(255, 23, 68, 0.4); 
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-box {
+    background: linear-gradient(160deg, #121e38, #0a1224);
+    border-radius: 30px;
+    padding: 24px 20px 20px;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid rgba(255, 215, 0, 0.10);
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-box .modal-close {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: none;
+    border: none;
+    color: #8aa3c9;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-box h2 {
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+/* ===== REWARDS GRID ===== */
+.rewards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 16px 0;
+}
+
+.reward-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 14px;
+    padding: 12px 6px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: all 0.2s;
+}
+
+.reward-item .r-icon {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.reward-item .r-name {
+    font-size: 11px;
+    font-weight: 700;
+    display: block;
+    line-height: 1.2;
+}
+
+.reward-item .r-rarity {
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    display: block;
+    margin-top: 3px;
+}
+
+/* Цвета редкостей в наградах */
+.reward-item.r-common { border-color: rgba(84, 110, 122, 0.2); }
+.reward-item.r-common .r-rarity { color: #78909c; }
+
+.reward-item.r-uncommon { border-color: rgba(41, 182, 246, 0.2); }
+.reward-item.r-uncommon .r-rarity { color: #29b6f6; }
+
+.reward-item.r-rare { border-color: rgba(124, 77, 255, 0.2); }
+.reward-item.r-rare .r-rarity { color: #7c4dff; }
+
+.reward-item.r-epic { border-color: rgba(224, 64, 251, 0.2); }
+.reward-item.r-epic .r-rarity { color: #e040fb; }
+
+.reward-item.r-legendary { border-color: rgba(255, 167, 38, 0.25); }
+.reward-item.r-legendary .r-rarity { color: #ffa726; }
+
+.reward-item.r-mythic { border-color: rgba(255, 23, 68, 0.3); }
+.reward-item.r-mythic .r-rarity { color: #ff1744; }
+
+/* ===== OPENING SLOT ===== */
+.opening-display {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.opening-display .slot-icon {
+    font-size: 80px;
+    line-height: 1.2;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.opening-display .slot-name {
+    font-size: 22px;
+    font-weight: 900;
+    margin: 8px 0 4px;
+}
+
+.opening-display .slot-rarity {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.opening-display .slot-type {
+    font-size: 13px;
+    color: #8aa3c9;
+    margin-top: 4px;
+}
+
+/* ===== INVENTORY ===== */
+.inventory-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px 20px;
+    color: #546e7a;
+}
+
+.inventory-empty .big-icon {
+    font-size: 60px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.inventory-item {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+    padding: 14px 10px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.inventory-item .inv-icon {
+    font-size: 34px;
+    display: block;
+}
+
+.inventory-item .inv-name {
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+.inventory-item .inv-rarity {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+/* ===== STATS ===== */
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.stat-row .label {
+    color: #8aa3c9;
+}
+
+.stat-row .value {
+    font-weight: 700;
+}
+
+/* ===== NAV ===== */
+.nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: rgba(8, 14, 28, 0.96);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(255, 215, 0, 0.05);
+    z-index: 200;
+}
+
+.nav button {
+    background: none;
+    border: none;
+    color: #546e7a;
+    font-size: 10px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 4px 12px;
+}
+
+.nav button .nav-icon {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.nav button.active {
+    color: #ffd700;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+    width: 4px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #ffd700;
+    border-radius: 10px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 380px) {
+    .case-card {
+        min-height: 180px;
+        padding: 12px 8px;
+    }
+    .case-icon {
+        font-size: 34px;
+    }
+    .case-name {
+        font-size: 12px;
+    }
+    .rewards-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+    }
+    .reward-item .r-icon {
+        font-size: 22px;
+    }
+}
+
+@media (min-width: 500px) {
+    .case-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .rewards-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.btn-modal-action {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 16px;
+    font-weight: 900;
+    font-size: 16px;
+    background: linear-gradient(135deg, #ffd700, #f57c00);
+    color: #0a1628;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-modal-action:active {
+    transform: scale(0.97);
+}// ============================================================
+//  ДАННЫЕ
+// ============================================================
+
+let balance = parseInt(localStorage.getItem('caseup_balance')) || 6182;
+let opened = parseInt(localStorage.getItem('caseup_opened')) || 0;
+let totalSpent = parseInt(localStorage.getItem('caseup_spent')) || 0;
+let totalWon = parseInt(localStorage.getItem('caseup_won')) || 0;
+let inventory = JSON.parse(localStorage.getItem('caseup_inventory')) || [];
+let history = JSON.parse(localStorage.getItem('caseup_history')) || [];
+
+// ============================================================
+//  МАССИВ КЕЙСОВ (16 ШТУК)
+// ============================================================
+
+const cases = [
+    { id: 0, name: "Free Case", price: 0, icon: "🎁", color: "#4CAF50", gradient: "linear-gradient(135deg, #1b5e20, #4CAF50)", rarity: "Common" },
+    { id: 1, name: "Moon Case", price: 100, icon: "🌙", color: "#4FC3F7", gradient: "linear-gradient(135deg, #0d47a1, #4FC3F7)", rarity: "Common" },
+    { id: 2, name: "Sun Case", price: 150, icon: "☀️", color: "#FFD54F", gradient: "linear-gradient(135deg, #f57f17, #FFD54F)", rarity: "Common" },
+    { id: 3, name: "Neon Case", price: 200, icon: "💜", color: "#FF4081", gradient: "linear-gradient(135deg, #880e4f, #FF4081)", rarity: "Uncommon" },
+    { id: 4, name: "Gold Case", price: 300, icon: "👑", color: "#FFD700", gradient: "linear-gradient(135deg, #f9a825, #FFD700)", rarity: "Uncommon" },
+    { id: 5, name: "Diamond Case", price: 500, icon: "💎", color: "#00E5FF", gradient: "linear-gradient(135deg, #006064, #00E5FF)", rarity: "Rare" },
+    { id: 6, name: "Ruby Case", price: 750, icon: "❤️", color: "#FF1744", gradient: "linear-gradient(135deg, #b71c1c, #FF1744)", rarity: "Rare" },
+    { id: 7, name: "Sapphire Case", price: 1000, icon: "🔵", color: "#2979FF", gradient: "linear-gradient(135deg, #0d47a1, #2979FF)", rarity: "Rare" },
+    { id: 8, name: "Emerald Case", price: 1250, icon: "🟢", color: "#00E676", gradient: "linear-gradient(135deg, #1b5e20, #00E676)", rarity: "Epic" },
+    { id: 9, name: "Cyber Case", price: 1500, icon: "🤖", color: "#D500F9", gradient: "linear-gradient(135deg, #4a148c, #D500F9)", rarity: "Epic" },
+    { id: 10, name: "Matrix Case", price: 2000, icon: "💻", color: "#00E676", gradient: "linear-gradient(135deg, #003300, #00E676)", rarity: "Epic" },
+    { id: 11, name: "Galaxy Case", price: 2500, icon: "🌌", color: "#E040FB", gradient: "linear-gradient(135deg, #1a237e, #E040FB)", rarity: "Legendary" },
+    { id: 12, name: "Royal Case", price: 3000, icon: "🏰", color: "#FFD700", gradient: "linear-gradient(135deg, #4a2800, #FFD700)", rarity: "Legendary" },
+    { id: 13, name: "Titan Case", price: 4000, icon: "⚡", color: "#78909C", gradient: "linear-gradient(135deg, #263238, #78909C)", rarity: "Legendary" },
+    { id: 14, name: "God Case", price: 5000, icon: "🔥", color: "#FF6F00", gradient: "linear-gradient(135deg, #b26500, #FF6F00)", rarity: "Mythic" },
+    { id: 15, name: "VIP Case", price: 10000, icon: "💎", color: "#FF1744", gradient: "linear-gradient(135deg, #b71c1c, #FF1744)", rarity: "Mythic" }
+];
+
+// ============================================================
+//  НАГРАДЫ ДЛЯ КАЖДОГО КЕЙСА
+// ============================================================
+
+const caseRewards = {
+    0: [ // Free Case
+        { type: "stars", amount: 5, chance: 35, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 10, chance: 25, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 25, chance: 20, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "Free Gift", icon: "🎁", chance: 12, rarity: "Uncommon" },
+        { type: "nft", name: "Wooden Coin", icon: "🪙", chance: 8, rarity: "Rare" }
+    ],
+    1: [ // Moon Case
+        { type: "stars", amount: 50, chance: 30, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 100, chance: 25, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 150, chance: 18, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "Moon Stone", icon: "🪨", chance: 15, rarity: "Uncommon" },
+        { type: "nft", name: "Silver Crescent", icon: "🌙", chance: 8, rarity: "Rare" },
+        { type: "stars", amount: 300, chance: 4, rarity: "Rare", icon: "⭐" }
+    ],
+    2: [ // Sun Case
+        { type: "stars", amount: 80, chance: 28, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 150, chance: 22, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 250, chance: 18, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "Sun Token", icon: "🪙", chance: 14, rarity: "Uncommon" },
+        { type: "nft", name: "Golden Ray", icon: "☀️", chance: 10, rarity: "Rare" },
+        { type: "stars", amount: 500, chance: 5, rarity: "Rare", icon: "⭐" },
+        { type: "nft", name: "Solar Crown", icon: "👑", chance: 3, rarity: "Epic" }
+    ],
+    3: [ // Neon Case
+        { type: "stars", amount: 100, chance: 25, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 200, chance: 20, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 350, chance: 18, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "Neon Badge", icon: "💜", chance: 15, rarity: "Uncommon" },
+        { type: "nft", name: "Cyber Glow", icon: "✨", chance: 12, rarity: "Rare" },
+        { type: "stars", amount: 600, chance: 6, rarity: "Rare", icon: "⭐" },
+        { type: "nft", name: "Neon Dragon", icon: "🐉", chance: 4, rarity: "Epic" }
+    ],
+    4: [ // Gold Case
+        { type: "stars", amount: 150, chance: 22, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 300, chance: 18, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 500, chance: 16, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "Gold Coin", icon: "🪙", chance: 15, rarity: "Uncommon" },
+        { type: "nft", name: "Golden Ring", icon: "💍", chance: 12, rarity: "Rare" },
+        { type: "stars", amount: 800, chance: 8, rarity: "Rare", icon: "⭐" },
+        { type: "nft", name: "Gold Crown", icon: "👑", chance: 5, rarity: "Epic" },
+        { type: "stars", amount: 1500, chance: 4, rarity: "Legendary", icon: "⭐" }
+    ],
+    5: [ // Diamond Case
+        { type: "stars", amount: 250, chance: 20, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 500, chance: 16, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 800, chance: 14, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "Diamond Shard", icon: "💎", chance: 14, rarity: "Uncommon" },
+        { type: "nft", name: "Crystal Gem", icon: "🔮", chance: 12, rarity: "Rare" },
+        { type: "stars", amount: 1200, chance: 10, rarity: "Rare", icon: "⭐" },
+        { type: "nft", name: "Diamond Ring", icon: "💍", chance: 8, rarity: "Epic" },
+        { type: "stars", amount: 2500, chance: 4, rarity: "Legendary", icon: "⭐" },
+        { type: "nft", name: "Pure Diamond", icon: "💎", chance: 2, rarity: "Mythic" }
+    ],
+    6: [ // Ruby Case
+        { type: "stars", amount: 350, chance: 18, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 750, chance: 15, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 1100, chance: 14, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "Ruby Gem", icon: "❤️", chance: 14, rarity: "Uncommon" },
+        { type: "nft", name: "Red Crystal", icon: "🔴", chance: 12, rarity: "Rare" },
+        { type: "stars", amount: 1600, chance: 10, rarity: "Rare", icon: "⭐" },
+        { type: "nft", name: "Ruby Crown", icon: "👑", chance: 8, rarity: "Epic" },
+        { type: "stars", amount: 3000, chance: 5, rarity: "Legendary", icon: "⭐" },
+        { type: "nft", name: "Heart of Ruby", icon: "💖", chance: 4, rarity: "Legendary" }
+    ],
+    7: [ // Sapphire Case
+        { type: "stars", amount: 500, chance: 16, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 1000, chance: 14, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 1500, chance: 14, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "Sapphire Gem", icon: "🔵", chance: 14, rarity: "Uncommon" },
+        { type: "nft", name: "Blue Crystal", icon: "💎", chance: 12, rarity: "Rare" },
+        { type: "stars", amount: 2000, chance: 10, rarity: "Rare", icon: "⭐" },
+        { type: "nft", name: "Sapphire Crown", icon: "👑", chance: 8, rarity: "Epic" },
+        { type: "stars", amount: 3500, chance: 6, rarity: "Legendary", icon: "⭐" },
+        { type: "nft", name: "Star of Sapphire", icon: "⭐", chance: 6, rarity: "Legendary" }
+    ],
+    8: [ // Emerald Case
+        { type: "stars", amount: 600, chance: 15, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 1250, chance: 13, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 1800, chance: 13, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "Emerald Gem", icon: "🟢", chance: 13, rarity: "Uncommon" },
+        { type: "nft", name: "Green Crystal", icon: "💚", chance: 12, rarity: "Rare" },
+        { type: "stars", amount: 2500, chance: 10, rarity: "Rare", icon: "⭐" },
+        { type: "nft", name: "Emerald Crown", icon: "👑", chance: 8, rarity: "Epic" },
+        { type: "stars", amount: 4000, chance: 6, rarity: "Legendary", icon: "⭐" },
+        { type: "nft", name: "Eye of Emerald", icon: "👁️", chance: 10, rarity: "Epic" }
+    ],
+    9: [ // Cyber Case
+        { type: "stars", amount: 700, chance: 14, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 1500, chance: 12, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 2200, chance: 12, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "Cyber Chip", icon: "💻", chance: 13, rarity: "Uncommon" },
+        { type: "nft", name: "Hologram Badge", icon: "🌀", chance: 12, rarity: "Rare" },
+        { type: "stars", amount: 3000, chance: 10, rarity: "Rare", icon: "⭐" },
+        { type: "nft", name: "Cyber Sword", icon: "⚔️", chance: 8, rarity: "Epic" },
+        { type: "stars", amount: 5000, chance: 6, rarity: "Legendary", icon: "⭐" },
+        { type: "nft", name: "Neural Link", icon: "🧠", chance: 13, rarity: "Rare" }
+    ],
+    10: [ // Matrix Case
+        { type: "stars", amount: 900, chance: 13, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 2000, chance: 11, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 2800, chance: 11, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "Matrix Code", icon: "💻", chance: 13, rarity: "Uncommon" },
+        { type: "nft", name: "Digital Ghost", icon: "👻", chance: 12, rarity: "Rare" },
+        { type: "stars", amount: 3800, chance: 10, rarity: "Rare", icon: "⭐" },
+        { type: "nft", name: "The One", icon: "🧘", chance: 8, rarity: "Epic" },
+        { type: "stars", amount: 6000, chance: 6, rarity: "Legendary", icon: "⭐" },
+        { type: "nft", name: "Red Pill", icon: "💊", chance: 16, rarity: "Uncommon" }
+    ],
+    11: [ // Galaxy Case
+        { type: "stars", amount: 1200, chance: 12, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 2500, chance: 10, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 3500, chance: 10, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "Star Dust", icon: "✨", chance: 13, rarity: "Uncommon" },
+        { type: "nft", name: "Nebula Gem", icon: "🔮", chance: 12, rarity: "Rare" },
+        { type: "stars", amount: 4500, chance: 10, rarity: "Rare", icon: "⭐" },
+        { type: "nft", name: "Galaxy Crown", icon: "👑", chance: 8, rarity: "Epic" },
+        { type: "stars", amount: 7000, chance: 6, rarity: "Legendary", icon: "⭐" },
+        { type: "nft", name: "Black Hole", icon: "🕳️", chance: 4, rarity: "Mythic" }
+    ],
+    12: [ // Royal Case
+        { type: "stars", amount: 1500, chance: 11, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 3000, chance: 9, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 4200, chance: 9, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "Royal Seal", icon: "📜", chance: 13, rarity: "Uncommon" },
+        { type: "nft", name: "King's Ring", icon: "💍", chance: 12, rarity: "Rare" },
+        { type: "stars", amount: 5500, chance: 10, rarity: "Rare", icon: "⭐" },
+        { type: "nft", name: "Royal Crown", icon: "👑", chance: 8, rarity: "Epic" },
+        { type: "stars", amount: 8000, chance: 6, rarity: "Legendary", icon: "⭐" },
+        { type: "nft", name: "Scepter of Power", icon: "🔱", chance: 4, rarity: "Mythic" }
+    ],
+    13: [ // Titan Case
+        { type: "stars", amount: 2000, chance: 10, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 4000, chance: 8, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 5200, chance: 8, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "Titan Shield", icon: "🛡️", chance: 13, rarity: "Uncommon" },
+        { type: "nft", name: "Giant's Hammer", icon: "🔨", chance: 12, rarity: "Rare" },
+        { type: "stars", amount: 6500, chance: 10, rarity: "Rare", icon: "⭐" },
+        { type: "nft", name: "Titan Crown", icon: "👑", chance: 8, rarity: "Epic" },
+        { type: "stars", amount: 9000, chance: 6, rarity: "Legendary", icon: "⭐" },
+        { type: "nft", name: "Eye of Titan", icon: "👁️", chance: 4, rarity: "Mythic" }
+    ],
+    14: [ // God Case
+        { type: "stars", amount: 2500, chance: 9, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 5000, chance: 7, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 6500, chance: 7, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "Divine Blade", icon: "⚔️", chance: 13, rarity: "Uncommon" },
+        { type: "nft", name: "God's Shield", icon: "🛡️", chance: 12, rarity: "Rare" },
+        { type: "stars", amount: 8000, chance: 10, rarity: "Rare", icon: "⭐" },
+        { type: "nft", name: "God Crown", icon: "👑", chance: 8, rarity: "Epic" },
+        { type: "stars", amount: 12000, chance: 6, rarity: "Legendary", icon: "⭐" },
+        { type: "nft", name: "Divine Orb", icon: "🔮", chance: 4, rarity: "Mythic" }
+    ],
+    15: [ // VIP Case
+        { type: "stars", amount: 5000, chance: 8, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 10000, chance: 6, rarity: "Common", icon: "⭐" },
+        { type: "stars", amount: 15000, chance: 6, rarity: "Uncommon", icon: "⭐" },
+        { type: "nft", name: "VIP Badge", icon: "💎", chance: 13, rarity: "Uncommon" },
+        { type: "nft", name: "Gold Card", icon: "💳", chance: 12, rarity: "Rare" },
+        { type: "stars", amount: 20000, chance: 10, rarity: "Rare", icon: "⭐" },
+        { type: "nft", name: "VIP Crown", icon: "👑", chance: 8, rarity: "Epic" },
+        { type: "stars", amount: 30000, chance: 6, rarity: "Legendary", icon: "⭐" },
+        { type: "nft", name: "Diamond Rose", icon: "🌹", chance: 4, rarity: "Mythic" }
+    ]
+};
+
+// ============================================================
+//  ФУНКЦИИ
+// ============================================================
+
+// --- ОБНОВЛЕНИЕ БАЛАНСА ---
+function updateBalance() {
+    document.getElementById('balanceDisplay').textContent = balance;
+    localStorage.setItem('caseup_balance', balance);
+}
+
+// --- ОБНОВЛЕНИЕ СТАТИСТИКИ ---
+function updateStats() {
+    document.getElementById('statOpened').textContent = opened;
+    document.getElementById('statItems').textContent = inventory.length;
+    document.getElementById('statSpent').textContent = totalSpent;
+    document.getElementById('statWon').textContent = totalWon;
+}
+
+// --- ПОКАЗ СТРАНИЦЫ ---
+function showPage(id, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    if (id === 'inventoryPage') renderInventory();
+    if (id === 'profilePage') updateStats();
+}
+
+// --- ВСПОМОГАТЕЛЬНАЯ: ВЫБОР СЛУЧАЙНОЙ НАГРАДЫ ---
+function getRandomReward(rewards) {
+    const total = rewards.reduce((sum, r) => sum + r.chance, 0);
+    let rand = Math.random() * total;
+    for (const reward of rewards) {
+        rand -= reward.chance;
+        if (rand <= 0) return reward;
+    }
+    return rewards[0];
+}
+
+// --- ОТКРЫТИЕ КЕЙСА ---
+function openCase(id) {
+    const caseData = cases[id];
+    const rewards = caseRewards[id] || [];
+    
+    if (!caseData) {
+        alert('Кейс не найден!');
+        return;
+    }
+
+    if (caseData.price > balance) {
+        alert(`Недостаточно звезд! Нужно ${caseData.price} ⭐`);
+        return;
+    }
+
+    // Списание баланса
+    balance -= caseData.price;
+    totalSpent += caseData.price;
+    updateBalance();
+
+    // Выбор награды
+    const reward = getRandomReward(rewards);
+    
+    // Анимация открытия
+    showOpeningAnimation(caseData, reward);
+}
+
+// --- АНИМАЦИЯ ОТКРЫТИЯ ---
+function showOpeningAnimation(caseData, reward) {
+    const modal = document.getElementById('openingModal');
+    const icon = document.getElementById('slotIcon');
+    const name = document.getElementById('slotName');
+    const rarity = document.getElementById('slotRarity');
+    const type = document.getElementById('slotType');
+    const btnCollect = document.getElementById('btnCollect');
+    
+    modal.classList.add('active');
+    btnCollect.style.display = 'none';
+    
+    // Массив для прокрутки
+    const allRewards = caseRewards[caseData.id] || [];
+    let count = 0;
+    const maxRolls = 25 + Math.floor(Math.random() * 15);
+    
+    // Звук (через Web Audio API)
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = 800 + Math.random() * 400;
+        gain.gain.value = 0.05;
+        osc.start();
+        setTimeout(() => osc.stop(), 80);
+    } catch(e) {}
+    
+    const rollInterval = setInterval(() => {
+        const temp = allRewards[Math.floor(Math.random() * allRewards.length)];
+        icon.textContent = temp.icon || '🎲';
+        name.textContent = temp.type === 'stars' ? `${temp.amount} ⭐` : temp.name;
+        rarity.textContent = temp.rarity || 'Common';
+        rarity.style.color = getRarityColor(temp.rarity);
+        type.textContent = temp.type === 'stars' ? 'Звёзды' : 'NFT';
+        count++;
+        
+        if (count >= maxRolls) {
+            clearInterval(rollInterval);
+            
+            // Финальный результат
+            icon.textContent = reward.icon || '🎁';
+            name.textContent = reward.type === 'stars' ? `${reward.amount} ⭐` : reward.name;
+            rarity.textContent = reward.rarity || 'Common';
+            rarity.style.color = getRarityColor(reward.rarity);
+            type.textContent = reward.type === 'stars' ? 'Звёзды' : 'NFT';
+            
+            // Сохраняем результат
+            window._currentReward = reward;
+            window._currentCaseId = caseData.id;
+            
+            // Показываем кнопку "Забрать"
+            btnCollect.style.display = 'block';
+        }
+    }, 80);
+}
+
+// --- ЦВЕТ РЕДКОСТИ ---
+function getRarityColor(rarity) {
+    const colors = {
+        'Common': '#78909c',
+        'Uncommon': '#29b6f6',
+        'Rare': '#7c4dff',
+        'Epic': '#e040fb',
+        'Legendary': '#ffa726',
+        'Mythic': '#ff1744'
+    };
+    return colors[rarity] || '#ffffff';
+}
+
+// --- ЗАБРАТЬ НАГРАДУ ---
+function collectReward() {
+    const reward = window._currentReward;
+    const caseId = window._currentCaseId;
+    
+    if (!reward) return;
+    
+    if (reward.type === 'stars') {
+        balance += reward.amount;
+        totalWon += reward.amount;
+        updateBalance();
+    } else {
+        // NFT
+        inventory.push({
+            name: reward.name,
+            icon: reward.icon,
+            rarity: reward.rarity,
+            fromCase: cases[caseId]?.name || 'Unknown',
+            date: new Date().toLocaleString()
+        });
+        localStorage.setItem('caseup_inventory', JSON.stringify(inventory));
+    }
+    
+    opened++;
+    localStorage.setItem('caseup_opened', opened);
+    
+    // Сохраняем историю
+    const historyEntry = {
+        caseName: cases[caseId]?.name || 'Unknown',
+        reward: reward.type === 'stars' ? `${reward.amount} ⭐` : reward.name,
+        rarity: reward.rarity,
+        type: reward.type,
+        time: new Date().toLocaleString()
+    };
+    history.unshift(historyEntry);
+    if (history.length > 50) history.pop();
+    localStorage.setItem('caseup_history', JSON.stringify(history));
+    
+    // Закрываем модалку
+    closeOpening();
+    renderInventory();
+    updateStats();
+}
+
+// --- ЗАКРЫТЬ МОДАЛКУ ОТКРЫТИЯ ---
+function closeOpening() {
+    document.getElementById('openingModal').classList.remove('active');
+    window._currentReward = null;
+}
+
+// --- ПОКАЗ ВОЗМОЖНЫХ ПРИЗОВ ---
+function showRewards(id) {
+    const caseData = cases[id];
+    const rewards = caseRewards[id] || [];
+    
+    if (!caseData) return;
+    
+    document.getElementById('rewardsCaseName').textContent = caseData.name;
+    const grid = document.getElementById('rewardsGrid');
+    grid.innerHTML = '';
+    
+    rewards.forEach(r => {
+        const div = document.createElement('div');
+        div.className = `reward-item r-${r.rarity.toLowerCase()}`;
+        div.innerHTML = `
+            <span class="r-icon">${r.icon || '🎁'}</span>
+            <span class="r-name">${r.type === 'stars' ? `${r.amount} ⭐` : r.name}</span>
+            <span class="r-rarity">${r.rarity}</span>
+        `;
+        grid.appendChild(div);
+    });
+    
+    document.getElementById('rewardsModal').classList.add('active');
+}
+
+// --- ЗАКРЫТЬ МОДАЛКУ ПРИЗОВ ---
+function closeRewards() {
+    document.getElementById('rewardsModal').classList.remove('active');
+}
+
+// --- ОТОБРАЖЕНИЕ КЕЙСОВ ---
+function renderCases() {
+    const grid = document.getElementById('caseGrid');
+    grid.innerHTML = '';
+    
+    cases.forEach((c, i) => {
+        const card = document.createElement('div');
+        card.className = `case-card rarity-${c.rarity.toLowerCase()}`;
+        card.style.setProperty('--case-color', c.color);
+        if (c.price === 0) card.classList.add('free');
+        
+        card.innerHTML = `
+            <div class="case-icon">${c.icon}</div>
+            <div class="case-name">${c.name}</div>
+            <div class="case-price ${c.price === 0 ? 'free' : ''}">${c.price === 0 ? 'FREE' : `⭐ ${c.price}`}</div>
+            <div class="rarity-badge">${c.rarity}</div>
+            <button class="btn-open" onclick="event.stopPropagation(); openCase(${i})">Открыть</button>
+        `;
+        
+        // Клик по карточке показывает возможные призы
+        card.addEventListener('click', () => showRewards(i));
+        
+        grid.appendChild(card);
+    });
+}
+
+// --- ОТОБРАЖЕНИЕ ИНВЕНТАРЯ ---
+function renderInventory() {
+    const grid = document.getElementById('inventoryGrid');
+    grid.innerHTML = '';
+    
+    if (inventory.length === 0) {
+        grid.innerHTML = `<div class="inventory-empty"><span class="big-icon">🎒</span>Инвентарь пуст</div>`;
+        return;
+    }
+    
+    // Группировка по редкости
+    const grouped = {};
+    inventory.forEach(item => {
+        const key = item.rarity || 'Common';
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push(item);
+    });
+    
+    // Сортировка редкостей
+    const order = ['Mythic', 'Legendary', 'Epic', 'Rare', 'Uncommon', 'Common'];
+    for (const rarity of order) {
+        if (!grouped[rarity]) continue;
+        const items = grouped[rarity];
+        items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = `inventory-item rarity-${rarity.toLowerCase()}`;
+            div.style.borderColor = getRarityColor(rarity);
+            div.innerHTML = `
+                <span class="inv-icon">${item.icon || '🎁'}</span>
+                <span class="inv-name">${item.name}</span>
+                <span class="inv-rarity" style="color:${getRarityColor(rarity)}">${rarity}</span>
+            `;
+            grid.appendChild(div);
+        });
+    }
+}
+
+// --- БЫСТРОЕ ОТКРЫТИЕ VIP ---
+function quickOpenVIP() {
+    openCase(15);
+}
+
+// --- ПОПОЛНЕНИЕ БАЛАНСА ---
+function topUp() {
+    const amount = prompt('Сколько звезд добавить?', '100');
+    if (amount && !isNaN(amount) && parseInt(amount) > 0) {
+        balance += parseInt(amount);
+        updateBalance();
+    }
+}
+
+// --- ИГРЫ ---
+function playWheel() {
+    const prizes = [50, 80, 100, 150, 200, 300];
+    const win = prizes[Math.floor(Math.random() * prizes.length)];
+    balance += win;
+    totalWon += win;
+    updateBalance();
+    alert(`🎡 Колесо! Вы выиграли ${win} ⭐`);
+}
+
+function playMines() {
+    const win = Math.random() > 0.45;
+    if (win) {
+        const amount = 200 + Math.floor(Math.random() * 300);
+        balance += amount;
+        totalWon += amount;
+        updateBalance();
+        alert(`💣 Вы нашли подарок! +${amount} ⭐`);
+    } else {
+        alert(`💣 Мина! Попробуйте снова`);
+    }
+}
+
+function playCrash() {
+    const multi = (1 + Math.random() * 9).toFixed(2);
+    const win = Math.floor(100 * parseFloat(multi));
+    balance += win;
+    totalWon += win;
+    updateBalance();
+    alert(`🚀 Crash x${multi}! +${win} ⭐`);
+}
+
+// --- ОЧИСТКА ИСТОРИИ ---
+function clearHistory() {
+    if (confirm('Очистить историю открытий?')) {
+        history = [];
+        localStorage.setItem('caseup_history', JSON.stringify(history));
+        alert('История очищена');
+    }
+}
+
+// --- ИНИЦИАЛИЗАЦИЯ ---
+document.addEventListener('DOMContentLoaded', function() {
+    // Telegram
+    if (window.Telegram) {
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+    }
+    
+    updateBalance();
+    renderCases();
+    renderInventory();
+    updateStats();
+    
+    // Закрытие модалок по клику вне
+    document.getElementById('rewardsModal').addEventListener('click', function(e) {
+        if (e.target === this) closeRewards();
+    });
+    document.getElementById('openingModal').addEventListener('click', function(e) {
+        if (e.target === this) closeOpening();
+    });
+});
