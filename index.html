@@ -1,274 +1,121 @@
-// Фрагмент кода React (Frontend)
-import React, { useState } from 'react';
-import './CaseOpening.css'; // Подключаем темный стиль
-import caseToTheMoon from '../../assets/cases/case_moon.png'; // Кейс с ракетой
-
-const CaseOpeningScreen = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [dropResult, setDropResult] = useState(null);
-
-  // Функция открытия кейса (вызывает API)
-  const handleOpenCase = async (caseId) => {
-    setIsLoading(true);
-    try {
-      // !!! ЭТОТ ЗАПРОС БУДЕТ ОТПРАВЛЕН НА НАШ BACKEND API !!!
-      // const response = await fetch('/api/open-case', { method: 'POST', body: JSON.stringify({ caseId, userId: TELEGRAM_USER_ID }) });
-      // const data = await response.json();
-      
-      // Имитация ответа сервера (для демонстрации)
-      // Сервер возвращает: { success: true, item: { id: 'nft_diamond_ring', name: 'DIAMOND RING', rarity: 'Legendary', imageUrl: 'ссылка на твой скриншот.png' } }
-      
-      // ЗАГЛУШКА ДЛЯ ДЕМОНСТРАЦИИ (чтобы показать, что всё работает как на рендерах image_39.png)
-      setTimeout(() => {
-        const mockDrop = {
-            id: 'gift_diamond_ring_01',
-            name: 'DIAMOND RING',
-            rarity: 'Legendary',
-            // ИСПОЛЬЗУЕМ АУТЕНТИЧНУЮ ИКОНКУ ИЗ ТВОИХ СКРИНШОТОВ (image_34.png)
-            imageUrl: 'https://remote_storage/telegram_gifts/diamond_ring.gif', 
-            type: 'NFT'
-        };
-        setDropResult(mockDrop);
-        setIsLoading(false);
-      }, 2500); // Анимация открытия 2.5 секунды
-      
-    } catch (error) {
-      console.error('Ошибка открытия кейса', error);
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <div className="case-app-container">
-      <header className="app-header">
-        <div className="header-logo">CaseUp</div>
-        <div className="header-balance">⭐ 15,450</div> {/* Баланс в Звездах */}
-      </header>
-
-      {/* Витрина кейсов */}
-      <div className="cases-grid">
-        <div className="case-card premium" onClick={() => handleOpenCase('moon_case')}>
-            <img src={caseToTheMoon} alt="To The Moon Case" className="case-image" />
-            <div className="case-name">TO THE MOON</div>
-            <div className="case-price">⭐ 500</div>
-            <button className="open-btn" disabled={isLoading}>Открыть</button>
-        </div>
-        {/* ... другие кейсы ... */}
-      </div>
-
-      {/* Анимация вскрытия (появляется поверх всего) */}
-      {isLoading && (
-        <div className="opening-overlay">
-            <div className="spinner-animation"></div> {/* Крутящийся кейс */}
-        </div>
-      )}
-
-      {/* Модальное окно дропа (выпадает именно та самая иконка из image_39.png) */}
-      {dropResult && (
-        <div className="drop-modal-overlay">
-            <div className="drop-modal-content">
-                <h2>🎉 ВАМ ВЫПАЛО! 🎉</h2>
-                <div className={`item-card-big rarity-${dropResult.rarity.toLowerCase()}`}>
-                    {/* !!! ЭТО ТА САМАЯ КАРТИНКА ИЗ ТВОИХ СКРИНШОТОВ !!! */}
-                    <img src={dropResult.imageUrl} alt={dropResult.name} className="item-icon-large" />
-                </div>
-                <div className="item-name">{dropResult.name}</div>
-                <div className="item-rarity">{dropResult.rarity}</div>
-                {dropResult.type === 'NFT' && <div className="nft-badge">💎 NFT</div>}
-                <button className="collect-btn" onClick={() => setDropResult(null)}>Забрать в инвентарь</button>
-            </div>
-        </div>
-      )}
-
-    </div>
-  );
-};
-
-export default CaseOpeningScreen;
-// Фрагмент кода React (Frontend)
-import React, { useEffect, useState } from 'react';
-import './Inventory.css'; // Темный стиль
-
-const InventoryScreen = () => {
-  const [inventoryItems, setInventoryItems] = useState([]);
-
-  useEffect(() => {
-    // !!! ЗАПРОС НА НАШ BACKEND API ДЛЯ ПОЛУЧЕНИЯ NFT ПОЛЬЗОВАТЕЛЯ !!!
-    // fetch('/api/user-inventory?userId=TELEGRAM_ID')
-    //   .then(res => res.json())
-    //   .then(data => setInventoryItems(data.items));
-
-    // ЗАГЛУШКА ДЛЯ ДЕМОНСТРАЦИИ (используем ТОЧНО ТАКИЕ ЖЕ иконки, как в image_43.png)
-    const mockItems = [
-        { id: 1, name: 'DIAMOND RING', imageUrl: 'https://remote_storage/telegram_gifts/diamond_ring.gif', type: 'NFT' },
-        { id: 2, name: 'GOLD CROWN', imageUrl: 'https://remote_storage/telegram_gifts/gold_crown.gif', type: 'NFT' },
-        { id: 3, name: 'GOLDEN STARS', imageUrl: 'https://remote_storage/telegram_gifts/gold_stars.gif', type: 'TOKEN' }, // Звезды
-        { id: 4, name: 'TEDDY BEAR', imageUrl: 'https://remote_storage/telegram_gifts/teddy_bear.gif', type: 'NFT' },
-    ];
-    setInventoryItems(mockItems);
-  }, []);
-
-  return (
-    <div className="inventory-container">
-      <h1>Мой Хранитель</h1>
-      <div className="inventory-tabs">
-        <button className="tab-btn active">Все (4)</button>
-        <button className="tab-btn">NFT (3)</button>
-        <button className="tab-btn">Звезды (1)</button>
-      </div>
-
-      <div className="inventory-grid">
-        {inventoryItems.map(item => (
-          <div key={item.id} className="inventory-item-card">
-            {/* !!! ИКОНКИ ИЗ ТВОИХ СКРИНШОТОВ !!! */}
-            <img src={item.imageUrl} alt={item.name} className="item-icon" />
-            <div className="item-label">{item.name}</div>
-            {item.type === 'NFT' && <span className="nft-tag">💎 NFT</span>}
-            {item.type === 'TOKEN' && <span className="token-tag">⭐</span>}
-          </div>
-        ))}
-      </div>
-      
-      <div className="action-panel">
-          <button className="withdraw-btn">Вывести все NFT на кошелек TON</button>
-      </div>
-    </div>
-  );
-};
-
-export default InventoryScreen;
-// Фрагмент кода Backend (Node.js/Express)
-const express = require('express');
-const bodyParser = require('body-parser');
-const crypto = require('crypto'); // Для генерации случайных чисел
-const tonService = require('./tonService'); // Сервис для работы с TON (чеканка NFT)
-const app = express();
-
-app.use(bodyParser.json());
-
-// База данных (в реальности используем PostgreSQL/MongoDB)
-const DB = {
-    // Настройка кейса: список возможных призов
-    cases: {
-        'moon_case': [
-            { id: 'nft_diamond_ring', name: 'DIAMOND RING', rarity: 'Legendary', imageUrl: 'https://remote_storage/telegram_gifts/diamond_ring.gif', weight: 5 }, // Weight - шанс
-            { id: 'nft_gold_crown',   name: 'GOLD CROWN',   rarity: 'Epic',      imageUrl: 'https://remote_storage/telegram_gifts/gold_crown.gif',   weight: 15 },
-            { id: 'token_stars_1000', name: '1000 STARS',   rarity: 'Rare',      imageUrl: 'https://remote_storage/telegram_gifts/gold_stars.gif',     weight: 50 },
-            { id: 'nft_teddy_bear',   name: 'TEDDY BEAR',   rarity: 'Common',    imageUrl: 'https://remote_storage/telegram_gifts/teddy_bear.gif',     weight: 100 },
-        ]
-    },
-    // Пользователи и их инвентарь (для примера)
-    users: {
-        'user_123': { balance_stars: 15450, inventory: [] }
-    }
-};
-
-// --- API Endpoints ---
-
-// 1. Эндпоинт открытия кейса (Серверная логика)
-app.post('/api/open-case', (req, res) => {
-    const { caseId, userId } = req.body;
-    
-    const user = DB.users[userId];
-    const caseConfig = DB.cases[caseId];
-
-    if (!user || !caseConfig) {
-        return res.status(404).json({ success: false, error: 'User or Case not found' });
-    }
-
-    // Проверка баланса (стоимость открытия кейса)
-    const CASE_PRICE = 500; // Звезд
-    if (user.balance_stars < CASE_PRICE) {
-        return res.json({ success: false, error: 'Недостаточно Звезд' });
-    }
-
-    // --- ЧЕСТНАЯ ЛОГИКА РАНДОМА (Provably Fair) ---
-    // Генерируем случайное число от 0 до 100 (суммарный weight)
-    const totalWeight = caseConfig.reduce((sum, item) => sum + item.weight, 0);
-    const randomNum = crypto.randomInt(0, totalWeight);
-    
-    let accumulator = 0;
-    let wonItem = null;
-
-    for (const item of caseConfig) {
-        accumulator += item.weight;
-        if (randomNum < accumulator) {
-            wonItem = item;
-            break;
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CaseUp - Telegram Mini App</title>
+    <style>
+        :root {
+            --bg-color: #0f1218;
+            --card-bg: #1a1d24;
+            --text-color: #ffffff;
+            --accent-color: #ffd700;
+            --secondary-accent: #00c8ff;
+            --glow-gold: 0 0 15px rgba(255, 215, 0, 0.8);
         }
-    }
-
-    // !!! КРИТИЧЕСКИ ВАЖНО: Записываем результат в базу данных !!!
-    // В реальности генерируем уникальный ID для этого экземпляра NFT
-    const userItem = { ...wonItem, instanceId: crypto.randomUUID() };
-    user.inventory.push(userItem);
-    user.balance_stars -= CASE_PRICE; // Списываем Звезды
-
-    // !!! Важный шаг Web3: Автоматическая чеканка NFT в сети TON (опционально, или по запросу) !!!
-    // tonService.mintNFT(user.walletAddress, userItem).catch(console.error);
-
-    // Отправляем результат клиенту
-    res.json({ 
-        success: true, 
-        item: userItem, 
-        newBalance: user.balance_stars 
-    });
-});
-
-// 2. Эндпоинт получения инвентаря пользователя
-app.get('/api/user-inventory', (req, res) => {
-    const { userId } = req.query;
-    const user = DB.users[userId];
-    
-    if (!user) {
-        return res.status(404).json({ success: false, error: 'User not found' });
-    }
-
-    // Возвращаем список ассетов (из той же библиотеки, что и у конкурентов)
-    res.json({ 
-        success: true, 
-        items: user.inventory 
-    });
-});
-
-
-// Запуск сервера
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`CaseUp Web3 API запущен на порту ${PORT}`));
-          // Фрагмент кода Backend (Node.js) - Взаимодействие с TON
-// Используем библиотеку tonweb или @ton/ton
-
-const { TonClient, Address, internal } = require("@ton/ton");
-const { Mnemonic } = require("ton-crypto");
-
-// Настройка клиента TON (Mainnet/Testnet)
-const client = new TonClient({
-  endpoint: "https://toncenter.com/api/v2/jsonRPC",
-  // apiKey: "YOUR_API_KEY" // Для продакшна
-});
-
-// Наш Wallet (Collection Owner) - сид-фраза из env-переменных
-// const mnemonic = process.env.WALLET_MNEMONIC.split(" ");
-// const keyPair = await mnemonicToPrivateKey(mnemonic);
-// const wallet = client.wallet.create({ workchain: 0, publicKey: keyPair.publicKey });
-
-
-const tonService = {
-    
-    // Функция чеканки (mint) NFT-предмета
-    mintNFT: async (recipientWalletAddress, item) => {
-        // Здесь должна быть сложная логика деплоя NFT-контракта,
-        // соответствующего стандарту TEP-62/TEP-64 (NFT Standard).
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-color); padding-bottom: 80px; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(26, 29, 36, 0.95); border-bottom: 1px solid #2a2e38; position: sticky; top: 0; z-index: 100; }
+        .header-logo { font-weight: 800; font-size: 22px; color: var(--accent-color); text-transform: uppercase; text-shadow: var(--glow-gold); }
+        .header-balance { display: flex; align-items: center; background: #2a2e38; padding: 6px 15px; border-radius: 20px; font-size: 16px; color: var(--accent-color); font-weight: bold; border: 1px solid rgba(255, 215, 0, 0.3); }
+        .cases-container { padding: 25px 20px; }
+        .page-title { font-size: 24px; margin-bottom: 20px; text-align: center; color: var(--accent-color); text-transform: uppercase; font-weight: 900; }
+        .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .case-card { background: var(--card-bg); border-radius: 16px; padding: 20px; text-align: center; border: 1px solid #2a2e38; cursor: pointer; }
+        .case-name { font-weight: 700; font-size: 16px; margin: 10px 0 5px 0; color: #fff; }
+        .case-price { font-size: 15px; color: var(--accent-color); margin-bottom: 15px; font-weight: 800; }
+        .open-btn { background: linear-gradient(135deg, #ffd700, #ffc300); color: #000; border: none; padding: 10px; border-radius: 10px; font-weight: 900; width: 100%; cursor: pointer; text-transform: uppercase; }
         
-        console.log(`🚀 ЧЕКАНКА NFT ДЛЯ ПОЛЬЗОВАТЕЛЯ: ${recipientWalletAddress}`);
-        console.log(`🛠️ ДАННЫЕ АССЕТА:`, item);
+        /* Модальные окна */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 200; flex-direction: column; }
+        .drop-window { background: var(--card-bg); border-radius: 20px; padding: 30px; text-align: center; border: 2px solid var(--accent-color); box-shadow: var(--glow-gold); display: none; flex-direction: column; align-items: center; width: 85%; max-width: 350px; z-index: 201; }
+        .collect-btn { background: linear-gradient(135deg, #00c8ff, #00a2ff); color: #fff; border: none; padding: 12px 30px; border-radius: 12px; font-weight: 900; cursor: pointer; margin-top: 20px; text-transform: uppercase; width: 100%; }
+    </style>
+</head>
+<body>
 
-        // !!! ИСПОЛЬЗУЕМ ССЫЛКИ НА АУТЕНТИЧНЫЕ АССЕТЫ !!!
-        // Эти метаданные будут записаны в блокчейн:
-        const nftMetadata = {
-            name: item.name,
-            description: `Редкий коллекционный предмет CaseUp ${item.rarity}`,
-            image: item.imageUrl, // Та самая иконка из скриншотов
-            attributes: [
-                { trait_type: "Rarity", value: item.rarity },
-                { trait_
+<header>
+    <div class="header-logo">CaseUp</div>
+    <div class="header-balance">⭐ <span id="user-balance">15,450</span></div>
+</header>
+
+<div class="cases-container">
+    <h2 class="page-title">Выбери кейс</h2>
+    <div class="cases-grid">
+        <div class="case-card" onclick="openCase('STAR CASE', 100, '⭐')">
+            <div style="font-size: 50px;">🎁</div>
+            <div class="case-name">STAR CASE</div>
+            <div class="case-price">⭐ 100</div>
+            <button class="open-btn">Открыть</button>
+        </div>
+        <div class="case-card" onclick="openCase('NFT CROWN', 500, '👑')">
+            <div style="font-size: 50px;">👑</div>
+            <div class="case-name">NFT CROWN</div>
+            <div class="case-price">⭐ 500</div>
+            <button class="open-btn">Открыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- Окно анимации -->
+<div class="overlay" id="loadingOverlay">
+    <div style="font-size: 60px; animation: spin 1s infinite linear;">🌀</div>
+    <div style="color: #ffd700; margin-top: 15px; font-weight: bold;">Открываем кейс...</div>
+</div>
+
+<!-- Окно выигрыша -->
+<div class="overlay" id="dropOverlay">
+    <div class="drop-window" id="dropModal">
+        <h3 style="color: #ffd700; margin-bottom: 15px;">🎉 ВАМ ВЫПАЛО! 🎉</h3>
+        <div id="wonIcon" style="font-size: 70px; margin: 15px 0;">💎</div>
+        <div id="wonName" style="font-size: 20px; font-weight: bold; margin-bottom: 5px;">DIAMOND RING</div>
+        <div id="wonRarity" style="color: #00c8ff; font-size: 14px; margin-bottom: 15px; text-transform: uppercase;">Legendary NFT</div>
+        <button class="collect-btn" onclick="closeDrop()">Забрать</button>
+    </div>
+</div><script>
+    let balance = 15450;
+
+    const giftsPool = [
+        { name: 'DIAMOND RING', rarity: 'Legendary NFT', icon: '💍', price: 1000 },
+        { name: 'GOLD CROWN', rarity: 'Epic NFT', icon: '👑', price: 500 },
+        { name: 'GOLDEN STARS', rarity: 'Rare Token', icon: '⭐', price: 200 },
+        { name: 'TEDDY BEAR', rarity: 'Common Gift', icon: '🧸', price: 50 }
+    ];
+
+    function openCase(caseName, price) {
+        if (balance < price) {
+            alert('Недостаточно Звезд на балансе!');
+            return;
+        }
+
+        balance -= price;
+        document.getElementById('user-balance').innerText = balance.toLocaleString();
+
+        // Показываем анимацию загрузки
+        document.getElementById('loadingOverlay').style.display = 'flex';
+
+        setTimeout(() => {
+            document.getElementById('loadingOverlay').style.display = 'none';
+
+            // Рандомный выбор приза
+            const randomItem = giftsPool[Math.floor(Math.random() * giftsPool.length)];
+
+            // Заполняем модалку дропа
+            document.getElementById('wonIcon').innerText = randomItem.icon;
+            document.getElementById('wonName').innerText = randomItem.name;
+            document.getElementById('wonRarity').innerText = randomItem.rarity;
+
+            // Показываем окно выигрыша
+            document.getElementById('dropOverlay').style.display = 'flex';
+            document.getElementById('dropModal').style.display = 'flex';
+
+        }, 1500);
+    }
+
+    function closeDrop() {
+        document.getElementById('dropOverlay').style.display = 'none';
+        document.getElementById('dropModal').style.display = 'none';
+    }
+</script>
+</body>
+</html>
