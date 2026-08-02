@@ -28,8 +28,7 @@
         .grid-16 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .case-box { background: var(--card-bg); border-radius: 16px; padding: 15px; text-align: center; border: 1px solid var(--card-border); cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; transition: 0.2s; }
         .case-box:active { transform: scale(0.96); border-color: var(--accent-gold); }
-        .case-img { width: 64px; height: 64px; margin: 0 auto 10px auto; object-fit: contain; }
-        .case-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; color: var(--text-main); }
+        .case-title { font-weight: 700; font-size: 13px; margin: 8px 0 4px 0; color: var(--text-main); }
         .case-cost { font-size: 13px; color: var(--accent-gold); margin-bottom: 10px; font-weight: 800; }
         .btn-open { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; border: none; padding: 9px; border-radius: 10px; font-weight: 900; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; }
 
@@ -54,13 +53,11 @@
     <div class="balance">⭐ <span id="userBal">15450</span></div>
 </header>
 
-<!-- КЕЙСЫ (16 штук) -->
 <div id="tab-cases" class="page active">
     <div class="title">Все кейсы</div>
     <div class="grid-16" id="casesContainer"></div>
 </div>
 
-<!-- ИНВЕНТАРЬ -->
 <div id="tab-inventory" class="page">
     <div class="title">Инвентарь</div>
     <div class="inv-grid" id="inventoryContainer">
@@ -68,7 +65,6 @@
     </div>
 </div>
 
-<!-- ПРОФИЛЬ -->
 <div id="tab-profile" class="page">
     <div class="title">Профиль</div>
     <div class="profile-box">
@@ -79,7 +75,6 @@
     </div>
 </div>
 
-<!-- НАВИГАЦИЯ -->
 <div class="nav">
     <button class="nav-btn active" onclick="changeTab('cases', this)">
         <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z"/></svg>
@@ -95,13 +90,11 @@
     </button>
 </div>
 
-<!-- АНИМАЦИЯ ОТКРЫТИЯ -->
 <div class="overlay" id="loaderOverlay">
     <div style="font-size: 50px; animation: spin 1s infinite linear;">🎁</div>
     <div style="color: var(--accent-gold); margin-top: 15px; font-weight: bold; font-size: 15px;">Открываем кейс...</div>
 </div>
 
-<!-- ОКНО ВЫИГРЫША -->
 <div class="overlay" id="dropOverlay">
     <div class="modal" id="dropModal">
         <h3 style="color: var(--accent-gold); margin-bottom: 8px; font-size: 17px;">ВЫИГРЫШ!</h3>
