@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
@@ -11,172 +10,134 @@
 
 <style>
 
-:root{
-    --bg:#050816;
-    --panel:#0d1528;
-    --card:#111c32;
-    --blue:#00a8ff;
-    --gold:#ffd700;
-    --purple:#9b5cff;
-    --green:#35e28f;
-    --text:#ffffff;
-    --muted:#7f8aa3;
-}
-
-
 *{
+    box-sizing:border-box;
     margin:0;
     padding:0;
-    box-sizing:border-box;
-    font-family:
-    Inter,
-    Arial,
-    sans-serif;
+    font-family:Arial, sans-serif;
 }
-
 
 body{
-
     background:
-    radial-gradient(circle at 50% -10%,
-    #143a68 0,
-    #050816 45%);
-
+    radial-gradient(circle at top,#17335c,#050914 60%);
     color:white;
-
     min-height:100vh;
-
-    padding-bottom:90px;
-
+    padding-bottom:80px;
 }
 
 
-/* HEADER */
-
 .header{
+    height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:15px;
 
-height:70px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-padding:0 16px;
-
-background:
-rgba(7,12,25,.85);
-
-backdrop-filter:blur(15px);
-
-border-bottom:
-1px solid rgba(255,255,255,.08);
-
-position:sticky;
-
-top:0;
-
-z-index:50;
-
+    background:#0a1224;
+    border-bottom:1px solid #243354;
 }
 
 
 .logo{
-
-font-size:25px;
-
-font-weight:1000;
-
-letter-spacing:1px;
-
-color:var(--gold);
-
-text-shadow:
-0 0 20px rgba(255,215,0,.8);
-
+    font-size:26px;
+    font-weight:900;
+    color:#ffd700;
+    text-shadow:0 0 15px #ffd700;
 }
-
 
 
 .balance{
 
-padding:
-10px 16px;
+    background:#121d35;
+    border:1px solid #806900;
 
-border-radius:20px;
+    border-radius:25px;
 
-background:
-linear-gradient(
-135deg,
-#18243d,
-#0b1222
-);
+    padding:10px 18px;
 
-border:
-1px solid rgba(255,215,0,.35);
+    color:#ffd700;
 
-color:var(--gold);
-
-font-weight:900;
+    font-weight:900;
 
 }
 
 
 
-/* PAGE */
 
 
 .page{
-
-display:none;
-
-padding:16px;
-
-animation:
-show .35s ease;
-
+    display:none;
+    padding:15px;
 }
 
 
 .page.active{
-
-display:block;
-
-}
-
-
-@keyframes show{
-
-from{
-
-opacity:0;
-
-transform:translateY(15px);
-
-}
-
-to{
-
-opacity:1;
-
-transform:none;
-
-}
-
+    display:block;
 }
 
 
 
 
-.section-title{
+.banner{
 
-font-size:24px;
+    height:180px;
 
-font-weight:1000;
+    border-radius:25px;
 
-margin:
-15px 0 20px;
+    padding:20px;
+
+    overflow:hidden;
+
+    position:relative;
+
+
+    background:
+    linear-gradient(135deg,#173c72,#10182d);
+
+
+    border:1px solid #2358a0;
+
+    margin-bottom:20px;
+
+}
+
+
+
+.banner h1{
+
+    font-size:28px;
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+
+
+.banner p{
+
+    color:#b7c7e5;
+
+    margin-top:10px;
+
+}
+
+
+.banner button{
+
+    margin-top:25px;
+
+    padding:12px 25px;
+
+    border:0;
+
+    border-radius:15px;
+
+    background:
+    linear-gradient(135deg,#ffd700,#ff9d00);
+
+    font-weight:900;
 
 }
 
@@ -184,228 +145,139 @@ margin:
 
 
 
-/* FEATURE CASE */
+.title{
 
+    font-size:24px;
 
-.feature{
+    font-weight:900;
 
-height:190px;
-
-border-radius:28px;
-
-padding:20px;
-
-margin-bottom:20px;
-
-position:relative;
-
-overflow:hidden;
-
-background:
-
-linear-gradient(
-135deg,
-#122b52,
-#091224
-);
-
-
-border:
-1px solid rgba(0,168,255,.35);
-
+    margin:20px 0;
 
 }
 
 
 
-.feature:after{
-
-content:"";
-
-position:absolute;
-
-width:220px;
-
-height:220px;
-
-right:-40px;
-
-top:-30px;
 
 
-background:
-radial-gradient(
-circle,
-rgba(0,168,255,.7),
-transparent 65%
-);
+.grid{
 
+    display:grid;
 
-filter:blur(10px);
+    grid-template-columns:repeat(2,1fr);
 
+    gap:14px;
 
 }
 
-
-.feature h2{
-
-font-size:28px;
-
-position:relative;
-
-z-index:2;
-
-}
-
-
-.feature p{
-
-color:#b9c5df;
-
-margin-top:8px;
-
-position:relative;
-
-z-index:2;
-
-}
-
-
-
-.feature button{
-
-margin-top:25px;
-
-padding:
-
-13px 30px;
-
-
-border:0;
-
-border-radius:15px;
-
-
-background:
-linear-gradient(
-135deg,
-#ffd700,
-#ff9900
-);
-
-
-font-weight:1000;
-
-}
-
-
-
-/* CASE GRID */
-
-
-.case-grid{
-
-display:grid;
-
-grid-template-columns:
-repeat(2,1fr);
-
-gap:14px;
-
-}
 
 
 
 
 .case{
 
-height:230px;
+    height:250px;
 
-border-radius:25px;
+    border-radius:25px;
 
-background:
+    padding:15px;
 
-linear-gradient(
-160deg,
-#17243e,
-#0c1325
-);
+    text-align:center;
 
+    background:
 
-border:
-
-1px solid rgba(255,255,255,.08);
+    linear-gradient(160deg,#172544,#0c1427);
 
 
-padding:14px;
+    border:1px solid rgba(255,255,255,.08);
 
 
-position:relative;
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.4);
 
-overflow:hidden;
+}
 
 
-transition:.2s;
+
+.case-image{
+
+    height:120px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
 
 
 }
 
 
 
-.case:active{
+.box{
 
-transform:scale(.94);
+    width:80px;
+
+    height:80px;
+
+    border-radius:20px;
+
+    transform:rotate(5deg);
+
+
+    background:
+    linear-gradient(135deg,#ffd700,#ff9100);
+
+
+    box-shadow:
+
+    0 0 35px #ffb000;
+
+}
+
+
+
+.case:nth-child(3n) .box{
+
+    background:
+    linear-gradient(135deg,#00bfff,#005eff);
+
+    box-shadow:
+    0 0 35px #008cff;
 
 }
 
 
 
+.case:nth-child(4n) .box{
 
-.case-art{
+    background:
+    linear-gradient(135deg,#c15cff,#6b00ff);
 
-height:115px;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-
-font-size:70px;
-
-
-filter:
-drop-shadow(
-0 0 20px
-rgba(0,168,255,.7)
-);
-
+    box-shadow:
+    0 0 35px #9b00ff;
 
 }
+
 
 
 
 .case-name{
 
-font-weight:1000;
+    font-size:16px;
 
-font-size:15px;
-
-text-align:center;
+    font-weight:900;
 
 }
 
 
-.case-price{
 
-text-align:center;
+.price{
 
-margin:8px;
+    color:#ffd700;
 
-color:var(--gold);
+    font-weight:900;
 
-font-weight:1000;
+    margin:8px;
 
 }
 
@@ -413,101 +285,80 @@ font-weight:1000;
 
 .open{
 
-width:100%;
+    width:100%;
 
-padding:11px;
+    padding:12px;
 
-border:0;
+    border:0;
 
-border-radius:14px;
-
-
-background:
-
-linear-gradient(
-135deg,
-#ffd700,
-#ffb000
-);
+    border-radius:14px;
 
 
-font-weight:1000;
+    background:
+    linear-gradient(135deg,#ffd700,#ffae00);
+
+
+    font-weight:900;
 
 }
 
 
 
-/* NAV */
 
 
 .nav{
 
-position:fixed;
+    position:fixed;
 
-bottom:0;
+    bottom:0;
 
-left:0;
+    left:0;
 
-right:0;
-
-height:75px;
+    right:0;
 
 
-display:flex;
-
-justify-content:space-around;
-
-align-items:center;
+    height:75px;
 
 
-background:
-
-rgba(8,14,28,.95);
+    background:#090f20;
 
 
-backdrop-filter:blur(15px);
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
 
 
-border-top:
-
-1px solid rgba(255,255,255,.08);
-
-
-z-index:100;
+    border-top:1px solid #243354;
 
 
 }
-
 
 
 .nav button{
 
-background:none;
+    background:none;
 
-border:0;
+    border:0;
 
-color:#75809a;
+    color:#71809c;
 
-font-weight:900;
+    font-size:12px;
 
-font-size:12px;
+    font-weight:bold;
 
+}
+
+
+.nav .active{
+
+    color:#ffd700;
 
 }
 
 
-
-.nav button.active{
-
-color:var(--gold);
-
-}
-
-</style>
-
-</head>
-
-<body>
+</style><body>
 
 
 <div class="header">
@@ -518,42 +369,47 @@ CASEUP
 
 
 <div class="balance">
-⭐ <span id="balance">5501</span>
+⭐ <span id="balance">6182</span>
 </div>
 
 </div>
 
 
 
-<!-- КЕЙСЫ -->
+
 
 <section id="casesPage" class="page active">
 
 
-<div class="feature">
+<div class="banner">
 
-<h2>
-🔥 VIP Case
-</h2>
+
+<h1>
+🔥 Лучшие кейсы
+</h1>
+
 
 <p>
-Лучшие подарки и редкие NFT
+Открывай кейсы и получай редкие подарки
 </p>
 
+
 <button onclick="openCase(15)">
-Открыть ⭐10000
+VIP CASE ⭐10000
 </button>
+
 
 </div>
 
 
 
-<div class="section-title">
+<div class="title">
 🎁 Все кейсы
 </div>
 
 
-<div class="case-grid" id="cases"></div>
+
+<div class="grid" id="caseList"></div>
 
 
 </section>
@@ -562,33 +418,33 @@ CASEUP
 
 
 
-<!-- ИГРЫ -->
+
 
 
 <section id="gamesPage" class="page">
 
 
-<div class="section-title">
-🎮 Мини игры
+<div class="title">
+🎮 Игры
 </div>
 
 
-
-<div class="case-grid">
+<div class="grid">
 
 
 <div class="case">
 
-<div class="case-art">
-🎡
+<div class="case-image">
+<div class="box"></div>
 </div>
 
 <div class="case-name">
-Wheel
+🎡 Колесо
 </div>
 
-<div class="case-price">
-Колесо удачи
+
+<div class="price">
+Умножай звезды
 </div>
 
 
@@ -602,17 +458,19 @@ onclick="wheel()">
 
 
 
+
 <div class="case">
 
-<div class="case-art">
-💣
+<div class="case-image">
+<div class="box"></div>
 </div>
 
 <div class="case-name">
-Mines
+💣 Mines
 </div>
 
-<div class="case-price">
+
+<div class="price">
 Найди подарок
 </div>
 
@@ -626,18 +484,18 @@ onclick="mines()">
 
 
 
-
 <div class="case">
 
-<div class="case-art">
-🚀
+<div class="case-image">
+<div class="box"></div>
 </div>
 
 <div class="case-name">
-Crash
+🚀 Crash
 </div>
 
-<div class="case-price">
+
+<div class="price">
 x1-x50
 </div>
 
@@ -650,8 +508,6 @@ onclick="crash()">
 </div>
 
 
-
-
 </div>
 
 
@@ -662,19 +518,19 @@ onclick="crash()">
 
 
 
-<!-- ИНВЕНТАРЬ -->
+
+
 
 
 <section id="inventoryPage" class="page">
 
 
-<div class="section-title">
+<div class="title">
 🎒 Инвентарь
 </div>
 
 
-<div class="case-grid"
-id="inventory">
+<div class="grid" id="inventory">
 
 </div>
 
@@ -686,33 +542,30 @@ id="inventory">
 
 
 
-<!-- ПРОФИЛЬ -->
+
+
 
 
 <section id="profilePage" class="page">
 
 
-<div class="feature">
+<div class="banner">
 
 
-<h2>
-👤 Игрок
-</h2>
+<h1>
+👤 Профиль
+</h1>
 
 
 <p>
 Открыто кейсов:
-<span id="opened">
-0
-</span>
+<span id="opened">0</span>
 </p>
 
 
 <p>
 Предметов:
-<span id="count">
-0
-</span>
+<span id="items">0</span>
 </p>
 
 
@@ -727,15 +580,13 @@ id="inventory">
 
 
 
-
-<!-- НАВИГАЦИЯ -->
 
 
 <div class="nav">
 
 
 <button class="active"
-onclick="page('casesPage',this)">
+onclick="showPage('casesPage',this)">
 🎁
 <br>
 Кейсы
@@ -743,7 +594,7 @@ onclick="page('casesPage',this)">
 
 
 <button
-onclick="page('gamesPage',this)">
+onclick="showPage('gamesPage',this)">
 🎮
 <br>
 Игры
@@ -751,7 +602,7 @@ onclick="page('gamesPage',this)">
 
 
 <button
-onclick="page('inventoryPage',this)">
+onclick="showPage('inventoryPage',this)">
 🎒
 <br>
 Инвентарь
@@ -759,7 +610,7 @@ onclick="page('inventoryPage',this)">
 
 
 <button
-onclick="page('profilePage',this)">
+onclick="showPage('profilePage',this)">
 👤
 <br>
 Профиль
@@ -775,26 +626,21 @@ onclick="page('profilePage',this)">
 
 
 
-
-<!-- ОКНО ОТКРЫТИЯ -->
-
-
 <div id="modal"
 style="
 display:none;
 position:fixed;
 inset:0;
 background:rgba(0,0,0,.85);
-z-index:200;
+z-index:999;
 align-items:center;
 justify-content:center;
 ">
 
 
-
 <div style="
+background:#111b32;
 width:90%;
-background:#111a2d;
 border-radius:30px;
 padding:25px;
 text-align:center;
@@ -807,7 +653,7 @@ border:1px solid #ffd700;
 </h2>
 
 
-<div id="roulette"
+<div id="gift"
 style="
 font-size:90px;
 margin:30px;
@@ -816,19 +662,22 @@ margin:30px;
 </div>
 
 
-<h2 id="winName">
+
+<h2 id="win">
+
 </h2>
 
 
-<p id="winRare">
+<p id="rare">
+
 </p>
 
 
 
 <button class="open"
-onclick="claim()">
+onclick="takeGift()">
 
-Забрать в инвентарь
+Забрать
 
 </button>
 
@@ -842,21 +691,26 @@ onclick="claim()">
 
 
 
+
+
+
+
 <script>
 
 
-let balance=5501;
+let balance = 6182;
 
 
-let opened=0;
+let opened = 0;
 
 
-let current=null;
+let currentGift=null;
 
 
-let inventory=
+
+let inventory =
 JSON.parse(
-localStorage.getItem("caseup_inventory")
+localStorage.getItem("caseup")
 )
 ||
 [];
@@ -865,40 +719,120 @@ localStorage.getItem("caseup_inventory")
 
 
 
-const cases=[
+const cases = [
 
 
-["Star Case",50,"⭐"],
+{
+name:"Star Case",
+price:50,
+color:"gold"
+},
 
-["Moon Case",100,"🌙"],
 
-["Sun Case",150,"☀️"],
+{
+name:"Moon Case",
+price:100,
+color:"blue"
+},
 
-["Neon Case",200,"⚡"],
 
-["Gold Case",300,"🪙"],
+{
+name:"Sun Case",
+price:150,
+color:"gold"
+},
 
-["Diamond Case",500,"💎"],
 
-["Ruby Case",750,"🔴"],
+{
+name:"Neon Case",
+price:200,
+color:"blue"
+},
 
-["Sapphire Case",1000,"🔵"],
 
-["Emerald Case",1250,"🟢"],
+{
+name:"Gold Case",
+price:300,
+color:"gold"
+},
 
-["Cyber Case",1500,"🤖"],
 
-["Matrix Case",2000,"🧬"],
+{
+name:"Diamond Case",
+price:500,
+color:"blue"
+},
 
-["Galaxy Case",2500,"🌌"],
 
-["Royal Case",3000,"👑"],
+{
+name:"Ruby Case",
+price:750,
+color:"red"
+},
 
-["Titan Case",4000,"🛡️"],
 
-["God Case",5000,"🔥"],
+{
+name:"Sapphire Case",
+price:1000,
+color:"blue"
+},
 
-["VIP Case",10000,"💠"]
+
+{
+name:"Emerald Case",
+price:1250,
+color:"green"
+},
+
+
+{
+name:"Cyber Case",
+price:1500,
+color:"purple"
+},
+
+
+{
+name:"Matrix Case",
+price:2000,
+color:"purple"
+},
+
+
+{
+name:"Galaxy Case",
+price:2500,
+color:"blue"
+},
+
+
+{
+name:"Royal Case",
+price:3000,
+color:"gold"
+},
+
+
+{
+name:"Titan Case",
+price:4000,
+color:"blue"
+},
+
+
+{
+name:"God Case",
+price:5000,
+color:"gold"
+},
+
+
+{
+name:"VIP Case",
+price:10000,
+color:"purple"
+}
+
 
 ];
 
@@ -906,53 +840,81 @@ const cases=[
 
 
 
-const rewards=[
+
+const gifts=[
 
 
-["Golden Star","⭐","Rare"],
+{
+name:"Diamond NFT",
+icon:"💎",
+rare:"Epic"
+},
 
-["Diamond","💎","Epic"],
 
-["Premium Gift","🎁","Legendary"],
+{
+name:"Golden Star",
+icon:"⭐",
+rare:"Rare"
+},
 
-["Crown NFT","👑","Mythic"],
 
-["Rocket","🚀","Legendary"],
+{
+name:"Premium Gift",
+icon:"🎁",
+rare:"Legendary"
+},
 
-["Galaxy Item","🌌","Ultra"]
+
+{
+name:"Crown",
+icon:"👑",
+rare:"Mythic"
+},
+
+
+{
+name:"Rocket",
+icon:"🚀",
+rare:"Legendary"
+}
+
 
 ];
 
 
 
 
-
-let box=document.getElementById("cases");
+const list=document.getElementById("caseList");
 
 
 
 cases.forEach((c,i)=>{
 
 
-box.innerHTML+=`
+list.innerHTML+=`
 
 <div class="case">
 
 
-<div class="case-art">
-${c[2]}
+<div class="case-image">
+
+<div class="box"></div>
+
 </div>
 
 
 <div class="case-name">
-${c[0]}
+
+${c.name}
+
 </div>
 
 
-<div class="case-price">
-⭐ ${c[1]}
-</div>
+<div class="price">
 
+⭐ ${c.price}
+
+</div>
 
 
 <button class="open"
@@ -968,18 +930,22 @@ onclick="openCase(${i})">
 `;
 
 
+
 });
+// ==============================
+// НАВИГАЦИЯ
+// ==============================
 
 
-
-function page(id,btn){
+function showPage(id,button){
 
 
 document
 .querySelectorAll(".page")
 .forEach(
-x=>x.classList.remove("active")
+p=>p.classList.remove("active")
 );
+
 
 
 document
@@ -991,29 +957,35 @@ document
 document
 .querySelectorAll(".nav button")
 .forEach(
-x=>x.classList.remove("active")
+b=>b.classList.remove("active")
 );
 
 
-btn.classList.add("active");
+
+button.classList.add("active");
 
 
 }
 
 
-// ===============================
+
+
+
+
+
+// ==============================
 // ОТКРЫТИЕ КЕЙСА
-// ===============================
+// ==============================
 
 
 function openCase(id){
 
 
-let selected=cases[id];
+let box=cases[id];
 
 
 
-if(balance < selected[1]){
+if(balance < box.price){
 
 alert(
 "Недостаточно ⭐"
@@ -1025,101 +997,95 @@ return;
 
 
 
-balance-=selected[1];
+balance-=box.price;
 
 
-document.getElementById(
-"balance"
-).innerText=balance;
+document
+.getElementById("balance")
+.innerText=balance;
 
 
 
 opened++;
 
 
-document.getElementById(
-"opened"
-).innerText=opened;
+document
+.getElementById("opened")
+.innerText=opened;
 
 
 
-document.getElementById(
-"modal"
-).style.display="flex";
+document
+.getElementById("modal")
+.style.display="flex";
 
 
 
-let roll=document.getElementById(
-"roulette"
-);
+let gift=
+document.getElementById("gift");
 
 
-let name=document.getElementById(
-"winName"
-);
+let win=
+document.getElementById("win");
 
 
-let rare=document.getElementById(
-"winRare"
-);
+let rare=
+document.getElementById("rare");
 
 
 
-roll.innerHTML="🎲";
+gift.innerHTML="🎲";
 
-
-name.innerHTML="Открытие...";
+win.innerHTML="Открываем...";
 
 rare.innerHTML="";
 
 
 
-let timer=0;
+
+let count=0;
 
 
-let animation=setInterval(()=>{
+let roll=setInterval(()=>{
 
 
 let temp=
-rewards[
+gifts[
 Math.floor(
-Math.random()*rewards.length
+Math.random()*gifts.length
 )
 ];
 
 
-roll.innerHTML=temp[1];
+gift.innerHTML=temp.icon;
 
 
-timer+=100;
-
-
-
-if(timer>=2200){
-
-
-clearInterval(animation);
+count++;
 
 
 
-let win=
-getReward();
+if(count>20){
+
+
+clearInterval(roll);
 
 
 
-current=win;
+currentGift=
+getRandomGift();
 
 
 
-roll.innerHTML=win[1];
+gift.innerHTML=
+currentGift.icon;
 
 
-name.innerHTML=
-win[0];
+win.innerHTML=
+currentGift.name;
 
 
 rare.innerHTML=
-"Редкость: "+win[2];
+currentGift.rare;
 
 
 
@@ -1131,7 +1097,6 @@ rare.innerHTML=
 
 
 
-
 }
 
 
@@ -1139,12 +1104,12 @@ rare.innerHTML=
 
 
 
-// ===============================
-// ШАНСЫ ВЫПАДЕНИЯ
-// ===============================
+// ==============================
+// ШАНСЫ ПРИЗОВ
+// ==============================
 
 
-function getReward(){
+function getRandomGift(){
 
 
 let r=Math.random();
@@ -1153,69 +1118,83 @@ let r=Math.random();
 
 if(r<0.55){
 
-return rewards[0];
+return gifts[0];
 
 }
+
 
 
 if(r<0.80){
 
-return rewards[1];
+return gifts[1];
 
 }
+
 
 
 if(r<0.93){
 
-return rewards[2];
+return gifts[2];
 
 }
+
 
 
 if(r<0.98){
 
-return rewards[4];
-
-}
-
-
-return rewards[3];
-
+return gifts[4];
 
 }
 
 
 
+return gifts[3];
+
+
+}
 
 
 
 
-// ===============================
-// ЗАБРАТЬ ПРИЗ
-// ===============================
-
-
-function claim(){
 
 
 
-if(current){
+
+
+// ==============================
+// ЗАБРАТЬ ПРЕДМЕТ
+// ==============================
+
+
+function takeGift(){
+
+
+
+if(!currentGift)
+return;
+
 
 
 inventory.push({
 
-name:current[0],
+name:
+currentGift.name,
 
-icon:current[1],
+icon:
+currentGift.icon,
 
-rarity:current[2]
+rare:
+currentGift.rare
+
 
 });
 
 
+
+
 localStorage.setItem(
 
-"caseup_inventory",
+"caseup",
 
 JSON.stringify(inventory)
 
@@ -1226,54 +1205,54 @@ JSON.stringify(inventory)
 renderInventory();
 
 
+
+document
+.getElementById("modal")
+.style.display="none";
+
+
+
 }
 
 
 
-document.getElementById(
-"modal"
-).style.display="none";
-
-
-}
 
 
 
 
 
 
-
-
-// ===============================
-// ИНВЕНТАРЬ
-// ===============================
+// ==============================
+// ОТОБРАЖЕНИЕ ИНВЕНТАРЯ
+// ==============================
 
 
 function renderInventory(){
 
 
-let place=document.getElementById(
-"inventory"
-);
+
+let box=
+document.getElementById("inventory");
 
 
 
-place.innerHTML="";
+box.innerHTML="";
+
 
 
 
 if(inventory.length===0){
 
 
-place.innerHTML=`
+box.innerHTML=`
 
 <div style="
 grid-column:1/3;
 text-align:center;
-color:#7f8aa3;
-padding:40px">
+padding:40px;
+color:#8793ad">
 
-Инвентарь пуст 🎁
+Пока пусто 🎁
 
 </div>
 
@@ -1281,57 +1260,67 @@ padding:40px">
 
 return;
 
+
 }
+
+
+
 
 
 
 inventory.forEach(item=>{
 
 
-place.innerHTML+=`
+box.innerHTML+=`
+
 
 <div class="case">
 
 
-<div class="case-art">
+<div class="case-image">
 
-${item.icon}
+<div class="box"></div>
 
 </div>
 
 
+
 <div class="case-name">
 
+${item.icon}
 ${item.name}
 
 </div>
 
 
-<div class="case-price">
 
-${item.rarity}
+<div class="price">
+
+${item.rare}
+
+</div>
+
+
 
 </div>
 
-
-</div>
 
 `;
-
 
 
 });
 
 
 
-document.getElementById(
-"count"
-).innerText=
+document
+.getElementById("items")
+.innerText=
 inventory.length;
 
 
 
 }
+
 
 
 
@@ -1342,34 +1331,35 @@ renderInventory();
 
 
 
-// ===============================
+
+
+// ==============================
 // МИНИ ИГРЫ
-// ===============================
+// ==============================
 
 
 
 function wheel(){
 
 
-
-let win=
+let prize=
 Math.floor(
 Math.random()*300
 )+50;
 
 
 
-balance+=win;
+balance+=prize;
 
 
+document
+.getElementById("balance")
+.innerText=balance;
 
-document.getElementById(
-"balance"
-).innerText=balance;
 
 
 alert(
-"🎡 Вы выиграли ⭐"+win
+"🎡 Вы выиграли ⭐"+prize
 );
 
 
@@ -1378,22 +1368,27 @@ alert(
 
 
 
+
 function mines(){
 
 
-let chance=Math.random();
+let result=
+Math.random();
 
 
 
-if(chance>0.45){
+if(result>0.45){
 
 
-balance+=200;
+
+balance+=250;
+
 
 
 alert(
-"💎 Вы нашли подарок ⭐200"
+"💎 Найден подарок ⭐250"
 );
+
 
 
 }
@@ -1402,7 +1397,7 @@ else{
 
 
 alert(
-"💥 Мина! Попробуйте снова"
+"💣 Мина! Попробуй ещё"
 );
 
 
@@ -1410,12 +1405,14 @@ alert(
 
 
 
-document.getElementById(
-"balance"
-).innerText=balance;
+document
+.getElementById("balance")
+.innerText=balance;
+
 
 
 }
+
 
 
 
@@ -1424,7 +1421,7 @@ document.getElementById(
 function crash(){
 
 
-let x=
+let multi=
 (
 Math.random()*10+1
 )
@@ -1432,32 +1429,26 @@ Math.random()*10+1
 
 
 
-let win=
+let prize=
 Math.floor(
-100*x
+100*multi
 );
 
 
 
-balance+=win;
+balance+=prize;
 
 
-
-document.getElementById(
-"balance"
-).innerText=balance;
+document
+.getElementById("balance")
+.innerText=balance;
 
 
 
 alert(
-
-"🚀 Crash x"+
-x+
-"\nВыигрыш ⭐"+
-win
-
+"🚀 x"+multi+
+"\n⭐ +"+prize
 );
-
 
 
 }
@@ -1468,9 +1459,9 @@ win
 
 
 
-// ===============================
-// TELEGRAM WEB APP
-// ===============================
+// ==============================
+// TELEGRAM
+// ==============================
 
 
 if(window.Telegram){
@@ -1482,7 +1473,80 @@ Telegram.WebApp.ready();
 Telegram.WebApp.expand();
 
 
+}<script>
+
+
+// ==============================
+// СОХРАНЕНИЕ БАЛАНСА
+// ==============================
+
+
+setInterval(()=>{
+
+
+localStorage.setItem(
+"caseup_balance",
+balance
+);
+
+
+},1000);
+
+
+
+
+
+// загрузка баланса
+
+
+let savedBalance =
+localStorage.getItem(
+"caseup_balance"
+);
+
+
+
+if(savedBalance){
+
+
+balance=
+Number(savedBalance);
+
+
+
+document
+.getElementById("balance")
+.innerText=
+balance;
+
+
 }
+
+
+
+
+
+
+// ==============================
+// TELEGRAM ТЕМА
+// ==============================
+
+
+if(window.Telegram){
+
+
+let tg=
+Telegram.WebApp;
+
+
+tg.ready();
+
+
+tg.expand();
+
+
+}
+
 
 
 
@@ -1493,295 +1557,4 @@ Telegram.WebApp.expand();
 
 </body>
 
-</html>/* ===== PREMIUM CASEUP STYLE ===== */
-
-
-.case{
-
-background:
-linear-gradient(
-145deg,
-rgba(255,255,255,.08),
-rgba(255,255,255,.02)
-),
-#10182b;
-
-box-shadow:
-
-0 15px 35px
-rgba(0,0,0,.35),
-
-inset 0 0 30px
-rgba(0,168,255,.08);
-
-}
-
-
-
-.case:hover{
-
-transform:
-translateY(-5px);
-
-box-shadow:
-
-0 20px 45px
-rgba(0,168,255,.25);
-
-}
-
-
-
-.case-art{
-
-position:relative;
-
-}
-
-
-
-.case-art:after{
-
-content:"";
-
-position:absolute;
-
-width:90px;
-
-height:90px;
-
-border-radius:50%;
-
-
-background:
-radial-gradient(
-circle,
-rgba(0,168,255,.5),
-transparent 70%
-);
-
-
-filter:blur(15px);
-
-z-index:-1;
-
-}
-
-
-
-
-
-/* РЕДКОСТИ */
-
-
-.rarity-common{
-
-color:#9ca3af;
-
-}
-
-
-.rarity-rare{
-
-color:#00a8ff;
-
-text-shadow:
-0 0 10px #00a8ff;
-
-}
-
-
-.rarity-epic{
-
-color:#9b5cff;
-
-text-shadow:
-0 0 15px #9b5cff;
-
-}
-
-
-.rarity-legendary{
-
-color:#ffd700;
-
-text-shadow:
-0 0 20px #ffd700;
-
-}
-
-
-
-
-/* ОКНО ОТКРЫТИЯ */
-
-
-#modal{
-
-animation:
-
-modalShow .35s ease;
-
-}
-
-
-
-@keyframes modalShow{
-
-
-from{
-
-opacity:0;
-
-}
-
-
-to{
-
-opacity:1;
-
-}
-
-}
-
-
-
-#modal>div{
-
-
-box-shadow:
-
-0 0 60px
-rgba(255,215,0,.2);
-
-
-}
-
-
-
-
-#roulette{
-
-
-animation:
-
-giftSpin 1s infinite;
-
-}
-
-
-
-@keyframes giftSpin{
-
-
-0%{
-
-transform:
-scale(1)
-rotate(0);
-
-}
-
-
-50%{
-
-transform:
-scale(1.15)
-rotate(10deg);
-
-}
-
-
-100%{
-
-transform:
-scale(1)
-rotate(0);
-
-}
-
-
-}
-
-
-
-
-
-/* КНОПКА */
-
-.open{
-
-box-shadow:
-
-0 5px 20px
-rgba(255,215,0,.35);
-
-}
-
-
-
-.open:active{
-
-transform:
-scale(.96);
-
-}
-
-
-
-/* ИНВЕНТАРЬ */
-
-
-#inventory .case{
-
-
-height:180px;
-
-}
-
-
-
-
-/* АДАПТИВ */
-
-
-@media(min-width:700px){
-
-
-.case-grid{
-
-grid-template-columns:
-repeat(4,1fr);
-
-}
-
-
-}
-
-
-
-@media(max-width:350px){
-
-
-.case-grid{
-
-gap:10px;
-
-}
-
-
-.case{
-
-height:210px;
-
-}
-
-
-.case-art{
-
-font-size:55px;
-
-}
-
-
-}
+</html>
